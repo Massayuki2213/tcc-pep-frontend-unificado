@@ -25,12 +25,14 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
   script = signal('cenario-emergencia');
   carga = signal('1');
 
-  scripts = ['cenario-emergencia', 'cenario-mono-ms'];
-  cargas = [
+  // Fallback exibido enquanto o orquestrador está offline; a fonte da verdade
+  // é GET /scenarios, que sobrescreve estes valores no ngOnInit.
+  scripts = signal<string[]>(['cenario-emergencia', 'cenario-mono-ms']);
+  cargas = signal<{ valor: string; nome: string }[]>([
     { valor: '1', nome: 'Normal (50 VUs)' },
     { valor: '2', nome: 'Dia Corrido (150 VUs)' },
     { valor: '3', nome: 'Emergência (300 VUs)' },
-  ];
+  ]);
 
   dashboards: DashboardOption[] = [
     { uid: 'tcc-pep-normal', nome: 'Cenário 1 — Normal' },
@@ -62,6 +64,8 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
         switchMap(() => this.svc.status().pipe(catchError(() => of(null)))),
       )
       .subscribe(st => {
+        // Orquestrador acabou de ficar online → busca cenários atualizados
+        if (st !== null && !this.online()) this.carregarCenarios();
         this.online.set(st !== null);
         if (st) {
           // Rodada acabou de terminar → lista de CSVs ganhou um arquivo novo
@@ -71,6 +75,23 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
       });
 
     this.carregarResultados();
+  }
+
+  carregarCenarios() {
+    this.svc.scenarios().subscribe({
+      next: sc => {
+        if (sc.scripts?.length) {
+          this.scripts.set(sc.scripts);
+          if (!sc.scripts.includes(this.script())) this.script.set(sc.scripts[0]);
+        }
+        if (sc.cargas?.length) {
+          this.cargas.set(sc.cargas);
+          if (!sc.cargas.some(c => c.valor === this.carga())) this.carga.set(sc.cargas[0].valor);
+        }
+      },
+      // Orquestrador offline é estado esperado — mantém o fallback hardcoded
+      error: () => {},
+    });
   }
 
   carregarResultados() {

@@ -21,7 +21,7 @@
       <label>
         Script k6
         <select [value]="script()" (change)="onScriptChange($event)" [disabled]="status()?.running">
-          @for (s of scripts; track s) {
+          @for (s of scripts(); track s) {
             <option [value]="s">{{ s }}</option>
           }
         </select>
@@ -30,7 +30,7 @@
       <label>
         Carga
         <select [value]="carga()" (change)="onCargaChange($event)" [disabled]="status()?.running">
-          @for (c of cargas; track c.valor) {
+          @for (c of cargas(); track c.valor) {
             <option [value]="c.valor">{{ c.nome }}</option>
           }
         </select>
