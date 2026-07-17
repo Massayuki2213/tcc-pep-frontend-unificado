@@ -27,6 +27,14 @@ Os dashboards Grafana são embutidos via iframe (requer
 `GF_SECURITY_ALLOW_EMBEDDING=true` + acesso anônimo Viewer, já configurados no
 compose do backend).
 
+## Environments (limitação consciente)
+
+Os dois arquivos em `src/environments/` apontam para `localhost` (API :3000,
+orquestrador :3333, Grafana :3005) — **inclusive o de produção**. Este front é
+uma ferramenta de demonstração local do TCC; o build de produção não é
+implantável em outro host sem ajustar essas URLs. Decisão registrada, não
+esquecimento.
+
 ---
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.4.
