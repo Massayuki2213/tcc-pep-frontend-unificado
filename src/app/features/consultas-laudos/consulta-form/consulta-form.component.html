@@ -1,0 +1,91 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Registrar Consulta / Laudo</h1>
+    <a routerLink="/atendimentos" class="btn">Voltar</a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-card">
+    <div class="form-row">
+      <label>
+        Médico *
+        <select formControlName="medicoId">
+          <option value="">Selecione</option>
+          @for (m of medicos(); track m.id) {
+            <option [value]="m.id">{{ m.nomeCompleto }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Tipo de registro *
+        <select formControlName="tipoRegistro">
+          @for (t of tipos; track t) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Data/hora *
+        <input formControlName="dataRegistro" type="datetime-local" />
+      </label>
+    </div>
+
+    <label>
+      Descrição clínica *
+      <textarea formControlName="descricaoClinica" rows="5"></textarea>
+    </label>
+
+    <!-- Prescrições -->
+    <fieldset>
+      <legend>Prescrições</legend>
+      @for (p of prescricoes.controls; track $index) {
+        <div [formGroup]="$any(p)" class="form-row subrow">
+          <input formControlName="medicamento" placeholder="Medicamento *" />
+          <input formControlName="dose"        placeholder="Dose *" />
+          <input formControlName="frequencia"  placeholder="Frequência *" />
+          <input formControlName="duracao"     placeholder="Duração" />
+          <button type="button" class="btn btn-sm btn-danger" (click)="removerPrescricao($index)">✕</button>
+        </div>
+      }
+      <button type="button" class="btn btn-sm" (click)="adicionarPrescricao()">+ Prescrição</button>
+    </fieldset>
+
+    <!-- Exames anexos -->
+    <fieldset>
+      <legend>Exames / Anexos</legend>
+      @for (e of examesAnexos.controls; track $index) {
+        <div [formGroup]="$any(e)" class="form-row subrow">
+          <input formControlName="tipo"           placeholder="Tipo (ex: ECG) *" />
+          <input formControlName="descricao"      placeholder="Descrição" />
+          <input formControlName="dataRealizacao" type="date" />
+          <input formControlName="urlAnexo"       placeholder="URL do anexo" />
+          <button type="button" class="btn btn-sm btn-danger" (click)="removerExame($index)">✕</button>
+        </div>
+      }
+      <button type="button" class="btn btn-sm" (click)="adicionarExame()">+ Exame</button>
+    </fieldset>
+
+    <!-- Novas alergias -->
+    <fieldset>
+      <legend>Novas alergias identificadas</legend>
+      @for (a of novasAlergias.controls; track $index) {
+        <div [formGroup]="$any(a)" class="form-row subrow">
+          <input formControlName="substancia" placeholder="Substância *" />
+          <select formControlName="severidade">
+            <option value="leve">Leve</option>
+            <option value="moderada">Moderada</option>
+            <option value="grave">Grave</option>
+          </select>
+          <input formControlName="reacao" placeholder="Reação" />
+          <button type="button" class="btn btn-sm btn-danger" (click)="removerAlergia($index)">✕</button>
+        </div>
+      }
+      <button type="button" class="btn btn-sm" (click)="adicionarAlergia()">+ Alergia</button>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      Salvar registro
+    </button>
+  </form>
+</div>

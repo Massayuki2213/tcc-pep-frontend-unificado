@@ -1,0 +1,82 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Registrar Triagem</h1>
+    <a routerLink="/atendimentos" class="btn">Voltar</a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-card">
+    <div class="form-row">
+      <label>
+        Paciente *
+        <select formControlName="pacienteId">
+          <option value="">Selecione o paciente</option>
+          @for (p of pacientes(); track p.id) {
+            <option [value]="p.id">{{ p.nomeCompleto }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Médico de triagem *
+        <select formControlName="medicoTriagemId">
+          <option value="">Selecione o médico</option>
+          @for (m of medicos(); track m.id) {
+            <option [value]="m.id">{{ m.nomeCompleto }} — {{ m.especialidade }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>
+        Data/hora de entrada *
+        <input formControlName="dataHoraEntrada" type="datetime-local" />
+      </label>
+
+      <label>
+        Classificação de risco *
+        <select formControlName="classificacaoRisco">
+          <option value="">Selecione</option>
+          @for (r of riscos; track r.value) {
+            <option [value]="r.value">{{ r.label }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <label>
+      Queixa principal *
+      <textarea formControlName="queixaPrincipal" rows="3"></textarea>
+    </label>
+
+    <fieldset>
+      <legend>Sinais vitais (opcional)</legend>
+      <div class="form-row">
+        <label>
+          Pressão arterial
+          <input formControlName="pressaoArterial" type="text" placeholder="120/80" />
+        </label>
+        <label>
+          Freq. cardíaca (bpm)
+          <input formControlName="frequenciaCardiaca" type="number" min="0" />
+        </label>
+        <label>
+          Saturação O₂ (%)
+          <input formControlName="saturacaoOxigenio" type="number" min="0" max="100" />
+        </label>
+        <label>
+          Temperatura (°C)
+          <input formControlName="temperaturaCorporal" type="number" step="0.1" />
+        </label>
+        <label>
+          Freq. respiratória (irpm)
+          <input formControlName="frequenciaRespiratoria" type="number" min="0" />
+        </label>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      Registrar triagem
+    </button>
+  </form>
+</div>

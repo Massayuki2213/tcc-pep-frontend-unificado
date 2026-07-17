@@ -1,0 +1,38 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Atendimentos</h1>
+      <p>Triagens registradas com classificação de risco Manchester.</p>
+    </div>
+    <a routerLink="/atendimentos/novo" class="btn btn-primary">+ Nova triagem</a>
+  </div>
+
+  @if (carregando()) {
+    <div class="loading"><span class="spinner"></span>Carregando atendimentos…</div>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Queixa principal</th>
+          <th>Risco</th>
+          <th>Entrada</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (a of atendimentos(); track a.id) {
+          <tr>
+            <td>{{ a.queixaPrincipal }}</td>
+            <td><span [class]="'badge risco-' + a.classificacaoRisco.toLowerCase()">{{ riscoLabel(a.classificacaoRisco) }}</span></td>
+            <td>{{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="actions">
+              <a [routerLink]="['/atendimentos', a.id]" class="btn btn-sm">Ver</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="empty">Nenhum atendimento registrado.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

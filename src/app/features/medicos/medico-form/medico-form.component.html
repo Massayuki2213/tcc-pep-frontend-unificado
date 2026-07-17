@@ -1,0 +1,32 @@
+<div class="page">
+  <div class="page-header">
+    <h1>{{ editando() ? 'Editar' : 'Novo' }} Médico</h1>
+    <a routerLink="/medicos" class="btn">Voltar</a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-card">
+    <label>
+      Nome completo *
+      <input formControlName="nomeCompleto" type="text" placeholder="Dr. João Silva" />
+    </label>
+
+    <label>
+      CRM *
+      <input formControlName="crm" type="text" placeholder="123456/SP" />
+    </label>
+
+    <label>
+      Especialidade *
+      <input formControlName="especialidade" type="text" placeholder="Clínica Geral" />
+    </label>
+
+    <label class="label-check">
+      <input formControlName="ativo" type="checkbox" />
+      Médico ativo
+    </label>
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      {{ editando() ? 'Salvar alterações' : 'Cadastrar' }}
+    </button>
+  </form>
+</div>

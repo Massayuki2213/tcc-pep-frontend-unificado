@@ -1,0 +1,63 @@
+@if (atendimento(); as a) {
+  <div class="page">
+    <div class="page-header">
+      <h1>Atendimento</h1>
+      <div class="actions">
+        <a [routerLink]="['/consultas-laudos/novo']" [queryParams]="{ atendimentoId: a.id, pacienteId: a.pacienteId }" class="btn btn-primary">
+          + Registrar consulta/laudo
+        </a>
+        <a routerLink="/atendimentos" class="btn">Voltar</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <p>
+        <span [class]="'badge risco-' + a.classificacaoRisco.toLowerCase()">{{ riscoLabel() }}</span>
+      </p>
+      <p><strong>Entrada:</strong> {{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</p>
+      <p><strong>Queixa principal:</strong> {{ a.queixaPrincipal }}</p>
+
+      @if (a.pressaoArterial || a.frequenciaCardiaca || a.saturacaoOxigenio || a.temperaturaCorporal || a.frequenciaRespiratoria) {
+        <div class="vitals-grid">
+          @if (a.pressaoArterial) {
+            <div class="vital"><div class="vital-label">Pressão arterial</div><div class="vital-value">{{ a.pressaoArterial }}</div></div>
+          }
+          @if (a.frequenciaCardiaca) {
+            <div class="vital"><div class="vital-label">Freq. cardíaca</div><div class="vital-value">{{ a.frequenciaCardiaca }} bpm</div></div>
+          }
+          @if (a.saturacaoOxigenio) {
+            <div class="vital"><div class="vital-label">SpO₂</div><div class="vital-value">{{ a.saturacaoOxigenio }}%</div></div>
+          }
+          @if (a.temperaturaCorporal) {
+            <div class="vital"><div class="vital-label">Temperatura</div><div class="vital-value">{{ a.temperaturaCorporal }}°C</div></div>
+          }
+          @if (a.frequenciaRespiratoria) {
+            <div class="vital"><div class="vital-label">Freq. respiratória</div><div class="vital-value">{{ a.frequenciaRespiratoria }} irpm</div></div>
+          }
+        </div>
+      }
+    </div>
+
+    <h2>Consultas / Laudos</h2>
+    @if (a.consultasLaudos?.length) {
+      @for (cl of a.consultasLaudos!; track cl._id) {
+        <div class="card">
+          <p><strong>Tipo:</strong> {{ cl.tipoRegistro }}</p>
+          <p><strong>Data:</strong> {{ cl.dataRegistro | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p>{{ cl.descricaoClinica }}</p>
+          @if (cl.prescricoes?.length) {
+            <p><strong>Prescrições:</strong>
+              @for (pr of cl.prescricoes; track pr.medicamento) {
+                <span class="badge">{{ pr.medicamento }} {{ pr.dose }} / {{ pr.frequencia }}</span>
+              }
+            </p>
+          }
+        </div>
+      }
+    } @else {
+      <p class="empty">Nenhum registro clínico ainda.</p>
+    }
+  </div>
+} @else {
+  <div class="loading"><span class="spinner"></span>Carregando atendimento…</div>
+}

@@ -1,0 +1,60 @@
+<div class="page">
+  <div class="page-header">
+    <h1>{{ editando() ? 'Editar' : 'Novo' }} Paciente</h1>
+    <a routerLink="/pacientes" class="btn">Voltar</a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-card">
+    <label>
+      Nome completo *
+      <input formControlName="nomeCompleto" type="text" />
+    </label>
+
+    <div class="form-row">
+      <label>
+        Sexo *
+        <select formControlName="sexo">
+          <option value="">Selecione</option>
+          <option value="M">Masculino</option>
+          <option value="F">Feminino</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </label>
+
+      <label>
+        Data de nascimento *
+        <input formControlName="dataNascimento" type="date" />
+      </label>
+    </div>
+
+    @if (!editando()) {
+      <label>
+        CPF *
+        <input formControlName="cpf" type="text" placeholder="Apenas números" />
+      </label>
+    }
+
+    <div class="form-row">
+      <label>
+        Telefone
+        <input formControlName="telefoneContato" type="text" />
+      </label>
+
+      <label>
+        Tipagem sanguínea
+        <input formControlName="tipagemSanguinea" type="text" placeholder="A+, O-, ..." />
+      </label>
+    </div>
+
+    @if (!editando()) {
+      <label class="label-check">
+        <input formControlName="consentimentoLgpd" type="checkbox" />
+        Paciente consente com o tratamento dos dados (LGPD) *
+      </label>
+    }
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      {{ editando() ? 'Salvar alterações' : 'Cadastrar' }}
+    </button>
+  </form>
+</div>

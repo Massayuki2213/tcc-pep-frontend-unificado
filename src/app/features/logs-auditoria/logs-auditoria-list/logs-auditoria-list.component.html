@@ -1,0 +1,40 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Logs de Auditoria</h1>
+      <p>Trilha LGPD gerada automaticamente a cada operação clínica.</p>
+    </div>
+    @if (!carregando() && total() > limite) {
+      <span class="badge">Exibindo os {{ limite }} mais recentes de {{ total() }}</span>
+    }
+  </div>
+
+  @if (carregando()) {
+    <div class="loading"><span class="spinner"></span>Carregando logs…</div>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Data/hora</th>
+          <th>Ação</th>
+          <th>Entidade</th>
+          <th>ID da entidade</th>
+          <th>Atendimento</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (log of logs(); track log.id) {
+          <tr>
+            <td>{{ log.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{ log.acaoRealizada }}</td>
+            <td><span class="badge">{{ log.entidadeAfetada }}</span></td>
+            <td class="mono">{{ log.entidadeId }}</td>
+            <td class="mono">{{ log.atendimentoId ?? '—' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="empty">Nenhum log registrado.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

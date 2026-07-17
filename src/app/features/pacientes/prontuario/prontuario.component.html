@@ -1,0 +1,49 @@
+@if (data(); as d) {
+  <div class="page">
+    <div class="page-header">
+      <h1>Prontuário — {{ d.nomeCompleto }}</h1>
+      <a routerLink="/pacientes" class="btn">Voltar</a>
+    </div>
+
+    <div class="card">
+      <h2>Dados pessoais</h2>
+      <p><strong>Sexo:</strong> {{ d.sexo }}</p>
+      <p><strong>Nascimento:</strong> {{ d.dataNascimento | date:'dd/MM/yyyy' }}</p>
+      @if (d.tipagemSanguinea) { <p><strong>Tipagem:</strong> {{ d.tipagemSanguinea }}</p> }
+      @if (d.telefoneContato)  { <p><strong>Telefone:</strong> {{ d.telefoneContato }}</p> }
+    </div>
+
+    @if (d.historicoClinico) {
+      <div class="card">
+        <h2>Histórico clínico</h2>
+        @if (d.historicoClinico.alergiasConhecidas?.length) {
+          <p><strong>Alergias:</strong></p>
+          <ul>
+            @for (a of d.historicoClinico.alergiasConhecidas; track a.substancia) {
+              <li>{{ a.substancia }} — {{ a.severidade }} @if (a.reacao) { ({{ a.reacao }}) }</li>
+            }
+          </ul>
+        } @else {
+          <p>Nenhuma alergia registrada.</p>
+        }
+      </div>
+    }
+
+    <h2>Atendimentos</h2>
+    @if (d.atendimentos?.length) {
+      @for (a of d.atendimentos; track a.id) {
+        <div class="card">
+          <p>
+            <strong>{{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</strong>
+            — {{ a.queixaPrincipal }}
+            <a [routerLink]="['/atendimentos', a.id]" class="btn btn-sm" style="margin-left:8px">Ver detalhes</a>
+          </p>
+        </div>
+      }
+    } @else {
+      <p class="empty">Nenhum atendimento registrado.</p>
+    }
+  </div>
+} @else {
+  <div class="loading"><span class="spinner"></span>Carregando prontuário…</div>
+}

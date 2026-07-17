@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Pacientes</h1>
+      <p>Cadastro, prontuários e início de triagem.</p>
+    </div>
+    <a routerLink="/pacientes/novo" class="btn btn-primary">+ Novo paciente</a>
+  </div>
+
+  @if (carregando()) {
+    <div class="loading"><span class="spinner"></span>Carregando pacientes…</div>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Sexo</th>
+          <th>Tipagem</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of pacientes(); track p.id) {
+          <tr>
+            <td><span class="cell-nome"><span class="avatar">{{ iniciais(p.nomeCompleto) }}</span>{{ p.nomeCompleto }}</span></td>
+            <td>{{ p.sexo }}</td>
+            <td>{{ p.tipagemSanguinea ?? '—' }}</td>
+            <td class="actions">
+              <a [routerLink]="['/pacientes', p.id]" class="btn btn-sm">Prontuário</a>
+              <a [routerLink]="['/pacientes', p.id, 'editar']" class="btn btn-sm">Editar</a>
+              <a [routerLink]="['/atendimentos/novo']" [queryParams]="{ pacienteId: p.id }" class="btn btn-sm btn-primary">Triagem</a>
+              <button (click)="remover(p.id)" class="btn btn-sm btn-danger">Remover</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="empty">Nenhum paciente cadastrado.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

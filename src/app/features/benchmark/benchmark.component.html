@@ -1,0 +1,108 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Benchmark</h1>
+      <p>Dispare cenários k6, acompanhe a execução e baixe os resultados.</p>
+    </div>
+    @if (online()) {
+      @if (status()?.running) {
+        <span class="badge badge-success"><span class="pulse-dot"></span>Teste em execução</span>
+      } @else {
+        <span class="badge badge-success">Orquestrador online</span>
+      }
+    } @else {
+      <span class="badge badge-danger">Orquestrador offline — rode <span class="mono">npm run orchestrator</span></span>
+    }
+  </div>
+
+  <div class="card">
+    <h2>Disparar teste de carga</h2>
+    <div class="form-row">
+      <label>
+        Script k6
+        <select [value]="script()" (change)="onScriptChange($event)" [disabled]="status()?.running">
+          @for (s of scripts; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Carga
+        <select [value]="carga()" (change)="onCargaChange($event)" [disabled]="status()?.running">
+          @for (c of cargas; track c.valor) {
+            <option [value]="c.valor">{{ c.nome }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="actions">
+      @if (status()?.running) {
+        <button class="btn btn-danger" (click)="parar()">Parar teste</button>
+        <span class="badge">Rodando: {{ status()?.script }} — carga {{ status()?.carga }} (desde {{ status()?.startedAt }})</span>
+      } @else {
+        <button class="btn btn-primary" (click)="iniciar()" [disabled]="!online()">Iniciar teste</button>
+        @if (status()?.finishedAt) {
+          <span class="badge">Última rodada: exit {{ status()?.exitCode }} em {{ status()?.finishedAt }}</span>
+        }
+      }
+    </div>
+  </div>
+
+  @if (status() && status()!.log.length > 0) {
+    <div class="card">
+      <h2>Log do k6</h2>
+      <pre class="mono benchmark-log">@for (linha of status()!.log; track $index) {{{ linha }}
+}</pre>
+    </div>
+  }
+
+  <div class="card">
+    <div class="page-header">
+      <h2>Resultados (CSV)</h2>
+      <button class="btn btn-sm" (click)="carregarResultados()">Atualizar</button>
+    </div>
+    @if (resultados().length > 0) {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Cenário</th>
+            <th>Arquivo</th>
+            <th>Gerado em</th>
+            <th>Tamanho</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of resultados(); track r.rel) {
+            <tr>
+              <td><span class="badge">{{ r.cenario }}</span></td>
+              <td class="mono">{{ r.arquivo }}</td>
+              <td>{{ r.modificadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ formatarTamanho(r.tamanhoBytes) }}</td>
+              <td><a [href]="downloadUrl(r.rel)" class="btn btn-sm btn-primary" download>Baixar CSV</a></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="empty">Nenhum resultado ainda — rode um teste para gerar o primeiro CSV.</p>
+    }
+  </div>
+
+  <div class="card">
+    <div class="page-header">
+      <h2>Dashboard (Grafana)</h2>
+      <label>
+        Painel
+        <select [value]="dashboardUid()" (change)="onDashboardChange($event)">
+          @for (d of dashboards; track d.uid) {
+            <option [value]="d.uid">{{ d.nome }}</option>
+          }
+        </select>
+      </label>
+    </div>
+    <iframe class="benchmark-grafana" [src]="grafanaSrc()" title="Dashboard Grafana"></iframe>
+  </div>
+</div>

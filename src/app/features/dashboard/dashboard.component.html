@@ -1,0 +1,110 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Visão geral</h1>
+      <p>Panorama do pronto atendimento — triagem, pacientes e registros clínicos.</p>
+    </div>
+    <div class="actions">
+      <a routerLink="/pacientes/novo" class="btn">+ Novo paciente</a>
+      <a routerLink="/atendimentos/novo" class="btn btn-primary">+ Nova triagem</a>
+    </div>
+  </div>
+
+  @if (carregando()) {
+    <div class="loading"><span class="spinner"></span>Carregando indicadores…</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-tile">
+        <span class="stat-icon i-blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <div>
+          <div class="stat-value">{{ totalPacientes() }}</div>
+          <div class="stat-label">Pacientes cadastrados</div>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <span class="stat-icon i-green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <div>
+          <div class="stat-value">{{ totalMedicosAtivos() }}</div>
+          <div class="stat-label">Médicos ativos</div>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <span class="stat-icon i-amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+        </span>
+        <div>
+          <div class="stat-value">{{ totalAtendimentos() }}</div>
+          <div class="stat-label">Atendimentos (triagens)</div>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <span class="stat-icon i-purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M12 12v6" transform="translate(0 -1.5) scale(1 .7)"/></svg>
+        </span>
+        <div>
+          <div class="stat-value">{{ totalConsultas() }}</div>
+          <div class="stat-label">Registros clínicos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="card">
+        <h2>Classificação de risco — Manchester</h2>
+        @if (totalAtendimentos() > 0) {
+          <div class="risk-bars">
+            @for (r of distribuicaoRisco(); track r.value) {
+              <div class="risk-bar-row">
+                <span class="risk-name">{{ r.nome }}</span>
+                <div class="risk-track">
+                  <div [class]="'risk-fill fill-' + r.value.toLowerCase()" [style.width.%]="r.pct"></div>
+                </div>
+                <span class="risk-count">{{ r.count }}</span>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty">Nenhuma triagem registrada ainda.</p>
+        }
+      </div>
+
+      <div class="card">
+        <div class="page-header">
+          <h2>Últimos atendimentos</h2>
+          <a routerLink="/atendimentos" class="btn btn-sm">Ver todos</a>
+        </div>
+        @if (ultimosAtendimentos().length > 0) {
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Queixa</th>
+                <th>Risco</th>
+                <th>Entrada</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (a of ultimosAtendimentos(); track a.id) {
+                <tr>
+                  <td>{{ a.queixaPrincipal }}</td>
+                  <td><span [class]="'badge risco-' + a.classificacaoRisco.toLowerCase()">{{ a.classificacaoRisco }}</span></td>
+                  <td>{{ a.dataHoraEntrada | date:'dd/MM HH:mm' }}</td>
+                  <td><a [routerLink]="['/atendimentos', a.id]" class="btn btn-sm">Abrir</a></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="empty">Nenhum atendimento registrado.</p>
+        }
+      </div>
+    </div>
+  }
+</div>
