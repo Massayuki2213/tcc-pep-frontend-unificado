@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AtendimentosService } from '../atendimentos.service';
@@ -15,7 +15,7 @@ export class AtendimentosListComponent implements OnInit {
   carregando   = signal(true);
   erro         = signal(false);
 
-  constructor(private svc: AtendimentosService) {}
+  private svc = inject(AtendimentosService);
 
   ngOnInit() {
     this.carregar();

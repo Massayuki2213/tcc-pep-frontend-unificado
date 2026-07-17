@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AtendimentosService } from '../atendimentos.service';
@@ -15,10 +15,8 @@ export class AtendimentoDetailComponent implements OnInit {
   riscoLabel  = signal('');
   erro        = signal(false);
 
-  constructor(
-    private svc: AtendimentosService,
-    private route: ActivatedRoute,
-  ) {}
+  private svc   = inject(AtendimentosService);
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
     this.carregar();

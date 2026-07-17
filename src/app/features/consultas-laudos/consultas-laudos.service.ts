@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../core/api.service';
 import { ConsultaLaudo, CreateConsultaLaudoDto } from '../../models/consulta-laudo.model';
 
 @Injectable({ providedIn: 'root' })
 export class ConsultasLaudosService {
-  constructor(private api: ApiService) {}
+  private api = inject(ApiService);
 
   listar()                           { return this.api.get<ConsultaLaudo[]>('/consultas-laudos'); }
   criar(dto: CreateConsultaLaudoDto) { return this.api.post<ConsultaLaudo>('/consultas-laudos', dto); }

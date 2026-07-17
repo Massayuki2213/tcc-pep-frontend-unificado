@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
@@ -46,12 +46,10 @@ export class DashboardComponent implements OnInit {
       .slice(0, 6),
   );
 
-  constructor(
-    private pacientesSvc: PacientesService,
-    private medicosSvc: MedicosService,
-    private atendimentosSvc: AtendimentosService,
-    private consultasSvc: ConsultasLaudosService,
-  ) {}
+  private pacientesSvc    = inject(PacientesService);
+  private medicosSvc      = inject(MedicosService);
+  private atendimentosSvc = inject(AtendimentosService);
+  private consultasSvc    = inject(ConsultasLaudosService);
 
   ngOnInit() {
     this.carregar();

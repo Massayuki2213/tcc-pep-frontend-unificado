@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../core/api.service';
 import { LogAuditoria } from '../../models/log-auditoria.model';
 
 @Injectable({ providedIn: 'root' })
 export class LogsAuditoriaService {
-  constructor(private api: ApiService) {}
+  private api = inject(ApiService);
 
   listar()                         { return this.api.get<LogAuditoria[]>('/logs-auditoria'); }
   buscar(id: string)               { return this.api.get<LogAuditoria>(`/logs-auditoria/${id}`); }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal, computed } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, computed, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription, interval, startWith, switchMap, catchError, of } from 'rxjs';
 import { DatePipe } from '@angular/common';
@@ -51,11 +51,9 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
 
   private poll?: Subscription;
 
-  constructor(
-    private svc: BenchmarkService,
-    private toast: ToastService,
-    private sanitizer: DomSanitizer,
-  ) {}
+  private svc       = inject(BenchmarkService);
+  private toast     = inject(ToastService);
+  private sanitizer = inject(DomSanitizer);
 
   ngOnInit() {
     this.poll = interval(2000)

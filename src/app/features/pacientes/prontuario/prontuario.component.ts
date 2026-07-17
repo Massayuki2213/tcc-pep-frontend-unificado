@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PacientesService } from '../pacientes.service';
@@ -21,10 +21,8 @@ export class ProntuarioComponent implements OnInit {
   data = signal<ProntuarioView | null>(null);
   erro = signal(false);
 
-  constructor(
-    private pacientesSvc: PacientesService,
-    private route: ActivatedRoute,
-  ) {}
+  private pacientesSvc = inject(PacientesService);
+  private route        = inject(ActivatedRoute);
 
   ngOnInit() {
     this.carregar();

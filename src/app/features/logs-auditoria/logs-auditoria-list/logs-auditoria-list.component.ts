@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LogsAuditoriaService } from '../logs-auditoria.service';
 import { LogAuditoria } from '../../../models/log-auditoria.model';
@@ -18,7 +18,7 @@ export class LogsAuditoriaListComponent implements OnInit {
   erro = signal(false);
   limite = LIMITE_EXIBICAO;
 
-  constructor(private svc: LogsAuditoriaService) {}
+  private svc = inject(LogsAuditoriaService);
 
   ngOnInit() {
     this.carregar();

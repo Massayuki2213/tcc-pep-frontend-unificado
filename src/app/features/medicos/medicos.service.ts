@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../core/api.service';
 import { Medico, CreateMedicoDto, UpdateMedicoDto, MedicoAtendimentosResponse, MedicoLaudosResponse } from '../../models/medico.model';
 
 @Injectable({ providedIn: 'root' })
 export class MedicosService {
-  constructor(private api: ApiService) {}
+  private api = inject(ApiService);
 
   listar()                          { return this.api.get<Medico[]>('/medicos'); }
   listarAtivos()                    { return this.api.get<Medico[]>('/medicos/ativos'); }

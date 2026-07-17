@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { SKIP_ERROR_TOAST } from '../../core/error.interceptor';
@@ -31,8 +31,7 @@ export class BenchmarkService {
   private base = environment.orchestratorUrl;
   // Polling constante: erro de conexão vira "orquestrador offline", não toast
   private ctx = new HttpContext().set(SKIP_ERROR_TOAST, true);
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   scenarios() {
     return this.http.get<BenchmarkScenarios>(`${this.base}/scenarios`, { context: this.ctx });

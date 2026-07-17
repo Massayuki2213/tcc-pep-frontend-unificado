@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastService } from './core/toast.service';
 
@@ -10,5 +10,5 @@ import { ToastService } from './core/toast.service';
   styleUrl: './app.scss',
 })
 export class App {
-  constructor(public toast: ToastService) {}
+  toast = inject(ToastService);
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MedicosService } from '../medicos.service';
 import { Medico } from '../../../models/medico.model';
@@ -15,7 +15,8 @@ export class MedicosListComponent implements OnInit {
   carregando = signal(true);
   erro = signal(false);
 
-  constructor(private svc: MedicosService, private toast: ToastService) {}
+  private svc   = inject(MedicosService);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     this.carregar();
