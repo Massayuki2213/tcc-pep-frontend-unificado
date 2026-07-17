@@ -13,13 +13,20 @@ import { ToastService } from '../../../core/toast.service';
 export class PacientesListComponent implements OnInit {
   pacientes = signal<Paciente[]>([]);
   carregando = signal(true);
+  erro = signal(false);
 
   constructor(private svc: PacientesService, private toast: ToastService) {}
 
   ngOnInit() {
+    this.carregar();
+  }
+
+  carregar() {
+    this.carregando.set(true);
+    this.erro.set(false);
     this.svc.listar().subscribe({
       next: data => { this.pacientes.set(data); this.carregando.set(false); },
-      error: ()   => this.carregando.set(false),
+      error: ()   => { this.erro.set(true); this.carregando.set(false); },
     });
   }
 

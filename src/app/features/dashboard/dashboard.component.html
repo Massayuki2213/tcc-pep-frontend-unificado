@@ -12,6 +12,11 @@
 
   @if (carregando()) {
     <div class="loading"><span class="spinner"></span>Carregando indicadores…</div>
+  } @else if (erro()) {
+    <div class="load-error">
+      <p>Não foi possível carregar os indicadores. Verifique se a API está no ar.</p>
+      <button class="btn" (click)="carregar()">Tentar novamente</button>
+    </div>
   } @else {
     <div class="stats-grid">
       <div class="stat-tile">

@@ -13,13 +13,20 @@ import { ToastService } from '../../../core/toast.service';
 export class MedicosListComponent implements OnInit {
   medicos = signal<Medico[]>([]);
   carregando = signal(true);
+  erro = signal(false);
 
   constructor(private svc: MedicosService, private toast: ToastService) {}
 
   ngOnInit() {
+    this.carregar();
+  }
+
+  carregar() {
+    this.carregando.set(true);
+    this.erro.set(false);
     this.svc.listar().subscribe({
       next: data => { this.medicos.set(data); this.carregando.set(false); },
-      error: ()   => this.carregando.set(false),
+      error: ()   => { this.erro.set(true); this.carregando.set(false); },
     });
   }
 

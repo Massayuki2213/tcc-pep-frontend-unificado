@@ -15,11 +15,18 @@ export class LogsAuditoriaListComponent implements OnInit {
   logs = signal<LogAuditoria[]>([]);
   total = signal(0);
   carregando = signal(true);
+  erro = signal(false);
   limite = LIMITE_EXIBICAO;
 
   constructor(private svc: LogsAuditoriaService) {}
 
   ngOnInit() {
+    this.carregar();
+  }
+
+  carregar() {
+    this.carregando.set(true);
+    this.erro.set(false);
     this.svc.listar().subscribe({
       next: data => {
         this.total.set(data.length);
@@ -28,7 +35,7 @@ export class LogsAuditoriaListComponent implements OnInit {
         this.logs.set(ordenados.slice(0, LIMITE_EXIBICAO));
         this.carregando.set(false);
       },
-      error: () => this.carregando.set(false),
+      error: () => { this.erro.set(true); this.carregando.set(false); },
     });
   }
 }

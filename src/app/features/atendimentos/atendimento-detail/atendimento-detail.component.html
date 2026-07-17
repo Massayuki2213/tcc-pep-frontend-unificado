@@ -58,6 +58,11 @@
       <p class="empty">Nenhum registro clínico ainda.</p>
     }
   </div>
+} @else if (erro()) {
+  <div class="load-error">
+    <p>Não foi possível carregar o atendimento. Verifique se a API está no ar.</p>
+    <button class="btn" (click)="carregar()">Tentar novamente</button>
+  </div>
 } @else {
   <div class="loading"><span class="spinner"></span>Carregando atendimento…</div>
 }

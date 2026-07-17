@@ -11,6 +11,11 @@
 
   @if (carregando()) {
     <div class="loading"><span class="spinner"></span>Carregando logs…</div>
+  } @else if (erro()) {
+    <div class="load-error">
+      <p>Não foi possível carregar os logs. Verifique se a API está no ar.</p>
+      <button class="btn" (click)="carregar()">Tentar novamente</button>
+    </div>
   } @else {
     <table class="table">
       <thead>

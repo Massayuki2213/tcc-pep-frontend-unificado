@@ -44,6 +44,11 @@
       <p class="empty">Nenhum atendimento registrado.</p>
     }
   </div>
+} @else if (erro()) {
+  <div class="load-error">
+    <p>Não foi possível carregar o prontuário. Verifique se a API está no ar.</p>
+    <button class="btn" (click)="carregar()">Tentar novamente</button>
+  </div>
 } @else {
   <div class="loading"><span class="spinner"></span>Carregando prontuário…</div>
 }

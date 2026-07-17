@@ -23,6 +23,7 @@ interface RiscoBar {
 })
 export class DashboardComponent implements OnInit {
   carregando = signal(true);
+  erro = signal(false);
   totalPacientes = signal(0);
   totalMedicosAtivos = signal(0);
   totalConsultas = signal(0);
@@ -53,6 +54,12 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.carregar();
+  }
+
+  carregar() {
+    this.carregando.set(true);
+    this.erro.set(false);
     forkJoin({
       pacientes: this.pacientesSvc.listar(),
       medicos: this.medicosSvc.listarAtivos(),
@@ -66,7 +73,7 @@ export class DashboardComponent implements OnInit {
         this.atendimentos.set(r.atendimentos);
         this.carregando.set(false);
       },
-      error: () => this.carregando.set(false),
+      error: () => { this.erro.set(true); this.carregando.set(false); },
     });
   }
 
