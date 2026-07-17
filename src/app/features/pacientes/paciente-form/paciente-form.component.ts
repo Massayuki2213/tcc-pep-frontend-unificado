@@ -2,6 +2,7 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { PacientesService } from '../pacientes.service';
+import { CreatePacienteDto, UpdatePacienteDto } from '../../../models/paciente.model';
 import { ToastService } from '../../../core/toast.service';
 
 @Component({
@@ -41,10 +42,22 @@ export class PacienteFormComponent implements OnInit {
 
   salvar() {
     if (this.form.invalid) return;
-    const dto = this.form.getRawValue() as any;
+    const raw = this.form.getRawValue();
+    // Campos comuns a criação e edição; cpf/consentimento só existem na criação
+    const base = {
+      nomeCompleto:     raw.nomeCompleto!,
+      sexo:             raw.sexo!,
+      dataNascimento:   raw.dataNascimento!,
+      telefoneContato:  raw.telefoneContato || undefined,
+      tipagemSanguinea: raw.tipagemSanguinea || undefined,
+    };
     const req = this.editando()
-      ? this.svc.atualizar(this.id!, dto)
-      : this.svc.criar(dto);
+      ? this.svc.atualizar(this.id!, base satisfies UpdatePacienteDto)
+      : this.svc.criar({
+          ...base,
+          cpf:               raw.cpf!,
+          consentimentoLgpd: raw.consentimentoLgpd!,
+        } satisfies CreatePacienteDto);
     req.subscribe(() => {
       this.toast.success(this.editando() ? 'Paciente atualizado!' : 'Paciente cadastrado!');
       this.router.navigate(['/pacientes']);

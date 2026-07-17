@@ -11,5 +11,5 @@ export class AtendimentosService {
   // POST /atendimentos retorna { success, atendimentoId }, não a entidade completa
   criar(dto: CreateAtendimentoDto)           { return this.api.post<{ success: boolean; atendimentoId: string }>('/atendimentos', dto); }
   atualizar(id: string, dto: UpdateAtendimentoDto) { return this.api.patch<Atendimento>(`/atendimentos/${id}`, dto); }
-  remover(id: string)                        { return this.api.delete<any>(`/atendimentos/${id}`); }
+  remover(id: string)                        { return this.api.delete<void>(`/atendimentos/${id}`); }
 }

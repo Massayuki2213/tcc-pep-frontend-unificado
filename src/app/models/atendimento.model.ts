@@ -1,3 +1,5 @@
+import { ConsultaLaudo } from './consulta-laudo.model';
+
 export type RiscoManchester =
   | 'VERMELHO'
   | 'LARANJA'
@@ -25,7 +27,7 @@ export interface Atendimento {
   saturacaoOxigenio?: number;
   temperaturaCorporal?: number;
   frequenciaRespiratoria?: number;
-  consultasLaudos?: any[];
+  consultasLaudos?: ConsultaLaudo[];
 }
 
 export interface CreateAtendimentoDto {

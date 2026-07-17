@@ -7,7 +7,7 @@ import { MedicosService } from '../../medicos/medicos.service';
 import { PacientesService } from '../../pacientes/pacientes.service';
 import { Medico } from '../../../models/medico.model';
 import { Paciente } from '../../../models/paciente.model';
-import { RISCO_MANCHESTER_OPTIONS } from '../../../models/atendimento.model';
+import { CreateAtendimentoDto, RiscoManchester, RISCO_MANCHESTER_OPTIONS } from '../../../models/atendimento.model';
 import { ToastService } from '../../../core/toast.service';
 
 @Component({
@@ -57,13 +57,20 @@ export class TriagemFormComponent implements OnInit {
 
   salvar() {
     if (this.form.invalid) return;
-    const raw = this.form.value;
-    const dto: any = {
-      ...raw,
-      dataHoraEntrada: new Date(raw.dataHoraEntrada!).toISOString(),
+    const raw = this.form.getRawValue();
+    // Vitais vazios viram undefined — o HttpClient omite chaves undefined no JSON
+    const dto: CreateAtendimentoDto = {
+      pacienteId:             raw.pacienteId!,
+      medicoTriagemId:        raw.medicoTriagemId!,
+      dataHoraEntrada:        new Date(raw.dataHoraEntrada!).toISOString(),
+      queixaPrincipal:        raw.queixaPrincipal!,
+      classificacaoRisco:     raw.classificacaoRisco as RiscoManchester,
+      pressaoArterial:        raw.pressaoArterial || undefined,
+      frequenciaCardiaca:     raw.frequenciaCardiaca ?? undefined,
+      saturacaoOxigenio:      raw.saturacaoOxigenio ?? undefined,
+      temperaturaCorporal:    raw.temperaturaCorporal ?? undefined,
+      frequenciaRespiratoria: raw.frequenciaRespiratoria ?? undefined,
     };
-    ['frequenciaCardiaca', 'saturacaoOxigenio', 'temperaturaCorporal', 'frequenciaRespiratoria']
-      .forEach(k => { if (dto[k] === null || dto[k] === '') delete dto[k]; });
 
     this.svc.criar(dto).subscribe(a => {
       this.toast.success('Triagem registrada!');

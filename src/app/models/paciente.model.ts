@@ -1,3 +1,6 @@
+import { Atendimento } from './atendimento.model';
+import { HistoricoClinico } from './historico-clinico.model';
+
 export interface Paciente {
   id: string;
   nomeCompleto: string;
@@ -19,3 +22,10 @@ export interface CreatePacienteDto {
 }
 
 export type UpdatePacienteDto = Partial<Omit<CreatePacienteDto, 'cpf'>>;
+
+/** GET /pacientes/:id/historico-completo — join poliglota (PG + MongoDB) */
+export interface HistoricoCompletoResponse {
+  paciente: Paciente;
+  historicoClinico: HistoricoClinico | null;
+  atendimentos: Atendimento[];
+}

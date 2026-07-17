@@ -2,6 +2,7 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ConsultasLaudosService } from '../consultas-laudos.service';
+import { CreateConsultaLaudoDto, ExameAnexo, NovaAlergia, Prescricao, TipoRegistro } from '../../../models/consulta-laudo.model';
 import { HistoricoClinicosService } from '../../historico-clinicos/historico-clinicos.service';
 import { MedicosService } from '../../medicos/medicos.service';
 import { Medico } from '../../../models/medico.model';
@@ -101,22 +102,22 @@ export class ConsultaFormComponent implements OnInit {
       this.toast.error('Histórico clínico ainda não carregado — aguarde ou registre uma triagem.');
       return;
     }
-    const raw = this.form.value;
-    const dto: any = {
+    const raw = this.form.getRawValue();
+    const dto: CreateConsultaLaudoDto = {
       atendimentoId:   this.atendimentoId,
-      historicoId:     this.historicoId,
+      historicoId:     this.historicoId!, // guard no início do método garante presença
       pacienteId:      this.pacienteId,
-      medicoId:        raw.medicoId,
-      tipoRegistro:    raw.tipoRegistro,
+      medicoId:        raw.medicoId!,
+      tipoRegistro:    raw.tipoRegistro as TipoRegistro,
       dataRegistro:    new Date(raw.dataRegistro!).toISOString(),
-      descricaoClinica: raw.descricaoClinica,
+      descricaoClinica: raw.descricaoClinica!,
     };
-    if (raw.prescricoes?.length)   dto.prescricoes = raw.prescricoes;
-    if (raw.examesAnexos?.length)  dto.examesAnexos = (raw.examesAnexos as any[]).map((e: any) => ({
+    if (raw.prescricoes?.length)   dto.prescricoes = raw.prescricoes as Prescricao[];
+    if (raw.examesAnexos?.length)  dto.examesAnexos = (raw.examesAnexos as ExameAnexo[]).map(e => ({
       ...e,
       dataRealizacao: e.dataRealizacao || undefined,
     }));
-    if (raw.novasAlergias?.length) dto.novasAlergiasIdentificadas = raw.novasAlergias;
+    if (raw.novasAlergias?.length) dto.novasAlergiasIdentificadas = raw.novasAlergias as NovaAlergia[];
 
     this.svc.criar(dto).subscribe(() => {
       this.toast.success('Registro clínico salvo!');

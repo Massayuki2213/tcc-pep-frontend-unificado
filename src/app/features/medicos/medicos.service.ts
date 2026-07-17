@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/api.service';
-import { Medico, CreateMedicoDto, UpdateMedicoDto } from '../../models/medico.model';
+import { Medico, CreateMedicoDto, UpdateMedicoDto, MedicoAtendimentosResponse, MedicoLaudosResponse } from '../../models/medico.model';
 
 @Injectable({ providedIn: 'root' })
 export class MedicosService {
@@ -11,7 +11,7 @@ export class MedicosService {
   buscar(id: string)                { return this.api.get<Medico>(`/medicos/${id}`); }
   criar(dto: CreateMedicoDto)       { return this.api.post<Medico>('/medicos', dto); }
   atualizar(id: string, dto: UpdateMedicoDto) { return this.api.patch<Medico>(`/medicos/${id}`, dto); }
-  getAtendimentos(id: string)       { return this.api.get<any>(`/medicos/${id}/atendimentos`); }
-  getLaudos(id: string)             { return this.api.get<any>(`/medicos/${id}/laudos`); }
+  getAtendimentos(id: string)       { return this.api.get<MedicoAtendimentosResponse>(`/medicos/${id}/atendimentos`); }
+  getLaudos(id: string)             { return this.api.get<MedicoLaudosResponse>(`/medicos/${id}/laudos`); }
   remover(id: string)               { return this.api.delete<void>(`/medicos/${id}`); }
 }

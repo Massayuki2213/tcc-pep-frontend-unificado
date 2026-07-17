@@ -2,6 +2,7 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MedicosService } from '../medicos.service';
+import { CreateMedicoDto } from '../../../models/medico.model';
 import { ToastService } from '../../../core/toast.service';
 
 @Component({
@@ -36,7 +37,13 @@ export class MedicoFormComponent implements OnInit {
 
   salvar() {
     if (this.form.invalid) return;
-    const dto = this.form.value as any;
+    const raw = this.form.getRawValue();
+    const dto: CreateMedicoDto = {
+      nomeCompleto:  raw.nomeCompleto!,
+      crm:           raw.crm!,
+      especialidade: raw.especialidade!,
+      ativo:         raw.ativo ?? true,
+    };
     const req = this.editando()
       ? this.svc.atualizar(this.id!, dto)
       : this.svc.criar(dto);
