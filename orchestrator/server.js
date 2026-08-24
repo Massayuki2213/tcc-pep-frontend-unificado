@@ -60,6 +60,7 @@ const STACKS = {
     nome: 'Monolito',
     dir: BACKEND_DIR,
     perfil: null,
+    env: {},
     scripts: {
       'cenario-emergencia': '/scripts/cenario-emergencia.js',
       'cenario-mono-ms': '/scripts/cenario-mono-ms.js',
@@ -70,6 +71,11 @@ const STACKS = {
     dir: MS_DIR,
     // O serviço k6 do compose do MS está sob profiles: ["load-test"]
     perfil: 'load-test',
+    // Sem API_GATEWAY o script cai no fallback `http://ms-medicos:3001`, que
+    // não tem o segmento do recurso e devolve 404 em todo POST. Roteando pelo
+    // gateway as URLs saem completas — e essa é a topologia real do MS, com o
+    // hop do gateway contando no tempo de resposta medido.
+    env: { API_GATEWAY: 'http://api-gateway:4000' },
     scripts: {
       'cenario-emergencia-ms': '/scripts/cenario-emergencia-ms.js',
     },
@@ -116,12 +122,12 @@ function startRun(stack, script, carga) {
   spawn('docker', ['rm', '-f', K6_CONTAINER_NAME]).on('close', () => {
     const args = ['compose'];
     if (cfg.perfil) args.push('--profile', cfg.perfil);
-    args.push(
-      'run', '--rm', '--name', K6_CONTAINER_NAME, 'k6',
-      'run', '--out', 'experimental-prometheus-rw',
-      '-e', `SCENARIO=${carga}`,
-      cfg.scripts[script],
-    );
+    args.push('run', '--rm', '--name', K6_CONTAINER_NAME, 'k6', 'run', '--out', 'experimental-prometheus-rw');
+    args.push('-e', `SCENARIO=${carga}`);
+    for (const [chave, valor] of Object.entries(cfg.env)) {
+      args.push('-e', `${chave}=${valor}`);
+    }
+    args.push(cfg.scripts[script]);
     appendLog(`[orquestrador] cwd=${cfg.dir}`);
     appendLog(`[orquestrador] docker ${args.join(' ')}`);
     proc = spawn('docker', args, { cwd: cfg.dir });
