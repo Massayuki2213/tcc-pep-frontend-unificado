@@ -9,6 +9,8 @@ import { environment } from '../../../environments/environment';
 interface DashboardOption {
   uid: string;
   nome: string;
+  /** Em qual Grafana este painel mora — cada stack tem o seu. */
+  stack: 'monolito' | 'microsservicos';
 }
 
 @Component({
@@ -44,19 +46,30 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
   scripts = computed(() => this.stackAtual()?.scripts ?? []);
 
   dashboards: DashboardOption[] = [
-    { uid: 'tcc-pep-normal', nome: 'Cenário 1 — Normal' },
-    { uid: 'tcc-pep-dia-corrido', nome: 'Cenário 2 — Dia Corrido' },
-    { uid: 'tcc-pep-emergencia', nome: 'Cenário 3 — Emergência' },
-    { uid: 'tcc-pep-mono-ms', nome: 'Comparativo Mono × MS' },
-    { uid: 'tcc-pep-monolito', nome: 'Monolito — Visão Geral' },
+    { uid: 'tcc-pep-normal', nome: 'Cenário 1 — Normal', stack: 'monolito' },
+    { uid: 'tcc-pep-dia-corrido', nome: 'Cenário 2 — Dia Corrido', stack: 'monolito' },
+    { uid: 'tcc-pep-emergencia', nome: 'Cenário 3 — Emergência', stack: 'monolito' },
+    { uid: 'tcc-pep-mono-ms', nome: 'Comparativo Mono × MS', stack: 'monolito' },
+    { uid: 'tcc-pep-monolito', nome: 'Monolito — Visão Geral', stack: 'monolito' },
+    { uid: 'tcc-pep-ms-normal', nome: 'Cenário 1 — Normal', stack: 'microsservicos' },
+    { uid: 'tcc-pep-ms-dia-corrido', nome: 'Cenário 2 — Dia Corrido', stack: 'microsservicos' },
+    { uid: 'tcc-pep-ms-emergencia', nome: 'Cenário 3 — Emergência', stack: 'microsservicos' },
+    { uid: 'tcc-pep-comparativo', nome: 'Comparativo MS × Monolito', stack: 'microsservicos' },
   ];
   dashboardUid = signal(this.dashboards[0].uid);
 
-  grafanaSrc = computed<SafeResourceUrl>(() =>
-    this.sanitizer.bypassSecurityTrustResourceUrl(
-      `${environment.grafanaUrl}/d/${this.dashboardUid()}?kiosk&refresh=5s&from=now-15m&to=now`,
-    ),
-  );
+  dashboardsMonolito = computed(() => this.dashboards.filter(d => d.stack === 'monolito'));
+  dashboardsMs = computed(() => this.dashboards.filter(d => d.stack === 'microsservicos'));
+
+  dashboardAtual = computed(() => this.dashboards.find(d => d.uid === this.dashboardUid()));
+
+  grafanaSrc = computed<SafeResourceUrl>(() => {
+    const painel = this.dashboardAtual();
+    const base = painel?.stack === 'microsservicos' ? environment.grafanaMsUrl : environment.grafanaUrl;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      `${base}/d/${this.dashboardUid()}?kiosk&refresh=5s&from=now-15m&to=now`,
+    );
+  });
 
   private poll?: Subscription;
 

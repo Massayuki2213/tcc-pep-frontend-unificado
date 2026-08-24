@@ -110,9 +110,16 @@
       <label>
         Painel
         <select [value]="dashboardUid()" (change)="onDashboardChange($event)">
-          @for (d of dashboards; track d.uid) {
-            <option [value]="d.uid">{{ d.nome }}</option>
-          }
+          <optgroup label="Monolito (:3005)">
+            @for (d of dashboardsMonolito(); track d.uid) {
+              <option [value]="d.uid">{{ d.nome }}</option>
+            }
+          </optgroup>
+          <optgroup label="Microsserviços (:3008)">
+            @for (d of dashboardsMs(); track d.uid) {
+              <option [value]="d.uid">{{ d.nome }}</option>
+            }
+          </optgroup>
         </select>
       </label>
     </div>
