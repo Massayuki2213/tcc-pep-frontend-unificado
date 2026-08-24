@@ -1,0 +1,271 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Laboratório</h1>
+      <p>Acervo das rodadas de benchmark, organizado como o delineamento fatorial do TCC: arquitetura × carga.</p>
+    </div>
+    @if (online()) {
+      <span class="badge badge-success">{{ total() }} rodada(s) no acervo</span>
+    } @else {
+      <span class="badge badge-danger">Orquestrador offline — rode <span class="mono">npm run orchestrator</span></span>
+    }
+  </div>
+
+  <!-- Matriz do delineamento -->
+  <div class="card">
+    <div class="page-header">
+      <div class="page-title">
+        <h2>Delineamento</h2>
+        <p>Cada rodada do k6 é uma observação. As células precisam de repetições para haver erro amostral.</p>
+      </div>
+      <label>
+        Métrica-resposta
+        <select [value]="metrica()" (change)="onMetricaChange($event)">
+          @for (m of metricas; track m.chave) {
+            <option [value]="m.chave">{{ m.nome }} ({{ m.unidade }})</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <table class="table lab-matriz">
+      <thead>
+        <tr>
+          <th>Arquitetura</th>
+          @for (c of cargas; track c.valor) {
+            <th>{{ c.nome }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (a of arquiteturas; track a.valor) {
+          <tr>
+            <td class="cell-nome">{{ a.nome }}</td>
+            @for (c of cargas; track c.valor) {
+              @let cel = celula(a.valor, c.valor);
+              <td class="lab-celula" [class]="'estado-' + cel.estado">
+                <span class="lab-n">n = {{ cel.n }}</span>
+                @if (cel.media !== null) {
+                  <span class="lab-media">
+                    {{ cel.media | number:'1.0-2' }}
+                    @if (cel.desvio !== null) {
+                      <span class="lab-dp">± {{ cel.desvio | number:'1.0-2' }}</span>
+                    } @else {
+                      <span class="lab-dp">± —</span>
+                    }
+                  </span>
+                  <span class="lab-unidade">{{ metricaAtual().unidade }}</span>
+                } @else {
+                  <span class="lab-media lab-vazia">sem dados</span>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <p class="lab-legenda">
+      Média ± desvio padrão amostral da métrica selecionada.
+      <span class="lab-chip estado-vazia"></span> vazia
+      <span class="lab-chip estado-insuficiente"></span> &lt; {{ minReplicatas }}
+      <span class="lab-chip estado-minima"></span> mínima
+      <span class="lab-chip estado-boa"></span> {{ idealReplicatas }}+
+    </p>
+  </div>
+
+  <!-- Prontidão das análises -->
+  <div class="card">
+    <h2>O que o acervo já sustenta</h2>
+    <div class="lab-prontidao">
+      @for (p of prontidao(); track p.nome) {
+        <div class="lab-analise" [class.pronta]="p.pronto">
+          <div class="lab-analise-topo">
+            <span class="badge" [class.badge-success]="p.pronto" [class.badge-danger]="!p.pronto">
+              {{ p.pronto ? 'pronto' : 'incompleto' }}
+            </span>
+            <strong>{{ p.nome }}</strong>
+          </div>
+          <p>{{ p.detalhe }}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Exportação -->
+  <div class="card">
+    <div class="page-header">
+      <div class="page-title">
+        <h2>Dataset consolidado</h2>
+        <p>Uma linha por rodada, formato tidy. É este arquivo que alimenta o teste t, a ANOVA e o Tukey.</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-sm" (click)="copiarDataset()" [disabled]="!online() || total() === 0">Copiar</button>
+        <a class="btn btn-sm btn-primary" [href]="datasetUrl()" download>Baixar CSV</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodadas do orquestrador ainda fora do acervo -->
+  <div class="card">
+    <div class="page-header">
+      <div class="page-title">
+        <h2>Rodadas disponíveis</h2>
+        <p>CSVs gerados pelo orquestrador que ainda não entraram no acervo.</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-sm" (click)="recarregar()">Atualizar</button>
+        @if (naoImportados().length > 0) {
+          <button class="btn btn-sm btn-primary" (click)="importarTodas()">
+            Guardar todas ({{ naoImportados().length }})
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (naoImportados().length > 0) {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Arquitetura</th>
+            <th>Cenário</th>
+            <th>Arquivo</th>
+            <th>Gerado em</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of naoImportados(); track r.rel) {
+            <tr>
+              <td>{{ r.stackNome }}</td>
+              <td><span class="badge">{{ r.cenario }}</span></td>
+              <td class="mono">{{ r.arquivo }}</td>
+              <td>{{ r.modificadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td><button class="btn btn-sm btn-primary" (click)="importar(r.rel)">Guardar</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="empty">Nenhuma rodada pendente — tudo que o orquestrador gerou já está no acervo.</p>
+    }
+  </div>
+
+  <!-- Entrada manual -->
+  <div class="card">
+    <div class="page-title">
+      <h2>Adicionar rodada externa</h2>
+      <p>
+        Para rodadas geradas fora deste orquestrador — as de microsserviços, por exemplo.
+        Arquitetura e carga saem das colunas <span class="mono">system_type</span> e
+        <span class="mono">scenario</span> do próprio CSV; os campos abaixo só são necessários se o arquivo não as tiver.
+      </p>
+    </div>
+
+    <div class="form-row">
+      <label>
+        Arquitetura
+        <select [value]="novaArquitetura()" (change)="onArquiteturaChange($event)">
+          <option value="">Detectar do CSV</option>
+          @for (a of arquiteturas; track a.valor) {
+            <option [value]="a.valor">{{ a.nome }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Carga
+        <select [value]="novaCarga()" (change)="onCargaChange($event)">
+          <option value="">Detectar do CSV</option>
+          @for (c of cargas; track c.valor) {
+            <option [value]="c.valor">{{ c.nome }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Nota (opcional)
+        <input type="text" [value]="novaNota()" (input)="onNotaChange($event)" placeholder="ex.: máquina fria, 3ª repetição">
+      </label>
+    </div>
+
+    <label class="lab-arquivo">
+      Enviar arquivo CSV
+      <input type="file" accept=".csv,text/csv" (change)="carregarArquivo($event)" [disabled]="!online()">
+    </label>
+
+    <label>
+      ou cole o conteúdo do CSV
+      <textarea class="mono lab-textarea" rows="6" [value]="csvColado()" (input)="onCsvChange($event)"
+        placeholder="timestamp,system_type,scenario,vus_max,label,endpoint,samples,avg_ms,..."></textarea>
+    </label>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="adicionarColado()" [disabled]="!online() || !csvColado().trim()">
+        Guardar rodada
+      </button>
+    </div>
+  </div>
+
+  <!-- Acervo -->
+  <div class="card">
+    <h2>Acervo ({{ total() }})</h2>
+    @if (total() > 0) {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Arquitetura</th>
+            <th>Carga</th>
+            <th>{{ metricaAtual().nome }}</th>
+            <th>VUs</th>
+            <th>Arquivo</th>
+            <th>Guardado em</th>
+            <th>Nota</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of observacoes(); track o.id) {
+            <tr>
+              <td>
+                <select [value]="o.arquitetura" (change)="reclassificar(o, 'arquitetura', $event)">
+                  @for (a of arquiteturas; track a.valor) {
+                    <option [value]="a.valor">{{ a.nome }}</option>
+                  }
+                </select>
+              </td>
+              <td>
+                <select [value]="o.carga" (change)="reclassificar(o, 'carga', $event)">
+                  @for (c of cargas; track c.valor) {
+                    <option [value]="c.valor">{{ c.nome }}</option>
+                  }
+                </select>
+              </td>
+              <td class="mono">
+                @if (valorDaMetrica(o) !== null) {
+                  {{ valorDaMetrica(o) | number:'1.0-2' }} {{ metricaAtual().unidade }}
+                } @else {
+                  —
+                }
+              </td>
+              <td>{{ o.metricas.vus_max ?? '—' }}</td>
+              <td class="mono lab-arquivo-nome" [title]="o.arquivo">{{ o.arquivo }}</td>
+              <td>{{ o.importadoEm | date:'dd/MM HH:mm' }}</td>
+              <td>
+                <input class="lab-nota" type="text" [value]="o.nota" (change)="anotar(o, $event)" placeholder="—">
+              </td>
+              <td class="actions">
+                <a class="btn btn-sm" [href]="csvUrl(o.id)" download>CSV</a>
+                <button class="btn btn-sm btn-danger" (click)="remover(o)">Remover</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="empty">
+        Acervo vazio. Guarde as rodadas do orquestrador acima, ou envie um CSV de uma execução externa.
+      </p>
+    }
+  </div>
+</div>

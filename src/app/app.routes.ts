@@ -29,5 +29,8 @@ export const routes: Routes = [
   // Benchmark (dispara k6 via orquestrador + dashboards Grafana)
   { path: 'benchmark', loadComponent: () => import('./features/benchmark/benchmark.component').then(m => m.BenchmarkComponent) },
 
+  // Laboratório (acervo das rodadas para o teste t e a ANOVA)
+  { path: 'laboratorio', loadComponent: () => import('./features/laboratorio/laboratorio.component').then(m => m.LaboratorioComponent) },
+
   { path: '**', redirectTo: '' },
 ];

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, signal, computed, inject } from '@angular
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription, interval, startWith, switchMap, catchError, of } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { BenchmarkService, BenchmarkStatus, ResultadoCsv } from './benchmark.service';
+import { BenchmarkService, BenchmarkStatus, ResultadoCsv, StackInfo } from './benchmark.service';
 import { ToastService } from '../../core/toast.service';
 import { environment } from '../../../environments/environment';
 
@@ -22,23 +22,32 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
   status = signal<BenchmarkStatus | null>(null);
   resultados = signal<ResultadoCsv[]>([]);
 
+  stack = signal('monolito');
   script = signal('cenario-emergencia');
   carga = signal('1');
 
   // Fallback exibido enquanto o orquestrador está offline; a fonte da verdade
   // é GET /scenarios, que sobrescreve estes valores no ngOnInit.
-  scripts = signal<string[]>(['cenario-emergencia', 'cenario-mono-ms']);
+  stacks = signal<StackInfo[]>([
+    { valor: 'monolito', nome: 'Monolito', dir: '', disponivel: true, scripts: ['cenario-emergencia', 'cenario-mono-ms'] },
+    { valor: 'microsservicos', nome: 'Microsserviços', dir: '', disponivel: true, scripts: ['cenario-emergencia-ms'] },
+  ]);
   cargas = signal<{ valor: string; nome: string }[]>([
     { valor: '1', nome: 'Normal (50 VUs)' },
     { valor: '2', nome: 'Dia Corrido (150 VUs)' },
     { valor: '3', nome: 'Emergência (300 VUs)' },
   ]);
 
+  stackAtual = computed(() => this.stacks().find(s => s.valor === this.stack()));
+
+  /** Cada stack tem seus próprios scripts — trocar de stack troca a lista. */
+  scripts = computed(() => this.stackAtual()?.scripts ?? []);
+
   dashboards: DashboardOption[] = [
     { uid: 'tcc-pep-normal', nome: 'Cenário 1 — Normal' },
     { uid: 'tcc-pep-dia-corrido', nome: 'Cenário 2 — Dia Corrido' },
     { uid: 'tcc-pep-emergencia', nome: 'Cenário 3 — Emergência' },
-    { uid: 'tcc-pep-mono-ms-compara', nome: 'Comparativo Mono × MS' },
+    { uid: 'tcc-pep-mono-ms', nome: 'Comparativo Mono × MS' },
     { uid: 'tcc-pep-monolito', nome: 'Monolito — Visão Geral' },
   ];
   dashboardUid = signal(this.dashboards[0].uid);
@@ -78,9 +87,10 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
   carregarCenarios() {
     this.svc.scenarios().subscribe({
       next: sc => {
-        if (sc.scripts?.length) {
-          this.scripts.set(sc.scripts);
-          if (!sc.scripts.includes(this.script())) this.script.set(sc.scripts[0]);
+        if (sc.stacks?.length) {
+          this.stacks.set(sc.stacks);
+          if (!sc.stacks.some(s => s.valor === this.stack())) this.stack.set(sc.stacks[0].valor);
+          this.ajustarScript();
         }
         if (sc.cargas?.length) {
           this.cargas.set(sc.cargas);
@@ -90,6 +100,14 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
       // Orquestrador offline é estado esperado — mantém o fallback hardcoded
       error: () => {},
     });
+  }
+
+  /** Mantém o script selecionado válido para a stack atual. */
+  private ajustarScript() {
+    const disponiveis = this.scripts();
+    if (disponiveis.length && !disponiveis.includes(this.script())) {
+      this.script.set(disponiveis[0]);
+    }
   }
 
   carregarResultados() {
@@ -112,7 +130,7 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
   }
 
   iniciar() {
-    this.svc.run(this.script(), this.carga()).subscribe({
+    this.svc.run(this.stack(), this.script(), this.carga()).subscribe({
       next: () => this.toast.success('Teste iniciado. Acompanhe o log e o dashboard.'),
       error: err => this.toast.error(err.message),
     });
@@ -123,6 +141,11 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
       next: () => this.toast.info('Parada solicitada.'),
       error: err => this.toast.error(err.message),
     });
+  }
+
+  onStackChange(e: Event) {
+    this.stack.set((e.target as HTMLSelectElement).value);
+    this.ajustarScript();
   }
 
   onScriptChange(e: Event) {

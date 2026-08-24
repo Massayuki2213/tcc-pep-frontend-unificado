@@ -578,6 +578,140 @@ fieldset {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* ── Laboratório ────────────────────────────────────────── */
+.lab-matriz {
+  table-layout: fixed;
+
+  th { text-align: center; }
+  th:first-child { text-align: left; width: 10rem; }
+}
+
+.lab-celula {
+  text-align: center;
+  vertical-align: middle;
+  border-left: 1px solid var(--border);
+
+  /* Faixa de cor à esquerda indica a saúde da célula */
+  box-shadow: inset 3px 0 0 0 transparent;
+
+  &.estado-vazia         { box-shadow: inset 3px 0 0 0 #cbd5e1; background: #f8fafc; }
+  &.estado-insuficiente  { box-shadow: inset 3px 0 0 0 var(--danger); background: #fef2f2; }
+  &.estado-minima        { box-shadow: inset 3px 0 0 0 #d97706; background: #fffbeb; }
+  &.estado-boa           { box-shadow: inset 3px 0 0 0 var(--accent); background: #f0fdf9; }
+}
+
+.lab-n {
+  display: block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted, #64748b);
+}
+
+.lab-media {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: .15rem;
+
+  &.lab-vazia {
+    font-size: .85rem;
+    font-weight: 400;
+    color: #94a3b8;
+  }
+}
+
+.lab-dp {
+  font-size: .8rem;
+  font-weight: 400;
+  color: #64748b;
+  margin-left: .2rem;
+}
+
+.lab-unidade {
+  display: block;
+  font-size: .7rem;
+  color: #94a3b8;
+}
+
+.lab-legenda {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-wrap: wrap;
+  margin-top: .9rem;
+  font-size: .78rem;
+  color: #64748b;
+}
+
+.lab-chip {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-left: .5rem;
+
+  &.estado-vazia        { background: #cbd5e1; }
+  &.estado-insuficiente { background: var(--danger); }
+  &.estado-minima       { background: #d97706; }
+  &.estado-boa          { background: var(--accent); }
+}
+
+.lab-prontidao {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: .85rem;
+}
+
+.lab-analise {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .85rem 1rem;
+  background: #f8fafc;
+
+  &.pronta { background: #f0fdf9; border-color: #a7f3d0; }
+
+  p {
+    margin: .45rem 0 0;
+    font-size: .82rem;
+    line-height: 1.45;
+    color: #475569;
+  }
+}
+
+.lab-analise-topo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.lab-textarea {
+  width: 100%;
+  resize: vertical;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+.lab-arquivo {
+  display: block;
+  margin-bottom: .75rem;
+}
+
+.lab-arquivo-nome {
+  max-width: 15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lab-nota {
+  width: 100%;
+  min-width: 8rem;
+  font-size: .8rem;
+}
+
 /* ── Scrollbar sutil ────────────────────────────────────── */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }

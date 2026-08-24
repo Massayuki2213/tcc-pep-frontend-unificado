@@ -5,6 +5,7 @@ import { SKIP_ERROR_TOAST } from '../../core/error.interceptor';
 
 export interface BenchmarkStatus {
   running: boolean;
+  stack: string | null;
   script: string | null;
   carga: string | null;
   startedAt: string | null;
@@ -13,12 +14,23 @@ export interface BenchmarkStatus {
   log: string[];
 }
 
-export interface BenchmarkScenarios {
+/** Uma das duas arquiteturas comparadas, com seus scripts k6 próprios. */
+export interface StackInfo {
+  valor: string;
+  nome: string;
+  dir: string;
+  disponivel: boolean;
   scripts: string[];
+}
+
+export interface BenchmarkScenarios {
+  stacks: StackInfo[];
   cargas: { valor: string; nome: string }[];
 }
 
 export interface ResultadoCsv {
+  stack: string;
+  stackNome: string;
   cenario: string;
   arquivo: string;
   rel: string;
@@ -41,8 +53,8 @@ export class BenchmarkService {
     return this.http.get<BenchmarkStatus>(`${this.base}/status`, { context: this.ctx });
   }
 
-  run(script: string, carga: string) {
-    return this.http.post(`${this.base}/run`, { script, carga }, { context: this.ctx });
+  run(stack: string, script: string, carga: string) {
+    return this.http.post(`${this.base}/run`, { stack, script, carga }, { context: this.ctx });
   }
 
   stop() {

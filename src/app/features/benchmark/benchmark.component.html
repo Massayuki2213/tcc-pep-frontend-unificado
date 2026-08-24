@@ -19,6 +19,17 @@
     <h2>Disparar teste de carga</h2>
     <div class="form-row">
       <label>
+        Arquitetura
+        <select [value]="stack()" (change)="onStackChange($event)" [disabled]="status()?.running">
+          @for (s of stacks(); track s.valor) {
+            <option [value]="s.valor" [disabled]="!s.disponivel">
+              {{ s.nome }}{{ s.disponivel ? '' : ' (repo não encontrado)' }}
+            </option>
+          }
+        </select>
+      </label>
+
+      <label>
         Script k6
         <select [value]="script()" (change)="onScriptChange($event)" [disabled]="status()?.running">
           @for (s of scripts(); track s) {
@@ -40,7 +51,7 @@
     <div class="actions">
       @if (status()?.running) {
         <button class="btn btn-danger" (click)="parar()">Parar teste</button>
-        <span class="badge">Rodando: {{ status()?.script }} — carga {{ status()?.carga }} (desde {{ status()?.startedAt }})</span>
+        <span class="badge">Rodando: {{ status()?.stack }} / {{ status()?.script }} — carga {{ status()?.carga }} (desde {{ status()?.startedAt }})</span>
       } @else {
         <button class="btn btn-primary" (click)="iniciar()" [disabled]="!online()">Iniciar teste</button>
         @if (status()?.finishedAt) {
@@ -67,6 +78,7 @@
       <table class="table">
         <thead>
           <tr>
+            <th>Arquitetura</th>
             <th>Cenário</th>
             <th>Arquivo</th>
             <th>Gerado em</th>
@@ -77,6 +89,7 @@
         <tbody>
           @for (r of resultados(); track r.rel) {
             <tr>
+              <td>{{ r.stackNome }}</td>
               <td><span class="badge">{{ r.cenario }}</span></td>
               <td class="mono">{{ r.arquivo }}</td>
               <td>{{ r.modificadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
