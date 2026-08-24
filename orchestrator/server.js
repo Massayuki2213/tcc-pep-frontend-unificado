@@ -35,6 +35,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const lab = require('./lab');
+const reset = require('./reset');
 
 const PORT = Number(process.env.PORT || 3333);
 
@@ -92,6 +93,7 @@ const state = {
   stack: null,
   script: null,
   carga: null,
+  reset: null,
   startedAt: null,
   finishedAt: null,
   exitCode: null,
@@ -107,16 +109,22 @@ function appendLog(chunk) {
   }
 }
 
-function startRun(stack, script, carga) {
+function startRun(stack, script, carga, resultadoReset = null) {
   const cfg = STACKS[stack];
   state.running = true;
   state.stack = stack;
   state.script = script;
   state.carga = carga;
+  state.reset = resultadoReset;
   state.startedAt = new Date().toISOString();
   state.finishedAt = null;
   state.exitCode = null;
   state.log = [`[orquestrador] iniciando ${script} em ${cfg.nome} (carga ${carga})...`];
+  if (resultadoReset) {
+    state.log.push(
+      `[orquestrador] banco zerado antes da rodada (${resultadoReset.linhasAntes} -> ${resultadoReset.linhasDepois} linhas no postgres)`,
+    );
+  }
 
   // Remove resto de rodada anterior abortada (best-effort)
   spawn('docker', ['rm', '-f', K6_CONTAINER_NAME]).on('close', () => {
@@ -315,8 +323,22 @@ const server = http.createServer(async (req, res) => {
     if (!CARGAS.includes(String(carga))) {
       return json(res, 400, { error: 'Carga inválida. Use: 1, 2 ou 3.' });
     }
-    startRun(stack, script, String(carga));
-    return json(res, 202, { started: true, stack, script, carga });
+
+    // Protocolo do experimento: zerar o banco antes da rodada faz as
+    // replicatas partirem da mesma condição inicial
+    let resultadoReset = null;
+    if (body.reset) {
+      resultadoReset = await reset.resetar(stack, cfg.dir);
+      if (!resultadoReset.ok) {
+        const falhas = resultadoReset.passos?.filter(p => !p.ok).map(p => `${p.alvo}: ${p.detalhe}`);
+        return json(res, 500, {
+          error: `Reset do banco falhou — rodada nao iniciada. ${falhas?.join(' | ') ?? resultadoReset.erro}`,
+        });
+      }
+    }
+
+    startRun(stack, script, String(carga), resultadoReset);
+    return json(res, 202, { started: true, stack, script, carga, reset: resultadoReset });
   }
 
   if (req.method === 'POST' && req.url === '/stop') {
@@ -324,6 +346,19 @@ const server = http.createServer(async (req, res) => {
     return json(res, stopped ? 200 : 409, stopped
       ? { stopped: true }
       : { error: 'Nenhuma rodada em andamento.' });
+  }
+
+  if (req.method === 'POST' && pathname === '/reset') {
+    if (state.running) {
+      return json(res, 409, { error: 'Ha uma rodada em andamento — nao da para zerar o banco agora.' });
+    }
+    const { stack } = await readBody(req);
+    const cfg = STACKS[stack];
+    if (!cfg) {
+      return json(res, 400, { error: `Stack invalida. Use: ${Object.keys(STACKS).join(', ')}` });
+    }
+    const r = await reset.resetar(stack, cfg.dir);
+    return json(res, r.ok ? 200 : 500, r);
   }
 
   // --- Laboratório ----------------------------------------------------------
