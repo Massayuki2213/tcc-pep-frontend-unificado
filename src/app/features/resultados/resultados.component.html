@@ -1,0 +1,276 @@
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Resultados</h1>
+      <p>Teste t de Student, ANOVA de dois fatores e Tukey HSD sobre o acervo do laboratório.</p>
+    </div>
+    <div class="actions">
+      <label>
+        Métrica-resposta
+        <select [value]="metrica()" (change)="onMetricaChange($event)">
+          @for (m of metricas; track m.chave) {
+            <option [value]="m.chave">{{ m.nome }}</option>
+          }
+        </select>
+      </label>
+      <button class="btn btn-sm" (click)="carregar()">Recalcular</button>
+    </div>
+  </div>
+
+  @if (offline()) {
+    <div class="card">
+      <p class="empty">
+        Orquestrador offline — rode <span class="mono">npm run orchestrator</span> para calcular a análise.
+      </p>
+    </div>
+  } @else if (carregando()) {
+    <div class="card"><p class="empty">Calculando…</p></div>
+  } @else if (analise(); as a) {
+
+    @if (!a.completo) {
+      <div class="card res-aviso">
+        <strong>Acervo incompleto.</strong>
+        Alguma célula tem menos de duas rodadas — sem isso não há desvio amostral e os testes não se sustentam.
+        Rode a campanha em <span class="mono">orchestrator/campanha.js</span> antes de usar estes números.
+      </div>
+    }
+
+    <!-- Veredito -->
+    <div class="res-veredito">
+      @for (t of a.testesT; track t.carga) {
+        <div class="res-vcell" [class.sig]="t.significativo">
+          <span class="res-vlabel">{{ nomeCarga(t.carga) }}</span>
+          @if (!t.insuficiente) {
+            <span class="res-vnum">{{ pctRazao(t.razao!) }}</span>
+            <span class="res-vsub">
+              MS {{ t.razao! >= 1 ? 'mais lento' : 'mais rápido' }} ·
+              p = {{ fmtP(t.welch!.p) }}
+              @if (t.significativo) { <b>significativo</b> } @else { <span class="res-ns">não significativo</span> }
+            </span>
+          } @else {
+            <span class="res-vnum res-vazio">—</span>
+            <span class="res-vsub">rodadas insuficientes</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Escala -->
+    @if (podeLog()) {
+      <div class="card res-escala">
+        <div>
+          <strong>Escala {{ a.log ? 'logarítmica' : 'bruta' }}</strong>
+          <p>
+            Tempo de resposta tem variância que cresce junto com a média, o que viola a
+            homocedasticidade que a ANOVA assume. O logaritmo estabiliza isso — e faz a diferença
+            de médias virar uma <em>razão</em> na escala original.
+          </p>
+        </div>
+        <button class="btn btn-sm" (click)="alternarLog()">
+          Usar escala {{ a.log ? 'bruta' : 'logarítmica' }}
+        </button>
+      </div>
+    }
+
+    <!-- Descritivas -->
+    <div class="card">
+      <h2>Descritivas por célula</h2>
+      <div class="res-scroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Célula</th><th>n</th><th>Média ({{ a.unidade }})</th><th>Desvio</th><th>CV</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (d of a.descritivas; track d.arquitetura + d.carga) {
+              <tr>
+                <td>
+                  <span class="res-dot" [class.mono]="d.arquitetura === 'monolito'"
+                        [class.ms]="d.arquitetura !== 'monolito'"></span>
+                  {{ d.arquitetura === 'monolito' ? 'Monolito' : 'Microsserviços' }} · {{ nomeCarga(d.carga) }}
+                </td>
+                <td class="mono">{{ d.n }}</td>
+                <td class="mono">{{ d.media !== null ? (d.media | number:'1.2-2') : '—' }}</td>
+                <td class="mono">{{ d.desvio !== null ? (d.desvio | number:'1.2-2') : '—' }}</td>
+                <td class="mono">{{ d.cv !== null ? (d.cv | number:'1.1-1') + '%' : '—' }}</td>
+                <td class="res-barcell">
+                  <span class="res-bar" [class.mono]="d.arquitetura === 'monolito'"
+                        [class.ms]="d.arquitetura !== 'monolito'"
+                        [style.width]="larguraBarra(d.media)"></span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Teste t -->
+    <div class="card">
+      <h2>Teste t — monolito × microsserviços, por carga</h2>
+      <p class="res-nota">
+        Duas amostras independentes sob carga fixa. Usa-se <b>Welch</b> em vez do t clássico porque as
+        variâncias dos dois grupos diferem; o t de Student aparece ao lado para comparação.
+      </p>
+      <div class="res-scroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Carga</th><th>Monolito</th><th>Microsserviços</th><th>Razão</th>
+              <th>t (Welch)</th><th>gl</th><th>p</th><th>p (Student)</th><th>d</th><th>Decisão</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of a.testesT; track t.carga) {
+              <tr>
+                <td>{{ nomeCarga(t.carga) }}</td>
+                @if (!t.insuficiente) {
+                  <td class="mono">{{ t.mediaMono! | number:'1.2-2' }} ± {{ t.dpMono! | number:'1.2-2' }}</td>
+                  <td class="mono">{{ t.mediaMs! | number:'1.2-2' }} ± {{ t.dpMs! | number:'1.2-2' }}</td>
+                  <td class="mono">{{ t.razao! | number:'1.3-3' }}</td>
+                  <td class="mono">{{ t.welch!.t | number:'1.3-3' }}</td>
+                  <td class="mono">{{ t.welch!.df | number:'1.2-2' }}</td>
+                  <td class="mono">{{ fmtP(t.welch!.p) }}</td>
+                  <td class="mono res-secundario">{{ fmtP(t.student!.p) }}</td>
+                  <td class="mono">{{ t.d! | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge" [class.badge-success]="t.significativo" [class.badge-danger]="!t.significativo">
+                      {{ t.significativo ? 'rejeita H₀' : 'não rejeita' }}
+                    </span>
+                  </td>
+                } @else {
+                  <td colspan="9" class="res-secundario">rodadas insuficientes nesta carga</td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ANOVA -->
+    @if (a.anova; as av) {
+      <div class="card">
+        <h2>ANOVA de dois fatores</h2>
+        <p class="res-nota">
+          Arquitetura (2 níveis) × carga (3 níveis), n = {{ av.n }} por célula, com termo de interação.
+        </p>
+        <div class="res-scroll">
+          <table class="table">
+            <thead>
+              <tr><th>Fonte</th><th>SQ</th><th>gl</th><th>QM</th><th>F</th><th>p</th><th>η²p</th></tr>
+            </thead>
+            <tbody>
+              @for (f of av.fatores; track f.nome) {
+                <tr>
+                  <td><b>{{ f.nome }}</b></td>
+                  <td class="mono">{{ f.ss | number:'1.2-2' }}</td>
+                  <td class="mono">{{ f.df }}</td>
+                  <td class="mono">{{ f.ms | number:'1.2-2' }}</td>
+                  <td class="mono">{{ f.F | number:'1.3-3' }}</td>
+                  <td class="mono">
+                    {{ fmtP(f.p) }}
+                    @if (f.p < a.alfa) { <span class="res-star">*</span> }
+                  </td>
+                  <td class="mono">{{ f.etaP | number:'1.3-3' }}</td>
+                </tr>
+              }
+              <tr class="res-residuo">
+                <td>Resíduo</td>
+                <td class="mono">{{ av.residuo.ss | number:'1.2-2' }}</td>
+                <td class="mono">{{ av.residuo.df }}</td>
+                <td class="mono">{{ av.residuo.ms | number:'1.2-2' }}</td>
+                <td colspan="3"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="res-nota">
+          <span class="res-star">*</span> significativo a {{ a.alfa * 100 }}%.
+          Interação não significativa quer dizer que <em>este desenho não teve poder</em> para
+          confirmá-la — não que ela não exista.
+        </p>
+      </div>
+    } @else {
+      <div class="card">
+        <h2>ANOVA de dois fatores</h2>
+        <p class="empty">Exige células balanceadas — todas com o mesmo número de rodadas.</p>
+      </div>
+    }
+
+    <!-- Tukey -->
+    @if (a.posthoc; as ph) {
+      <div class="card">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Tukey HSD</h2>
+            <p>
+              q crítico = {{ ph.qCrit | number:'1.3-3' }} · HSD = {{ ph.hsd | number:'1.2-2' }} {{ a.unidade }}
+            </p>
+          </div>
+        </div>
+
+        <h3 class="res-sub">Arquiteturas na mesma carga</h3>
+        <div class="res-scroll">
+          <table class="table">
+            <thead>
+              <tr><th>Par</th><th>Diferença</th><th>q</th><th>p ajustado</th><th>Decisão</th></tr>
+            </thead>
+            <tbody>
+              @for (p of paresChave(); track p.a + p.b) {
+                <tr>
+                  <td>{{ p.a }} × {{ p.b }}</td>
+                  <td class="mono">{{ p.dif | number:'1.3-3' }}</td>
+                  <td class="mono">{{ p.q | number:'1.2-2' }}</td>
+                  <td class="mono">{{ fmtP(p.p) }}</td>
+                  <td>
+                    <span class="badge" [class.badge-success]="p.significativo" [class.badge-danger]="!p.significativo">
+                      {{ p.significativo ? 'significativo' : 'não significativo' }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="res-sub">Demais comparações ({{ paresRestantes().length }})</h3>
+        <div class="res-scroll">
+          <table class="table">
+            <thead>
+              <tr><th>Par</th><th>Diferença</th><th>q</th><th>p ajustado</th><th></th></tr>
+            </thead>
+            <tbody>
+              @for (p of paresRestantes(); track p.a + p.b) {
+                <tr>
+                  <td class="res-secundario">{{ p.a }} × {{ p.b }}</td>
+                  <td class="mono">{{ p.dif | number:'1.3-3' }}</td>
+                  <td class="mono">{{ p.q | number:'1.2-2' }}</td>
+                  <td class="mono">{{ fmtP(p.p) }}</td>
+                  <td>@if (p.significativo) { <span class="res-star">*</span> }</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <div class="card res-escala">
+      <div>
+        <strong>Levar para fora</strong>
+        <p>
+          O dataset consolidado tem uma linha por rodada, pronto para R, Python ou planilha —
+          é a forma de passar os dados brutos adiante sem depender desta tela.
+        </p>
+      </div>
+      <a class="btn btn-sm btn-primary" [href]="datasetUrl()" download>Baixar dataset</a>
+    </div>
+
+    <p class="res-rodape">
+      {{ a.total }} observações · α = {{ a.alfa }} ·
+      métrica {{ metricaAtual()?.nome }}{{ a.log ? ' em escala logarítmica' : '' }}
+    </p>
+  }
+</div>

@@ -239,7 +239,7 @@ function anovaDoisFatores(celulas) {
     fatores: [
       { nome: 'Arquitetura', ss: ssA, df: dfA, ms: msA, F: msA / msErro, p: pValorF(msA / msErro, dfA, dfErro), etaP: ssA / (ssA + ssDentro) },
       { nome: 'Carga', ss: ssB, df: dfB, ms: msB, F: msB / msErro, p: pValorF(msB / msErro, dfB, dfErro), etaP: ssB / (ssB + ssDentro) },
-      { nome: 'Interacao', ss: ssAB, df: dfAB, ms: msAB, F: msAB / msErro, p: pValorF(msAB / msErro, dfAB, dfErro), etaP: ssAB / (ssAB + ssDentro) },
+      { nome: 'Interação', ss: ssAB, df: dfAB, ms: msAB, F: msAB / msErro, p: pValorF(msAB / msErro, dfAB, dfErro), etaP: ssAB / (ssAB + ssDentro) },
     ],
     residuo: { ss: ssDentro, df: dfErro, ms: msErro },
   };
@@ -297,6 +297,107 @@ function validar() {
   }
   console.log(`\n  ${todosOk ? 'Todas as referencias conferem.' : 'ATENCAO: ha divergencia — nao confie nos resultados.'}`);
   return todosOk;
+}
+
+// ─── API programática ─────────────────────────────────────────────────────
+
+/**
+ * Roda a análise inteira sobre um acervo e devolve tudo estruturado.
+ *
+ * É esta função que o endpoint /lab/analise expõe para a tela de Resultados:
+ * a estatística mora num lugar só, validada de uma vez, em vez de existir uma
+ * segunda implementação no front que pode divergir em silêncio.
+ */
+function analisar(acervo, metrica = 'avg_ms', log = false) {
+  const celulas = {};
+  for (const arq of ARQS) {
+    for (const c of CARGAS) {
+      celulas[`${arq}|${c}`] = acervo
+        .filter(o => o.arquitetura === arq && o.carga === c)
+        .map(o => o.metricas?.[metrica])
+        .filter(x => typeof x === 'number' && Number.isFinite(x))
+        .map(x => (log ? Math.log(x) : x));
+    }
+  }
+
+  const tamanhos = Object.values(celulas).map(v => v.length);
+  const balanceado = tamanhos.every(t => t === tamanhos[0]) && tamanhos[0] > 1;
+  const completo = tamanhos.every(t => t >= 2);
+
+  const descritivas = [];
+  for (const arq of ARQS) {
+    for (const c of CARGAS) {
+      const v = celulas[`${arq}|${c}`];
+      const m = v.length ? media(v) : null;
+      const s = v.length > 1 ? dp(v) : null;
+      descritivas.push({
+        arquitetura: arq,
+        carga: c,
+        n: v.length,
+        media: m,
+        desvio: s,
+        cv: m && s ? (s / m) * 100 : null,
+      });
+    }
+  }
+
+  const testesT = CARGAS.map(c => {
+    const mono = celulas[`monolito|${c}`];
+    const ms = celulas[`microsservicos|${c}`];
+    if (mono.length < 2 || ms.length < 2) return { carga: c, insuficiente: true };
+    const w = testeWelch(mono, ms);
+    const s = testeStudent(mono, ms);
+    return {
+      carga: c,
+      insuficiente: false,
+      mediaMono: media(mono),
+      mediaMs: media(ms),
+      dpMono: dp(mono),
+      dpMs: dp(ms),
+      // Em escala log a diferença de médias vira razão na escala original
+      razao: log ? Math.exp(media(ms) - media(mono)) : media(ms) / media(mono),
+      difMedia: w.difMedia,
+      welch: { t: w.t, df: w.df, p: w.p },
+      student: { t: s.t, df: s.df, p: s.p },
+      d: cohenD(mono, ms),
+      significativo: w.p < ALFA,
+    };
+  });
+
+  let anova = null;
+  let posthoc = null;
+  if (balanceado) {
+    anova = anovaDoisFatores(celulas);
+    const tk = tukey(celulas, anova.msErro, anova.dfErro, anova.n);
+    posthoc = {
+      qCrit: tk.qCrit,
+      hsd: tk.hsd,
+      pares: tk.pares.map(p => ({
+        a: p.a.replace('|', '/'),
+        b: p.b.replace('|', '/'),
+        dif: p.dif,
+        q: p.q,
+        p: p.p,
+        significativo: p.significativo,
+        // Marca as comparações que confrontam arquiteturas na mesma carga
+        mesmaCarga: p.a.split('|')[1] === p.b.split('|')[1],
+      })),
+    };
+  }
+
+  return {
+    metrica,
+    log,
+    unidade: log ? 'ln(ms)' : metrica === 'rps' ? 'req/s' : metrica.endsWith('_ms') ? 'ms' : '',
+    alfa: ALFA,
+    total: acervo.length,
+    balanceado,
+    completo,
+    descritivas,
+    testesT,
+    anova,
+    posthoc,
+  };
 }
 
 // ─── Relatório ────────────────────────────────────────────────────────────
@@ -402,4 +503,6 @@ function main() {
   console.log('\n  * diferenca significativa a 5%');
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { analisar, validar, ARQS, CARGAS, ALFA };

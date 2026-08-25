@@ -32,5 +32,8 @@ export const routes: Routes = [
   // Laboratório (acervo das rodadas para o teste t e a ANOVA)
   { path: 'laboratorio', loadComponent: () => import('./features/laboratorio/laboratorio.component').then(m => m.LaboratorioComponent) },
 
+  // Resultados (teste t, ANOVA e Tukey sobre o acervo)
+  { path: 'resultados', loadComponent: () => import('./features/resultados/resultados.component').then(m => m.ResultadosComponent) },
+
   { path: '**', redirectTo: '' },
 ];

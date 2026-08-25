@@ -28,6 +28,7 @@
  *   PATCH  /lab/observacoes/<id>   → { arquitetura, carga, nota }
  *   DELETE /lab/observacoes/<id>   → remove do acervo
  *   GET    /lab/observacoes/<id>/csv → baixa o CSV original da rodada
+ *   GET    /lab/analise           → teste t, ANOVA e Tukey sobre o acervo
  *   GET    /lab/dataset.csv        → dataset tidy consolidado
  */
 const http = require('http');
@@ -35,6 +36,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const lab = require('./lab');
+const analise = require('./analise');
 const reset = require('./reset');
 
 const PORT = Number(process.env.PORT || 3333);
@@ -365,6 +367,16 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'GET' && pathname === '/lab/observacoes') {
     return json(res, 200, lab.listar());
+  }
+
+  if (req.method === 'GET' && pathname === '/lab/analise') {
+    const metrica = searchParams.get('metrica') || 'avg_ms';
+    const log = searchParams.get('log') === '1';
+    try {
+      return json(res, 200, analise.analisar(lab.listar(), metrica, log));
+    } catch (e) {
+      return json(res, 500, { error: `Falha ao analisar: ${e.message}` });
+    }
   }
 
   if (req.method === 'GET' && pathname === '/lab/dataset.csv') {
