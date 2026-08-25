@@ -309,6 +309,7 @@ function main() {
   const soValidar = args.includes('--validar');
   const iM = args.indexOf('--metrica');
   const METRICA = iM >= 0 && args[iM + 1] ? args[iM + 1] : 'avg_ms';
+  const LOG = args.includes('--log');
 
   const ok = validar();
   if (soValidar) return;
@@ -326,14 +327,17 @@ function main() {
       celulas[`${arq}|${c}`] = acervo
         .filter(o => o.arquitetura === arq && o.carga === c)
         .map(o => o.metricas[METRICA])
-        .filter(x => typeof x === 'number');
+        .filter(x => typeof x === 'number')
+        // Tempo de resposta costuma ter variancia crescente com a media; o log
+        // estabiliza isso e resgata a homocedasticidade que a ANOVA assume.
+        .map(x => (LOG ? Math.log(x) : x));
     }
   }
 
   const tamanhos = Object.values(celulas).map(v => v.length);
   const balanceado = tamanhos.every(t => t === tamanhos[0]) && tamanhos[0] > 1;
 
-  const unidade = METRICA === 'rps' ? 'req/s' : METRICA.endsWith('_ms') ? 'ms' : '';
+  const unidade = LOG ? "ln(ms)" : METRICA === "rps" ? "req/s" : METRICA.endsWith("_ms") ? "ms" : "";
   console.log(`\n\n${'='.repeat(72)}\nMETRICA-RESPOSTA: ${METRICA} (${unidade})\n${'='.repeat(72)}`);
 
   console.log('\n1. DESCRITIVAS POR CELULA\n');
