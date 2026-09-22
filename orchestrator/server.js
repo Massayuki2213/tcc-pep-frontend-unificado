@@ -37,6 +37,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const lab = require('./lab');
 const analise = require('./analise');
+const maquina = require('./maquina');
 const reset = require('./reset');
 
 const PORT = Number(process.env.PORT || 3333);
@@ -44,9 +45,21 @@ const PORT = Number(process.env.PORT || 3333);
 const BACKEND_DIR =
   process.env.BACKEND_DIR ||
   path.resolve(__dirname, '..', '..', 'tcc-pep-backend-monolito');
-const MS_DIR =
-  process.env.MS_DIR ||
-  path.resolve(__dirname, '..', '..', 'tcc-pep-backend-ms', 'tcc-pep-backend-microsservicos');
+/**
+ * O repo de microsservicos aparece com dois layouts: clonado direto, ou dentro
+ * de uma pasta `tcc-pep-backend-ms`. Tentar os dois evita que o orquestrador
+ * quebre numa maquina nova so por causa de como o clone foi feito.
+ */
+function acharMsDir() {
+  if (process.env.MS_DIR) return process.env.MS_DIR;
+  const raiz = path.resolve(__dirname, '..', '..');
+  const candidatos = [
+    path.join(raiz, 'tcc-pep-backend-ms', 'tcc-pep-backend-microsservicos'),
+    path.join(raiz, 'tcc-pep-backend-microsservicos'),
+  ];
+  return candidatos.find(c => fs.existsSync(path.join(c, 'docker-compose.yml'))) || candidatos[0];
+}
+const MS_DIR = acharMsDir();
 
 const K6_CONTAINER_NAME = 'k6_run_orchestrator';
 const MAX_LOG_LINES = 400;
@@ -437,4 +450,5 @@ server.listen(PORT, '127.0.0.1', () => {
     console.log(`Stack ${k.padEnd(15)} ${fs.existsSync(c.dir) ? '✓' : '✗ (não encontrada)'} ${c.dir}`);
   }
   console.log(`Laboratório (acervo):     ${lab.LAB_DIR}`);
+  console.log(`Máquina:                  ${maquina.resumo()}`);
 });

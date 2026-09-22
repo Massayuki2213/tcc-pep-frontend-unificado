@@ -195,11 +195,41 @@ async function main() {
     }
   }
 
+  // A VM do Docker precisa comportar o orcamento de 4 CPU / 3 GB de UMA stack.
+  // Abaixo disso o limite do compose deixa de ser o gargalo e a maquina passa a
+  // ser — e ai a rodada nao e comparavel com a de outra maquina.
+  const maq = require('./maquina');
+  const p = maq.perfil();
+  registrar(`maquina: ${maq.resumo()}`);
+  if (p.cpusDocker !== null && p.cpusDocker < 4) {
+    registrar(`AVISO: a VM do Docker tem ${p.cpusDocker} CPU, abaixo das 4 que uma stack reserva.`);
+    registrar('       Os limites do compose nao vao vincular e a medicao nao sera comparavel.');
+    registrar('       Aumente CPUs em Docker Desktop > Settings > Resources antes de coletar.');
+    if (!args.includes('--forcar')) {
+      registrar('       Interrompido. Use --forcar para coletar mesmo assim.');
+      return;
+    }
+  }
+
   const acervo = (await api('/lab/observacoes')).corpo || [];
+  const maquinasNoAcervo = [...new Set(acervo.map(o => o.maquina?.apelido).filter(Boolean))];
+  if (maquinasNoAcervo.length && !maquinasNoAcervo.includes(p.apelido)) {
+    registrar(`NOTA: o acervo ja tem rodadas de ${maquinasNoAcervo.join(', ')}.`);
+    registrar(`      As novas virao carimbadas como "${p.apelido}" e a analise vai`);
+    registrar('      sinalizar a mistura — trate "maquina" como fator ou separe os acervos.');
+  }
   const pendentes = [];
   registrar(`=== campanha: ${REPETICOES} repeticoes por celula, semente ${SEMENTE} ===`);
+  // Conta so o que ESTA maquina produziu: cada maquina precisa do seu proprio
+  // conjunto completo de repeticoes. Contar o acervo inteiro faria a maquina B
+  // concluir que nao ha nada a coletar, porque as celulas ja estariam cheias
+  // com as rodadas da maquina A.
+  const daMaquina = acervo.filter(o => (o.maquina?.apelido ?? null) === p.apelido);
+  if (acervo.length !== daMaquina.length) {
+    registrar(`acervo total: ${acervo.length} observacoes | desta maquina: ${daMaquina.length}`);
+  }
   for (const c of CELULAS) {
-    const tem = acervo.filter(o => o.arquitetura === c.arquitetura && o.carga === c.nomeCarga).length;
+    const tem = daMaquina.filter(o => o.arquitetura === c.arquitetura && o.carga === c.nomeCarga).length;
     const falta = Math.max(0, REPETICOES - tem);
     registrar(`  ${(c.arquitetura + '/' + c.nomeCarga).padEnd(28)} tem ${tem}, faltam ${falta}`);
     for (let i = 0; i < falta; i++) pendentes.push(c);
@@ -235,7 +265,8 @@ async function main() {
   }
 
   registrar(`=== fim: ${ok} rodadas guardadas, ${falhas} descartadas ===`);
-  const final = (await api('/lab/observacoes')).corpo || [];
+  const final = ((await api('/lab/observacoes')).corpo || [])
+    .filter(o => (o.maquina?.apelido ?? null) === p.apelido);
   for (const c of CELULAS) {
     const tem = final.filter(o => o.arquitetura === c.arquitetura && o.carga === c.nomeCarga).length;
     registrar(`  ${(c.arquitetura + '/' + c.nomeCarga).padEnd(28)} ${tem}/${REPETICOES}`);

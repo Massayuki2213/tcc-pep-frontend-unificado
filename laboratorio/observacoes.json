@@ -105,7 +105,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "d8865a63-bc36-45be-92cb-ad4e22236be6",
@@ -213,7 +224,18 @@
         "slo_pass_pct": 96.92
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "0d9e3dbe-c3e8-42c2-8692-fb8eb849fd12",
@@ -321,7 +343,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "acdc1454-8ad9-4d65-92fe-8f720ed19838",
@@ -429,7 +462,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "0a4cd05d-0f17-4923-92d1-66443d07ec74",
@@ -537,7 +581,18 @@
         "slo_pass_pct": 99.61
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "9659dd6b-e41e-40ae-bf92-2060477cd067",
@@ -645,7 +700,18 @@
         "slo_pass_pct": 94.04
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "c7c9b80c-f1eb-4944-9916-909d0613f245",
@@ -753,7 +819,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "9696cb62-3d09-4397-82c3-4371e760d48f",
@@ -861,7 +938,18 @@
         "slo_pass_pct": 99.74
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "680286fe-db54-4e7a-8e3b-208efc7344ef",
@@ -969,7 +1057,18 @@
         "slo_pass_pct": 99.83
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "1251d0cf-1067-4bb5-8576-720a182dcbb9",
@@ -1077,7 +1176,18 @@
         "slo_pass_pct": 99.83
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "1402765f-e554-41ae-9116-ba6838cfe24f",
@@ -1185,7 +1295,18 @@
         "slo_pass_pct": 99.83
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "150717e2-2b42-4b88-b6c7-8633fd37525a",
@@ -1293,7 +1414,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "e2ed0c09-be17-420c-8e9c-2588c512bd45",
@@ -1401,7 +1533,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "2a83e07a-5213-4ebc-811a-5e5f31a7169f",
@@ -1509,7 +1652,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "aa22c654-2448-483f-a84c-e2b765195d26",
@@ -1617,7 +1771,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "02411ee7-10e1-424b-b10b-2b8f6c3dd326",
@@ -1725,7 +1890,18 @@
         "slo_pass_pct": 97
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "1ea76f1a-2f20-4242-b86f-79dcbd85d0bd",
@@ -1833,7 +2009,18 @@
         "slo_pass_pct": 97.06
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "3694e217-2ba1-42dc-bed4-6da947868387",
@@ -1941,7 +2128,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "179df59a-b3af-4c08-9943-5f9b1610d21c",
@@ -2049,7 +2247,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "36a0554a-3fc9-4a42-b10c-a7ec83767433",
@@ -2157,7 +2366,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "4d9172b4-14bb-4c3f-b7e4-98e7e6cd599c",
@@ -2265,7 +2485,18 @@
         "slo_pass_pct": 94.62
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "d1ac21a5-7036-46e7-bc13-16ec5c38c066",
@@ -2373,7 +2604,18 @@
         "slo_pass_pct": 95.47
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "bd8585e6-203e-43df-bb64-1487d8bb7070",
@@ -2481,7 +2723,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "2ada774a-a796-4ef1-8bbc-3e127b18e27e",
@@ -2589,7 +2842,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "fc72917b-7a9a-4404-a7cc-5b0e50360e4d",
@@ -2697,7 +2961,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "cdc876e9-8e6f-4919-b830-e98687d22ee7",
@@ -2805,7 +3080,18 @@
         "slo_pass_pct": 96.33
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "d6d2d224-3bd8-4ee3-8db1-6b14cac7983c",
@@ -2913,7 +3199,18 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "f465fd52-3e21-4008-b01c-64341ea1f1ed",
@@ -3021,7 +3318,18 @@
         "slo_pass_pct": 98.86
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "bfec8b9f-bb53-460b-9b75-8b884a35c751",
@@ -3129,7 +3437,18 @@
         "slo_pass_pct": 88.88
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   },
   {
     "id": "19a93242-e09a-4361-af91-2141fb096855",
@@ -3237,6 +3556,17 @@
         "slo_pass_pct": 100
       }
     ],
-    "nota": ""
+    "nota": "",
+    "maquina": {
+      "apelido": "NOT-COMERCIAL03",
+      "hostname": "NOT-COMERCIAL03",
+      "plataforma": "win32 10.0.26200",
+      "cpuModelo": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "cpusLogicas": 8,
+      "memoriaGB": 15.88,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.7,
+      "retroativo": true
+    }
   }
 ]

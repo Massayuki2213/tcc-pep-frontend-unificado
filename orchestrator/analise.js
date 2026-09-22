@@ -385,7 +385,14 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
     };
   }
 
+  // Quais maquinas produziram este acervo. Misturar hardwares sem tratar
+  // "maquina" como fator infla o residuo e derruba o poder dos testes: a
+  // variacao entre maquinas entra como se fosse ruido da arquitetura.
+  const maquinas = [...new Set(acervo.map(o => o.maquina?.apelido).filter(Boolean))];
+
   return {
+    maquinas,
+    misturaMaquinas: maquinas.length > 1,
     metrica,
     log,
     unidade: log ? 'ln(ms)' : metrica === 'rps' ? 'req/s' : metrica.endsWith('_ms') ? 'ms' : '',

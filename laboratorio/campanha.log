@@ -132,3 +132,28 @@
 2026-08-25T12:28:10.255Z    microsservicos/normal        5/5
 2026-08-25T12:28:10.255Z    microsservicos/dia-corrido   5/5
 2026-08-25T12:28:10.256Z    microsservicos/emergencia    5/5
+2026-09-22T14:56:26.423Z  ERRO FATAL: fetch failed
+2026-09-22T14:56:41.930Z  maquina: NOT-COMERCIAL03 — 8 CPU / 15.88 GB (Docker offline)
+2026-09-22T14:56:41.958Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-09-22T14:56:41.958Z    monolito/normal              tem 5, faltam 0
+2026-09-22T14:56:41.959Z    monolito/dia-corrido         tem 5, faltam 0
+2026-09-22T14:56:41.960Z    monolito/emergencia          tem 5, faltam 0
+2026-09-22T14:56:41.961Z    microsservicos/normal        tem 5, faltam 0
+2026-09-22T14:56:41.962Z    microsservicos/dia-corrido   tem 5, faltam 0
+2026-09-22T14:56:41.963Z    microsservicos/emergencia    tem 5, faltam 0
+2026-09-22T14:56:41.964Z  Nada a fazer — todas as celulas ja tem as repeticoes pedidas.
+2026-09-22T14:57:00.083Z  maquina: notebook-teste — 8 CPU / 15.88 GB (Docker offline)
+2026-09-22T14:57:00.092Z  NOTA: o acervo ja tem rodadas de NOT-COMERCIAL03.
+2026-09-22T14:57:00.092Z        As novas virao carimbadas como "notebook-teste" e a analise vai
+2026-09-22T14:57:00.093Z        sinalizar a mistura — trate "maquina" como fator ou separe os acervos.
+2026-09-22T14:57:00.093Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-09-22T14:57:00.094Z  acervo total: 30 observacoes | desta maquina: 0
+2026-09-22T14:57:00.095Z    monolito/normal              tem 0, faltam 5
+2026-09-22T14:57:00.096Z    monolito/dia-corrido         tem 0, faltam 5
+2026-09-22T14:57:00.097Z    monolito/emergencia          tem 0, faltam 5
+2026-09-22T14:57:00.098Z    microsservicos/normal        tem 0, faltam 5
+2026-09-22T14:57:00.099Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-09-22T14:57:00.100Z    microsservicos/emergencia    tem 0, faltam 5
+2026-09-22T14:57:00.101Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-09-22T14:57:00.102Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-09-22T14:57:00.103Z  --dry-run: parando aqui, nada foi executado.

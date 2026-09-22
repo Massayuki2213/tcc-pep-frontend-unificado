@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const maquina = require('./maquina');
 
 const LAB_DIR = process.env.LAB_DIR || path.resolve(__dirname, '..', 'laboratorio');
 const CSV_DIR = path.join(LAB_DIR, 'csv');
@@ -175,6 +176,9 @@ function criar(texto, nomeArquivo, opcoes = {}) {
     carga,
     origem: opcoes.origem || 'upload',
     origemRel: opcoes.origemRel || null,
+    // Carimbo de procedencia: sem ele, rodadas de maquinas diferentes viram
+    // uma amostra so e a variacao entre hardwares vaza para o residuo.
+    maquina: maquina.perfil(),
     arquivo: nomeArquivo,
     csvRel: `csv/${id}.csv`,
     timestampRodada: dados.timestampRodada,
@@ -255,7 +259,7 @@ function csvDaObservacao(id) {
  */
 function datasetCsv() {
   const colunas = [
-    'id', 'importado_em', 'timestamp_rodada', 'arquitetura', 'carga',
+    'id', 'importado_em', 'timestamp_rodada', 'arquitetura', 'carga', 'maquina',
     ...NUMERICAS, 'origem', 'arquivo', 'nota',
   ];
   const linhas = [colunas.join(',')];
@@ -270,6 +274,7 @@ function datasetCsv() {
   for (const o of ordenadas) {
     const valores = [
       o.id, o.importadoEm, o.timestampRodada || '', o.arquitetura, o.carga,
+      o.maquina?.apelido ?? '',
       ...NUMERICAS.map(c => (o.metricas?.[c] ?? '')),
       o.origem, o.arquivo, o.nota || '',
     ];
