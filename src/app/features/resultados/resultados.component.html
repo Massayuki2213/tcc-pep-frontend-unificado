@@ -8,8 +8,12 @@
       <label>
         Métrica-resposta
         <select [value]="metrica()" (change)="onMetricaChange($event)">
-          @for (m of metricas; track m.chave) {
-            <option [value]="m.chave">{{ m.nome }}</option>
+          @for (g of grupos; track g.nome) {
+            <optgroup [label]="g.nome">
+              @for (m of g.itens; track m.chave) {
+                <option [value]="m.chave">{{ m.nome }}</option>
+              }
+            </optgroup>
           }
         </select>
       </label>
@@ -34,6 +38,52 @@
         Rode a campanha em <span class="mono">orchestrator/campanha.js</span> antes de usar estes números.
       </div>
     }
+
+    @if (metricaSemDados()) {
+      <div class="card res-aviso">
+        <strong>Nenhuma rodada do acervo tem esta métrica.</strong>
+        O consumo de CPU e memória é lido do Prometheus ao fim de cada rodada, e só passa a existir
+        nas observações coletadas a partir de agora. As {{ a.total }} rodadas atuais foram coletadas
+        antes disso, e a retenção do Prometheus é de 7 dias — não há como preencher para trás.
+        Rode uma nova campanha para estas colunas ganharem valor.
+      </div>
+    }
+
+    <!-- Confiabilidade: o que separa "medimos" de "isto é um benchmark" -->
+    <div class="card">
+      <h2>Confiabilidade da medição</h2>
+      <p class="res-nota">
+        Os p-valores abaixo só significam alguma coisa se o delineamento se sustentar. Estes são os
+        critérios que sustentam — e cada um pode ser conferido nos próprios números.
+      </p>
+      <div class="res-scroll">
+        <table class="table">
+          <thead>
+            <tr><th>Critério</th><th>No acervo</th><th></th><th>Por que importa</th></tr>
+          </thead>
+          <tbody>
+            @for (c of criterios(); track c.nome) {
+              <tr>
+                <td><b>{{ c.nome }}</b></td>
+                <td class="mono">{{ c.valor }}</td>
+                <td>
+                  <span class="badge" [class.badge-success]="c.ok" [class.badge-danger]="!c.ok">
+                    {{ c.ok ? 'atende' : 'atenção' }}
+                  </span>
+                </td>
+                <td class="res-secundario">{{ c.porque }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (!criteriosOk()) {
+        <p class="res-nota">
+          Um critério em <b>atenção</b> não invalida o experimento sozinho, mas precisa ser declarado
+          no texto — é exatamente o tipo de coisa que a banca pergunta.
+        </p>
+      }
+    </div>
 
     <!-- Veredito -->
     <div class="res-veredito">

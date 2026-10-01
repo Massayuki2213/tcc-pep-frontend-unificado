@@ -61,6 +61,10 @@ export interface Analise {
   log: boolean;
   unidade: string;
   alfa: number;
+  /** Apelidos das máquinas que produziram o acervo. */
+  maquinas: string[];
+  /** Mais de um hardware no mesmo acervo infla o resíduo e derruba o poder. */
+  misturaMaquinas: boolean;
   total: number;
   balanceado: boolean;
   completo: boolean;

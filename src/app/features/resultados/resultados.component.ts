@@ -2,13 +2,29 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Analise, ResultadosService } from './resultados.service';
 
-/** Métricas que fazem sentido como variável-resposta do experimento. */
+/**
+ * Métricas que fazem sentido como variável-resposta do experimento — as quatro
+ * famílias que o trabalho se propõe a medir: tempo de resposta, vazão, taxa de
+ * erro e consumo de recursos.
+ *
+ * As de hardware não vêm do CSV do k6: são lidas do Prometheus na janela da
+ * rodada. Só existem em observações coletadas depois que essa captura entrou,
+ * então no acervo antigo aparecem vazias — e a tela diz isso em vez de fingir.
+ */
 const METRICAS = [
-  { chave: 'avg_ms', nome: 'Latência média', log: true },
-  { chave: 'p95_ms', nome: 'Latência p95', log: true },
-  { chave: 'med_ms', nome: 'Latência mediana', log: true },
-  { chave: 'rps', nome: 'Vazão', log: false },
+  { chave: 'avg_ms', nome: 'Latência média', log: true, grupo: 'Tempo de resposta' },
+  { chave: 'p95_ms', nome: 'Latência p95', log: true, grupo: 'Tempo de resposta' },
+  { chave: 'med_ms', nome: 'Latência mediana', log: true, grupo: 'Tempo de resposta' },
+  { chave: 'rps', nome: 'Vazão', log: false, grupo: 'Vazão' },
+  { chave: 'error_rate_pct', nome: 'Taxa de erro', log: false, grupo: 'Estabilidade' },
+  { chave: 'cpu_cores_avg', nome: 'CPU média (cores)', log: false, grupo: 'Consumo de recursos' },
+  { chave: 'cpu_cores_max', nome: 'CPU de pico (cores)', log: false, grupo: 'Consumo de recursos' },
+  { chave: 'mem_mb_avg', nome: 'Memória média (MB)', log: false, grupo: 'Consumo de recursos' },
+  { chave: 'mem_mb_max', nome: 'Memória de pico (MB)', log: false, grupo: 'Consumo de recursos' },
 ];
+
+/** Acima disto a célula variou demais para a média significar muita coisa. */
+const CV_ACEITAVEL = 20;
 
 const NOMES_CARGA: Record<string, string> = {
   normal: 'Normal',
@@ -24,6 +40,12 @@ const NOMES_CARGA: Record<string, string> = {
 })
 export class ResultadosComponent implements OnInit {
   metricas = METRICAS;
+
+  /** O seletor agrupa por família de métrica — são nove opções, não quatro. */
+  grupos = [...new Set(METRICAS.map(m => m.grupo))].map(g => ({
+    nome: g,
+    itens: METRICAS.filter(m => m.grupo === g),
+  }));
 
   metrica = signal('avg_ms');
   // Latência tem variância que cresce com a média; o log a estabiliza e é o
@@ -51,6 +73,67 @@ export class ResultadosComponent implements OnInit {
     const ds = this.analise()?.descritivas ?? [];
     return Math.max(1, ...ds.map(d => d.media ?? 0));
   });
+
+  /**
+   * A métrica escolhida não existe em nenhuma observação. É diferente de
+   * "acervo incompleto": os dados estão lá, só não têm esta coluna — caso das
+   * métricas de hardware em rodadas anteriores à captura do Prometheus.
+   */
+  metricaSemDados = computed(() => {
+    const ds = this.analise()?.descritivas ?? [];
+    return ds.length > 0 && ds.every(d => d.media === null);
+  });
+
+  /** Células cuja dispersão passou do aceitável para uma medição controlada. */
+  celulasInstaveis = computed(() =>
+    (this.analise()?.descritivas ?? []).filter(d => (d.cv ?? 0) > CV_ACEITAVEL),
+  );
+
+  cvAceitavel = CV_ACEITAVEL;
+
+  /** Menor n entre as células: é ele que limita o poder dos testes. */
+  menorN = computed(() => {
+    const ds = this.analise()?.descritivas ?? [];
+    return ds.length ? Math.min(...ds.map(d => d.n)) : 0;
+  });
+
+  /**
+   * Os critérios que separam "medimos umas vezes" de "isto é um benchmark".
+   * Cada um é uma condição do delineamento que, se falhar, tira o sentido dos
+   * p-valores exibidos abaixo — por isso ficam no topo, não no rodapé.
+   */
+  criterios = computed(() => {
+    const a = this.analise();
+    if (!a) return [];
+    return [
+      {
+        nome: 'Repetição',
+        ok: this.menorN() >= 3,
+        valor: `n = ${this.menorN()} por célula`,
+        porque: 'Sem repetir a mesma condição não há desvio amostral, e sem desvio não há teste.',
+      },
+      {
+        nome: 'Balanceamento',
+        ok: a.balanceado,
+        valor: a.balanceado ? 'células iguais' : 'células desiguais',
+        porque: 'A ANOVA de dois fatores aqui assume o mesmo n em todas as seis células.',
+      },
+      {
+        nome: 'Hardware único',
+        ok: !a.misturaMaquinas,
+        valor: a.maquinas?.length ? a.maquinas.join(', ') : '—',
+        porque: 'Misturar máquinas sem tratá-las como fator joga a variação entre elas no resíduo.',
+      },
+      {
+        nome: 'Dispersão',
+        ok: this.celulasInstaveis().length === 0,
+        valor: `${this.celulasInstaveis().length} célula(s) acima de ${CV_ACEITAVEL}% de CV`,
+        porque: 'CV alto indica que o ambiente variou entre rodadas, não que a arquitetura variou.',
+      },
+    ];
+  });
+
+  criteriosOk = computed(() => this.criterios().every(c => c.ok));
 
   ngOnInit() {
     this.carregar();
