@@ -1,7 +1,0 @@
-timestamp,system_type,scenario,vus_max,label,endpoint,samples,avg_ms,min_ms,med_ms,p90_ms,p95_ms,p99_ms,max_ms,rps,error_rate_pct,slo_pass_pct
-2026-08-25T12-28-07-398Z,microsservicos,normal,50,GET atendimento,GET /atendimentos/:id,1021,661.17,5.09,138.41,2068.79,3023.13,5103.28,5652.94,5.48,0.00,67.58
-2026-08-25T12-28-07-398Z,microsservicos,normal,50,GET paciente,GET /pacientes/:id,1021,6.15,3.39,4.95,8.40,11.50,26.95,84.96,5.48,0.00,100.00
-2026-08-25T12-28-07-398Z,microsservicos,normal,50,POST atendimento (dual-write),POST /atendimentos,1021,929.32,5.84,427.55,2694.86,3687.74,4944.24,5625.44,5.48,0.00,67.97
-2026-08-25T12-28-07-398Z,microsservicos,normal,50,GET atendimentos/medico,GET /atendimentos/medico/:id,1021,952.21,10.80,570.12,2566.63,3516.97,5254.50,5861.36,5.48,0.00,71.79
-2026-08-25T12-28-07-398Z,microsservicos,normal,50,POST medico (baseline),POST /medicos,1021,9.55,5.83,8.19,13.37,16.48,29.40,57.94,5.48,0.00,100.00
-2026-08-25T12-28-07-398Z,microsservicos,normal,50,GLOBAL,todas as requisicoes,5193,503.18,3.39,12.51,1712.65,2688.59,4767.96,5861.36,27.89,0.00,90.73
