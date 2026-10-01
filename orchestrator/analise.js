@@ -446,6 +446,76 @@ function arred(n, c) {
   return Math.round(n * f) / f;
 }
 
+
+/**
+ * Consolida as quatro familias de metricas que a secao 2.4.1 do trabalho
+ * promete medir, numa forma que responde diretamente a pergunta de pesquisa
+ * da p.18: menor tempo de resposta, maior vazao, melhor aproveitamento de
+ * recursos.
+ *
+ * Existe porque /lab/analise responde sobre UMA metrica por vez, e ler as
+ * quatro exige quatro chamadas e juntar na cabeca. O veredito do trabalho
+ * precisa caber numa tela.
+ */
+const METRICAS_CHAVE = [
+  { chave: 'avg_ms', rotulo: 'Tempo de resposta', unidade: 'ms', melhor: 'menor' },
+  { chave: 'rps', rotulo: 'Vazão', unidade: 'req/s', melhor: 'maior' },
+  { chave: 'cpu_cores_avg', rotulo: 'CPU usada', unidade: 'cores', melhor: null },
+  { chave: 'mem_mb_avg', rotulo: 'Memória usada', unidade: 'MB', melhor: 'menor' },
+];
+
+function resumo(acervo) {
+  const metricas = METRICAS_CHAVE.map(def => {
+    const r = analisar(acervo, def.chave, false);
+    const achar = (arq, c) => r.descritivas.find(d => d.arquitetura === arq && d.carga === c);
+    return {
+      ...def,
+      porCarga: CARGAS.map(c => {
+        const mo = achar('monolito', c);
+        const ms = achar('microsservicos', c);
+        const t = r.testesT.find(x => x.carga === c);
+        const difPct = mo?.media && ms?.media ? ((ms.media - mo.media) / mo.media) * 100 : null;
+        return {
+          carga: c,
+          monolito: mo?.media ?? null,
+          microsservicos: ms?.media ?? null,
+          difPct,
+          p: t?.degenerado ? null : (t?.welch?.p ?? null),
+          d: t?.d ?? null,
+          significativo: !!t?.significativo,
+        };
+      }),
+      anova: r.anova && !r.anova.degenerado
+        ? Object.fromEntries(r.anova.fatores.map(f => [f.nome, { p: f.p, etaP: f.etaP }]))
+        : null,
+      normalidadeOk: r.normalidade?.aceitavel ?? null,
+    };
+  });
+
+  // Aproveitamento = vazao entregue por core efetivamente usado. Separa duas
+  // coisas que "consumo de recursos" confunde: ser eficiente com o que se usa,
+  // e conseguir usar o que se tem.
+  const aproveitamento = [];
+  for (const arq of ARQS) {
+    for (const c of CARGAS) {
+      const obs = acervo.filter(o => o.arquitetura === arq && o.carga === c);
+      if (!obs.length) continue;
+      const rps = media(obs.map(o => o.metricas?.rps).filter(Number.isFinite));
+      const cores = media(obs.map(o => o.metricas?.cpu_cores_avg).filter(Number.isFinite));
+      aproveitamento.push({
+        arquitetura: arq,
+        carga: c,
+        rps,
+        cores,
+        rpsPorCore: cores ? rps / cores : null,
+        pctOrcamento: (cores / 4) * 100,
+      });
+    }
+  }
+
+  return { total: acervo.length, metricas, aproveitamento, orcamentoCpus: 4 };
+}
+
 function analisar(acervo, metrica = 'avg_ms', log = false) {
   const celulas = {};
   for (const arq of ARQS) {
@@ -659,4 +729,5 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { analisar, validar, ARQS, CARGAS, ALFA };
+module.exports = {
+  resumo, analisar, validar, ARQS, CARGAS, ALFA };

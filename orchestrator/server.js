@@ -447,6 +447,16 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // Consolidado das quatro familias de metricas, para responder a pergunta de
+  // pesquisa numa tela so em vez de quatro chamadas a /lab/analise.
+  if (req.method === 'GET' && pathname === '/lab/resumo') {
+    try {
+      return json(res, 200, analise.resumo(lab.listar()));
+    } catch (e) {
+      return json(res, 500, { error: `Falha ao resumir: ${e.message}` });
+    }
+  }
+
   if (req.method === 'GET' && pathname === '/lab/dataset.csv') {
     return texto(res, 200, lab.datasetCsv(), 'text/csv; charset=utf-8', 'laboratorio-dataset.csv');
   }

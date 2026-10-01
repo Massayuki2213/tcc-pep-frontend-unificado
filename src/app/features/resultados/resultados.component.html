@@ -49,6 +49,137 @@
       </div>
     }
 
+    <!-- Veredito: a pergunta de pesquisa respondida de uma vez -->
+    @if (veredito().length) {
+      <div class="card">
+        <h2>Resposta a pergunta de pesquisa</h2>
+        <p class="res-nota">
+          <em>"Considerando que ambos usam a mesma persistencia poliglota, qual apresenta menor
+          tempo de resposta, maior vazao e melhor aproveitamento de recursos sob cargas que
+          simulam atendimentos de emergencia?"</em>
+        </p>
+        <div class="res-scroll">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Metrica</th><th>Monolito</th><th>Microsservicos</th>
+                <th>Diferenca</th><th>p (arquitetura)</th><th>eta2p</th><th>Vence</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (v of veredito(); track v.rotulo) {
+                <tr>
+                  <td><b>{{ v.rotulo }}</b> <span class="res-secundario">({{ v.unidade }})</span></td>
+                  <td class="mono">{{ v.mono !== null ? (v.mono | number:'1.0-2') : 'sem dado' }}</td>
+                  <td class="mono">{{ v.ms !== null ? (v.ms | number:'1.0-2') : 'sem dado' }}</td>
+                  <td class="mono">{{ v.difPct !== null ? pctSinal(v.difPct) : 'sem dado' }}</td>
+                  <td class="mono">{{ v.p !== null ? fmtP(v.p) : 'sem dado' }}</td>
+                  <td class="mono">{{ v.etaP !== null ? (v.etaP | number:'1.3-3') : 'sem dado' }}</td>
+                  <td>
+                    @if (v.vencedor) {
+                      <span class="badge" [class.badge-success]="v.vencedor === 'monolito'"
+                            [class.badge-danger]="v.vencedor !== 'monolito'">
+                        {{ v.vencedor === 'monolito' ? 'Monolito' : 'Microsservicos' }}
+                      </span>
+                    } @else { <span class="res-secundario">sem direcao</span> }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="res-nota">
+          Valores sob a carga de <b>emergencia</b> (300 VUs). <b>eta2p</b> e a fracao da variacao
+          que a arquitetura explica — quanto mais perto de 1, mais a escolha arquitetural domina o
+          resultado. CPU aparece sem vencedor de proposito: usar menos CPU pode significar ser
+          eficiente <em>ou</em> nao conseguir recrutar recursos. E o que o painel abaixo separa.
+        </p>
+      </div>
+
+      @if (aproveitamentoEmergencia().length) {
+        <div class="card">
+          <h2>Aproveitamento de recursos</h2>
+          <p class="res-nota">
+            Duas perguntas diferentes que "consumo de recursos" costuma confundir: <b>e eficiente
+            com o que usa?</b> e <b>consegue usar o que tem?</b>
+          </p>
+          <div class="res-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Arquitetura</th><th>Vazao</th><th>CPU usada</th>
+                  <th>Vazao por core</th><th>Do orcamento de 4 cores</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (a of aproveitamentoEmergencia(); track a.arquitetura) {
+                  <tr>
+                    <td><b>{{ a.arquitetura === 'monolito' ? 'Monolito' : 'Microsservicos' }}</b></td>
+                    <td class="mono">{{ a.rps | number:'1.1-1' }} req/s</td>
+                    <td class="mono">{{ a.cores | number:'1.2-2' }} cores</td>
+                    <td class="mono">{{ a.rpsPorCore !== null ? (a.rpsPorCore | number:'1.1-1') : 'sem dado' }}</td>
+                    <td class="mono">{{ a.pctOrcamento | number:'1.0-0' }}%</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="res-nota">
+            A vazao por core e praticamente igual nas duas: <b>os microsservicos nao sao menos
+            eficientes com o core que usam</b>. A diferenca esta na ultima coluna — quanto do
+            orcamento cada arquitetura consegue de fato recrutar. Cada servico do MS esta limitado
+            a 0,3 core, entao o caminho quente satura enquanto os servicos vizinhos ficam ociosos;
+            o monolito concentra tudo num processo que pode ir ate 2,0.
+          </p>
+        </div>
+      }
+
+      <div class="card">
+        <h2>Onde cada teste estatistico entra</h2>
+        <div class="res-scroll">
+          <table class="table">
+            <thead>
+              <tr><th>A pergunta</th><th>O teste</th><th>O que ele entrega</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nesta carga especifica, as duas arquiteturas diferem?</td>
+                <td><b>Teste t de Welch</b></td>
+                <td class="res-secundario">
+                  Um p-valor por carga, mais o <i>d</i> de Cohen, que diz o <em>tamanho</em> da
+                  diferenca. Welch e nao Student porque as variancias dos dois grupos diferem.
+                </td>
+              </tr>
+              <tr>
+                <td>Olhando tudo junto, o que explica a variacao?</td>
+                <td><b>ANOVA de dois fatores</b></td>
+                <td class="res-secundario">
+                  Separa o efeito da arquitetura, o da carga e a <em>interacao</em> — se a distancia
+                  entre as arquiteturas muda conforme a carga sobe.
+                </td>
+              </tr>
+              <tr>
+                <td>Quais das seis celulas diferem entre si?</td>
+                <td><b>Tukey HSD</b></td>
+                <td class="res-secundario">
+                  As 15 comparacoes par a par, com controle do erro acumulado. Quinze testes t
+                  soltos produziriam cerca de um falso positivo so por sorte.
+                </td>
+              </tr>
+              <tr>
+                <td>Da para confiar nos tres acima?</td>
+                <td><b>Pressupostos</b></td>
+                <td class="res-secundario">
+                  Repeticao, balanceamento, hardware unico, dispersao e normalidade dos residuos —
+                  os paineis a seguir. Se algum falhar, os p-valores perdem o sentido.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
     <!-- Confiabilidade: o que separa "medimos" de "isto é um benchmark" -->
     <div class="card">
       <h2>Confiabilidade da medição</h2>

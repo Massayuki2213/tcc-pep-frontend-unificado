@@ -102,7 +102,46 @@ export class ResultadosService {
     );
   }
 
+  resumir() {
+    return this.http.get<Resumo>(`${this.base}/lab/resumo`, { context: this.ctx });
+  }
+
   datasetUrl() {
     return `${this.base}/lab/dataset.csv`;
   }
+}
+
+/** Consolidado das quatro famílias de métricas — alimenta o painel de veredito. */
+export interface ResumoMetrica {
+  chave: string;
+  rotulo: string;
+  unidade: string;
+  melhor: 'menor' | 'maior' | null;
+  porCarga: {
+    carga: string;
+    monolito: number | null;
+    microsservicos: number | null;
+    difPct: number | null;
+    p: number | null;
+    d: number | null;
+    significativo: boolean;
+  }[];
+  anova: Record<string, { p: number; etaP: number }> | null;
+  normalidadeOk: boolean | null;
+}
+
+export interface Aproveitamento {
+  arquitetura: string;
+  carga: string;
+  rps: number;
+  cores: number;
+  rpsPorCore: number | null;
+  pctOrcamento: number;
+}
+
+export interface Resumo {
+  total: number;
+  metricas: ResumoMetrica[];
+  aproveitamento: Aproveitamento[];
+  orcamentoCpus: number;
 }

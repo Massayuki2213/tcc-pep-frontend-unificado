@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Analise, ResultadosService } from './resultados.service';
+import { Analise, Resumo, ResultadosService } from './resultados.service';
 
 /**
  * Métricas que fazem sentido como variável-resposta do experimento — as quatro
@@ -53,6 +53,7 @@ export class ResultadosComponent implements OnInit {
   usarLog = signal(true);
 
   analise = signal<Analise | null>(null);
+  resumo = signal<Resumo | null>(null);
   carregando = signal(true);
   offline = signal(false);
 
@@ -158,7 +159,44 @@ export class ResultadosComponent implements OnInit {
 
   ngOnInit() {
     this.carregar();
+    this.svc.resumir().subscribe({ next: r => this.resumo.set(r), error: () => this.resumo.set(null) });
   }
+
+  /**
+   * O veredito da pergunta de pesquisa (p.18), em tres linhas: tempo de
+   * resposta, vazao e recursos. Cada linha ja traz o teste que a sustenta.
+   */
+  veredito = computed(() => {
+    const r = this.resumo();
+    if (!r) return [];
+    return r.metricas.map(m => {
+      const emerg = m.porCarga.find(c => c.carga === 'emergencia');
+      const todasSig = m.porCarga.every(c => c.significativo);
+      const anovaArq = m.anova?.['Arquitetura'];
+      return {
+        rotulo: m.rotulo,
+        unidade: m.unidade,
+        melhor: m.melhor,
+        mono: emerg?.monolito ?? null,
+        ms: emerg?.microsservicos ?? null,
+        difPct: emerg?.difPct ?? null,
+        p: anovaArq?.p ?? null,
+        etaP: anovaArq?.etaP ?? null,
+        todasSig,
+        // Quem leva a metrica, quando ela tem direcao de "melhor"
+        vencedor: !m.melhor || emerg?.monolito == null || emerg?.microsservicos == null
+          ? null
+          : m.melhor === 'menor'
+            ? (emerg.monolito < emerg.microsservicos ? 'monolito' : 'microsservicos')
+            : (emerg.monolito > emerg.microsservicos ? 'monolito' : 'microsservicos'),
+      };
+    });
+  });
+
+  /** Aproveitamento sob a carga mais pesada — separa eficiencia de capacidade. */
+  aproveitamentoEmergencia = computed(() =>
+    (this.resumo()?.aproveitamento ?? []).filter(a => a.carga === 'emergencia'),
+  );
 
   carregar() {
     this.carregando.set(true);
@@ -199,6 +237,11 @@ export class ResultadosComponent implements OnInit {
   /** Razão 1,505 → "+50,5%". */
   pctRazao(razao: number): string {
     return `${razao >= 1 ? '+' : ''}${((razao - 1) * 100).toFixed(1).replace('.', ',')}%`;
+  }
+
+  /** 359,27 -> "+359,3%" — sinal explicito para leitura rapida. */
+  pctSinal(v: number): string {
+    return `${v >= 0 ? '+' : ''}${v.toFixed(1).replace('.', ',')}%`;
   }
 
   larguraBarra(media: number | null): string {
