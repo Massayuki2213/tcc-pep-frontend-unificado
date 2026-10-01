@@ -308,6 +308,23 @@ function validar() {
  * a estatística mora num lugar só, validada de uma vez, em vez de existir uma
  * segunda implementação no front que pode divergir em silêncio.
  */
+/**
+ * Rotulo da unidade da metrica-resposta. Cobre tambem as metricas de consumo de
+ * recursos, que vem do Prometheus e nao do CSV do k6 — sem isso o relatorio
+ * imprimiria "CPU: 1,83" sem dizer 1,83 de que.
+ */
+function unidadeDe(metrica, log) {
+  const base =
+    metrica === 'rps' ? 'req/s'
+      : metrica.endsWith('_ms') ? 'ms'
+        : metrica.startsWith('cpu_cores') ? 'cores'
+          : metrica.startsWith('mem_mb') ? 'MB'
+            // `_pct` aparece no fim (error_rate_pct) e no meio (cpu_pct_avg)
+            : metrica.includes('_pct') ? '%'
+              : '';
+  return log ? `ln(${base || metrica})` : base;
+}
+
 function analisar(acervo, metrica = 'avg_ms', log = false) {
   const celulas = {};
   for (const arq of ARQS) {
@@ -395,7 +412,7 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
     misturaMaquinas: maquinas.length > 1,
     metrica,
     log,
-    unidade: log ? 'ln(ms)' : metrica === 'rps' ? 'req/s' : metrica.endsWith('_ms') ? 'ms' : '',
+    unidade: unidadeDe(metrica, log),
     alfa: ALFA,
     total: acervo.length,
     balanceado,

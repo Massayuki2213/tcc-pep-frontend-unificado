@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const maquina = require('./maquina');
+const hardware = require('./hardware');
 
 const LAB_DIR = process.env.LAB_DIR || path.resolve(__dirname, '..', 'laboratorio');
 const CSV_DIR = path.join(LAB_DIR, 'csv');
@@ -32,6 +33,18 @@ const NUMERICAS = [
   'vus_max', 'samples', 'avg_ms', 'min_ms', 'med_ms',
   'p90_ms', 'p95_ms', 'p99_ms', 'max_ms', 'rps', 'error_rate_pct', 'slo_pass_pct',
 ];
+
+/**
+ * Métricas que NÃO vêm do CSV: consumo de CPU e memória, lidos do Prometheus na
+ * janela da rodada. Ficam no mesmo objeto `metricas` das demais de propósito —
+ * é de lá que a análise tira a métrica-resposta, então mesclá-las aqui faz o
+ * teste t, a ANOVA e o Tukey valerem para consumo de recursos sem tocar em
+ * analise.js.
+ */
+const HARDWARE = hardware.METRICAS;
+
+/** Tudo que o dataset consolidado expõe como coluna numérica. */
+const COLUNAS_METRICAS = [...NUMERICAS, ...HARDWARE];
 
 // --- Persistência -----------------------------------------------------------
 
@@ -152,6 +165,17 @@ function extrair(texto) {
 
 // --- Operações do acervo ----------------------------------------------------
 
+/**
+ * As colunas de hardware sempre existem na observação, mesmo quando a coleta
+ * falhou — nulas e explícitas. Ausentes, o dataset ficaria com linhas de
+ * larguras diferentes conforme o Prometheus estivesse no ar ou não.
+ */
+function metricasDeHardware(h) {
+  const out = {};
+  for (const col of HARDWARE) out[col] = h?.metricas?.[col] ?? null;
+  return out;
+}
+
 function criar(texto, nomeArquivo, opcoes = {}) {
   const dados = extrair(texto);
   if (dados.erro) return { erro: dados.erro };
@@ -166,6 +190,9 @@ function criar(texto, nomeArquivo, opcoes = {}) {
   }
 
   const id = crypto.randomUUID();
+  // Antes de gravar, e nao so no listar/gravar do fim: num LAB_DIR ainda
+  // inexistente a primeira importacao quebraria aqui.
+  garantirDirs();
   const destino = path.join(CSV_DIR, `${id}.csv`);
   fs.writeFileSync(destino, texto, 'utf8');
 
@@ -182,8 +209,13 @@ function criar(texto, nomeArquivo, opcoes = {}) {
     arquivo: nomeArquivo,
     csvRel: `csv/${id}.csv`,
     timestampRodada: dados.timestampRodada,
-    metricas: dados.metricas,
+    // Latência/vazão do CSV e consumo de recursos do Prometheus no mesmo objeto:
+    // é `metricas` que a análise varre para achar a métrica-resposta.
+    metricas: { ...dados.metricas, ...metricasDeHardware(opcoes.hardware) },
     porJoin: dados.porJoin,
+    // Detalhamento por contentor e diagnóstico da coleta (janela consultada,
+    // contentores ausentes). Fora de `metricas` porque não é métrica-resposta.
+    hardware: opcoes.hardware || null,
     nota: opcoes.nota || '',
   };
 
@@ -197,7 +229,7 @@ function criar(texto, nomeArquivo, opcoes = {}) {
  * `caminho` já vem resolvido e validado pelo servidor (que conhece o diretório
  * de resultados de cada stack). Aqui só cabe recusar o que não existe.
  */
-function importarDoResults(rel, caminho) {
+function importarDoResults(rel, caminho, hardwareDaRodada = null) {
   if (!caminho) return { erro: 'Arquivo inválido.' };
   if (!fs.existsSync(caminho)) return { erro: 'Arquivo não encontrado.' };
 
@@ -210,6 +242,7 @@ function importarDoResults(rel, caminho) {
   return criar(fs.readFileSync(caminho, 'utf8'), nome, {
     origem: 'orquestrador',
     origemRel: rel,
+    hardware: hardwareDaRodada,
   });
 }
 
@@ -260,7 +293,7 @@ function csvDaObservacao(id) {
 function datasetCsv() {
   const colunas = [
     'id', 'importado_em', 'timestamp_rodada', 'arquitetura', 'carga', 'maquina',
-    ...NUMERICAS, 'origem', 'arquivo', 'nota',
+    ...COLUNAS_METRICAS, 'origem', 'arquivo', 'nota',
   ];
   const linhas = [colunas.join(',')];
 
@@ -275,7 +308,7 @@ function datasetCsv() {
     const valores = [
       o.id, o.importadoEm, o.timestampRodada || '', o.arquitetura, o.carga,
       o.maquina?.apelido ?? '',
-      ...NUMERICAS.map(c => (o.metricas?.[c] ?? '')),
+      ...COLUNAS_METRICAS.map(c => (o.metricas?.[c] ?? '')),
       o.origem, o.arquivo, o.nota || '',
     ];
     linhas.push(valores.map(v => {
@@ -290,6 +323,8 @@ module.exports = {
   ARQUITETURAS,
   CARGAS,
   NUMERICAS,
+  HARDWARE,
+  COLUNAS_METRICAS,
   LAB_DIR,
   listar,
   criar,

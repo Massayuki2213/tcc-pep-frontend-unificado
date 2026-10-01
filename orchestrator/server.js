@@ -39,6 +39,7 @@ const lab = require('./lab');
 const analise = require('./analise');
 const maquina = require('./maquina');
 const reset = require('./reset');
+const hardware = require('./hardware');
 
 const PORT = Number(process.env.PORT || 3333);
 
@@ -63,6 +64,11 @@ const MS_DIR = acharMsDir();
 
 const K6_CONTAINER_NAME = 'k6_run_orchestrator';
 const MAX_LOG_LINES = 400;
+
+// Prazo em que a coleta ainda é considerada da rodada recém-terminada. A
+// campanha importa em segundos; este limite só evita carimbar um CSV antigo
+// importado à mão com o consumo de uma rodada não relacionada.
+const JANELA_CARIMBO_MS = 10 * 60 * 1000;
 
 /**
  * As duas stacks comparadas pelo TCC. Cada uma tem seu docker-compose, seus
@@ -112,9 +118,13 @@ const state = {
   startedAt: null,
   finishedAt: null,
   exitCode: null,
+  // Consumo de CPU/RAM da rodada que acabou, amostrado do daemon do Docker.
+  // Fica aqui até a importação carimbá-lo na observação.
+  hardware: null,
   log: [],
 };
 let proc = null;
+let amostrador = null;
 
 function appendLog(chunk) {
   const lines = chunk.toString().split(/\r?\n/).filter(l => l.trim() !== '');
@@ -134,6 +144,10 @@ function startRun(stack, script, carga, resultadoReset = null) {
   state.startedAt = new Date().toISOString();
   state.finishedAt = null;
   state.exitCode = null;
+  state.hardware = null;
+  // O amostrador acompanha a rodada inteira: medir só no fim perderia o platô,
+  // que é onde o consumo de fato acontece.
+  amostrador = hardware.iniciar(stack);
   state.log = [`[orquestrador] iniciando ${script} em ${cfg.nome} (carga ${carga})...`];
   if (resultadoReset) {
     state.log.push(
@@ -165,13 +179,47 @@ function startRun(stack, script, carga, resultadoReset = null) {
   });
 }
 
-function finishRun(code) {
+/**
+ * Encerra a rodada e, antes de liberá-la, coleta o consumo de recursos.
+ *
+ * A ordem importa: `running` só vira false DEPOIS da coleta. Quem automatiza a
+ * campanha faz polling de /status e importa assim que a rodada termina — se o
+ * hardware fosse coletado em paralelo, a observação nasceria antes dos números
+ * chegarem e a quarta métrica ficaria nula justamente nas rodadas boas.
+ */
+async function finishRun(code) {
   if (!state.running) return;
-  state.running = false;
   state.finishedAt = new Date().toISOString();
   state.exitCode = code;
   appendLog(`[orquestrador] rodada encerrada (exit ${code})`);
   proc = null;
+
+  state.hardware = amostrador
+    ? await amostrador.parar()
+    : { erro: 'amostrador de hardware nao foi iniciado' };
+  amostrador = null;
+  appendLog(`[orquestrador] ${hardware.resumo(state.hardware)}`);
+  if (state.hardware?.containersAusentes?.length) {
+    appendLog(
+      `[orquestrador] AVISO: sem amostras de ${state.hardware.containersAusentes.join(', ')} — consumo subestimado.`,
+    );
+  }
+
+  state.running = false;
+}
+
+/**
+ * O consumo coletado pertence à ÚLTIMA rodada. Só carimba na importação quando
+ * há motivo para crer que é dela: mesma stack e importação logo em seguida.
+ *
+ * Importar um CSV antigo à mão não pode herdar o hardware de outra rodada — um
+ * número errado é pior que um campo nulo, porque entra na ANOVA sem avisar.
+ */
+function hardwarePara(rel) {
+  if (!state.hardware || state.hardware.erro || !state.finishedAt) return null;
+  if (!String(rel || '').startsWith(`${state.stack}/`)) return null;
+  const desde = Date.now() - Date.parse(state.finishedAt);
+  return desde >= 0 && desde <= JANELA_CARIMBO_MS ? state.hardware : null;
 }
 
 function stopRun() {
@@ -279,7 +327,14 @@ const server = http.createServer(async (req, res) => {
       ok: true,
       backendDir: BACKEND_DIR,
       stacks: Object.fromEntries(
-        Object.entries(STACKS).map(([k, c]) => [k, { dir: c.dir, disponivel: fs.existsSync(c.dir) }]),
+        Object.entries(STACKS).map(([k, c]) => [k, {
+          dir: c.dir,
+          disponivel: fs.existsSync(c.dir),
+          // Quais contentores entram na conta do consumo de recursos. Nao e
+          // sondado aqui de proposito: /health sofre polling da UI, e um
+          // `docker stats` por requisicao pesaria no sistema medido.
+          contentoresMedidos: hardware.STACKS[k]?.containers ?? [],
+        }]),
       ),
     });
   }
@@ -398,7 +453,7 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'POST' && pathname === '/lab/importar') {
     const { rel } = await readBody(req);
-    const r = lab.importarDoResults(rel, resolverResultado(rel));
+    const r = lab.importarDoResults(rel, resolverResultado(rel), hardwarePara(rel));
     return json(res, r.erro ? 400 : 201, r.erro ? { error: r.erro } : r.obs);
   }
 
