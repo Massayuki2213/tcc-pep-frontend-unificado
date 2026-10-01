@@ -156,6 +156,73 @@
       </div>
     </div>
 
+    <!-- Pressuposto de normalidade -->
+    @if (a.normalidade; as nm) {
+      @if (!nm.degenerado) {
+        <div class="card">
+          <h2>Pressuposto de normalidade</h2>
+          <p class="res-nota">
+            O teste t e a ANOVA assumem resíduos aproximadamente normais — resíduo é o quanto
+            cada rodada se afasta da média da <em>sua</em> célula, não o dado bruto. Com
+            delineamento balanceado a ANOVA é robusta a desvios moderados, mas desvio grande
+            costuma indicar rodada atípica, não arquitetura lenta.
+          </p>
+          <div class="res-escala">
+            <div class="res-scroll">
+              <table class="table">
+                <thead>
+                  <tr><th>Indicador</th><th>Valor</th><th>Em erros padrão</th><th></th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Assimetria</td>
+                    <td class="mono">{{ nm.assimetria | number:'1.3-3' }}</td>
+                    <td class="mono">{{ nm.zAssimetria | number:'1.2-2' }}</td>
+                    <td>
+                      <span class="badge" [class.badge-success]="(nm.zAssimetria ?? 0) < 2 && (nm.zAssimetria ?? 0) > -2"
+                            [class.badge-danger]="(nm.zAssimetria ?? 0) >= 2 || (nm.zAssimetria ?? 0) <= -2">
+                        {{ (nm.zAssimetria ?? 0) < 2 && (nm.zAssimetria ?? 0) > -2 ? 'ok' : 'desvia' }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Curtose (excesso)</td>
+                    <td class="mono">{{ nm.curtose | number:'1.3-3' }}</td>
+                    <td class="mono">{{ nm.zCurtose | number:'1.2-2' }}</td>
+                    <td>
+                      <span class="badge" [class.badge-success]="(nm.zCurtose ?? 0) < 2 && (nm.zCurtose ?? 0) > -2"
+                            [class.badge-danger]="(nm.zCurtose ?? 0) >= 2 || (nm.zCurtose ?? 0) <= -2">
+                        {{ (nm.zCurtose ?? 0) < 2 && (nm.zCurtose ?? 0) > -2 ? 'ok' : 'desvia' }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="res-nota">
+                {{ nm.n }} resíduos. Acima de 2 erros padrão é o sinal convencional de desvio.
+                @if (podeLog() && !a.log && !nm.aceitavel) {
+                  <b>A escala logarítmica costuma corrigir isso</b> — compare ligando-a acima.
+                }
+              </p>
+            </div>
+            <svg viewBox="0 0 240 240" width="240" height="240" role="img"
+                 aria-label="Gráfico Q-Q dos resíduos contra a normal">
+              <rect x="10" y="10" width="220" height="220" fill="none" stroke="currentColor" opacity="0.15"/>
+              <path [attr.d]="qqDiagonal()" stroke="currentColor" opacity="0.35" stroke-dasharray="4 3" fill="none"/>
+              @for (pt of qqPontos(); track $index) {
+                <circle [attr.cx]="pt.x" [attr.cy]="pt.y" r="3.5" fill="var(--accent)" opacity="0.75"/>
+              }
+            </svg>
+          </div>
+          <p class="res-nota">
+            No Q-Q, cada ponto é uma rodada. Quanto mais eles seguem a diagonal, mais os resíduos
+            se parecem com a normal: curvatura indica assimetria, e pontos fugindo nas pontas
+            indicam cauda pesada — tipicamente uma rodada em que o ambiente oscilou.
+          </p>
+        </div>
+      }
+    }
+
     <!-- Teste t -->
     <div class="card">
       <h2>Teste t — monolito × microsserviços, por carga</h2>

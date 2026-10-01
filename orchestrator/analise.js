@@ -234,12 +234,26 @@ function anovaDoisFatores(celulas) {
   const msAB = ssAB / dfAB;
   const msErro = ssDentro / dfErro;
 
+  // Variancia nula dentro das celulas degenera o F: ou sai NaN (0/0), ou sai
+  // Infinity com p=0, que a tela leria como "significativo" com confianca
+  // total. Nao e. Sem variacao entre repeticoes nao ha erro amostral contra o
+  // qual comparar o efeito, e o teste nao se aplica. Acontece de verdade em
+  // metricas como error_rate_pct, que costuma ser 0,00 em toda rodada boa.
+  const degenerado = !Number.isFinite(msErro) || msErro === 0;
+  const f = (ms, df) => (degenerado ? null : ms / msErro);
+  const pv = (ms, df) => (degenerado ? null : pValorF(ms / msErro, df, dfErro));
+  const eta = (ss) => (ss + ssDentro === 0 ? null : ss / (ss + ssDentro));
+
   return {
     n, N, ssTotal, msErro, dfErro,
+    degenerado,
+    motivoDegenerado: degenerado
+      ? 'As repeticoes nao variam dentro das celulas — sem erro amostral, o teste F nao se aplica.'
+      : null,
     fatores: [
-      { nome: 'Arquitetura', ss: ssA, df: dfA, ms: msA, F: msA / msErro, p: pValorF(msA / msErro, dfA, dfErro), etaP: ssA / (ssA + ssDentro) },
-      { nome: 'Carga', ss: ssB, df: dfB, ms: msB, F: msB / msErro, p: pValorF(msB / msErro, dfB, dfErro), etaP: ssB / (ssB + ssDentro) },
-      { nome: 'Interação', ss: ssAB, df: dfAB, ms: msAB, F: msAB / msErro, p: pValorF(msAB / msErro, dfAB, dfErro), etaP: ssAB / (ssAB + ssDentro) },
+      { nome: 'Arquitetura', ss: ssA, df: dfA, ms: msA, F: f(msA, dfA), p: pv(msA, dfA), etaP: eta(ssA) },
+      { nome: 'Carga', ss: ssB, df: dfB, ms: msB, F: f(msB, dfB), p: pv(msB, dfB), etaP: eta(ssB) },
+      { nome: 'Interação', ss: ssAB, df: dfAB, ms: msAB, F: f(msAB, dfAB), p: pv(msAB, dfAB), etaP: eta(ssAB) },
     ],
     residuo: { ss: ssDentro, df: dfErro, ms: msErro },
   };
@@ -252,6 +266,8 @@ function tukey(celulas, msErro, dfErro, n) {
   const se = Math.sqrt(msErro / n);
   const qCrit = qCritico(k, dfErro, ALFA);
   const hsd = qCrit * se;
+  // se == 0 faz todo q virar Infinity e todo par virar "significativo"
+  const degenerado = !Number.isFinite(se) || se === 0;
 
   const pares = [];
   for (let i = 0; i < k; i++) {
@@ -259,9 +275,10 @@ function tukey(celulas, msErro, dfErro, n) {
       const dif = media(celulas[chaves[i]]) - media(celulas[chaves[j]]);
       const q = Math.abs(dif) / se;
       pares.push({
-        a: chaves[i], b: chaves[j], dif, q,
-        p: 1 - ptukey(q, k, dfErro),
-        significativo: Math.abs(dif) > hsd,
+        a: chaves[i], b: chaves[j], dif,
+        q: degenerado ? null : q,
+        p: degenerado ? null : 1 - ptukey(q, k, dfErro),
+        significativo: !degenerado && Math.abs(dif) > hsd,
       });
     }
   }
@@ -325,6 +342,110 @@ function unidadeDe(metrica, log) {
   return log ? `ln(${base || metrica})` : base;
 }
 
+
+/**
+ * Diagnostico de normalidade dos residuos.
+ *
+ * A ANOVA e o teste t assumem residuos aproximadamente normais — residuo e o
+ * quanto cada rodada se afasta da media da SUA celula, nao o dado bruto. Nao
+ * ha aqui um teste de hipotese formal (Shapiro-Wilk) de proposito: com n=30 ele
+ * tem pouco poder e so pegaria desvio grosseiro, enquanto assimetria, curtose e
+ * o Q-Q mostram a MESMA coisa de forma inspecionavel, e o Q-Q e o que uma banca
+ * consegue ler numa figura.
+ *
+ * Erros padrao de referencia para n=30: assimetria ~0,43 e curtose ~0,83. Dois
+ * erros padrao sao a faixa usual de compatibilidade com a normal.
+ */
+function normalidade(celulas) {
+  const res = [];
+  for (const arq of ARQS) {
+    for (const c of CARGAS) {
+      const v = celulas[`${arq}|${c}`];
+      if (v.length < 2) continue;
+      const m = media(v);
+      for (const x of v) res.push(x - m);
+    }
+  }
+  if (res.length < 8) return null;
+
+  const n = res.length;
+  const m = media(res);
+  const s = dp(res);
+  if (!Number.isFinite(s) || s === 0) {
+    return { n, degenerado: true, assimetria: null, curtose: null, qq: [] };
+  }
+
+  const z = res.map(x => (x - m) / s);
+  const assimetria = media(z.map(x => x ** 3));
+  const curtose = media(z.map(x => x ** 4)) - 3;
+
+  // Erros padrao sob normalidade (Cramer)
+  const epAssim = Math.sqrt((6 * n * (n - 1)) / ((n - 2) * (n + 1) * (n + 3)));
+  const epCurt = 2 * epAssim * Math.sqrt((n ** 2 - 1) / ((n - 3) * (n + 5)));
+
+  // Pontos do Q-Q: quantil teorico (Blom) contra residuo padronizado observado
+  const ordenados = [...z].sort((a, b) => a - b);
+  const qq = ordenados.map((obs, i) => ({
+    teorico: probitNormal((i + 1 - 0.375) / (n + 0.25)),
+    observado: obs,
+  }));
+
+  return {
+    n,
+    degenerado: false,
+    assimetria,
+    curtose,
+    epAssimetria: epAssim,
+    epCurtose: epCurt,
+    // |valor| acima de 2 erros padrao e o sinal convencional de desvio
+    zAssimetria: assimetria / epAssim,
+    zCurtose: curtose / epCurt,
+    aceitavel: Math.abs(assimetria / epAssim) < 2 && Math.abs(curtose / epCurt) < 2,
+    qq,
+    // As rodadas mais distantes da media da sua celula — candidatas a
+    // investigacao antes de culpar a arquitetura pelo resultado.
+    extremos: [...z]
+      .map((v, i) => ({ z: v, i }))
+      .sort((a, b) => Math.abs(b.z) - Math.abs(a.z))
+      .slice(0, 3)
+      .map(x => arred(x.z, 2)),
+  };
+}
+
+/** Inversa da normal padrao (Acklam), para os quantis teoricos do Q-Q. */
+function probitNormal(p) {
+  if (p <= 0 || p >= 1) return 0;
+  const a = [-39.69683028665376, 220.9460984245205, -275.9285104469687,
+    138.3577518672690, -30.66479806614716, 2.506628277459239];
+  const b = [-54.47609879822406, 161.5858368580409, -155.6989798598866,
+    66.80131188771972, -13.28068155288572];
+  const c = [-0.007784894002430293, -0.3223964580411365, -2.400758277161838,
+    -2.549732539343734, 4.374664141464968, 2.938163982698783];
+  const d = [0.007784695709041462, 0.3224671290700398, 2.445134137142996,
+    3.754408661907416];
+  const pl = 0.02425;
+  let q;
+  if (p < pl) {
+    q = Math.sqrt(-2 * Math.log(p));
+    return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+      ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+  }
+  if (p > 1 - pl) {
+    q = Math.sqrt(-2 * Math.log(1 - p));
+    return -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+      ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+  }
+  q = p - 0.5;
+  const r = q * q;
+  return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
+    (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+}
+
+function arred(n, c) {
+  const f = 10 ** c;
+  return Math.round(n * f) / f;
+}
+
 function analisar(acervo, metrica = 'avg_ms', log = false) {
   const celulas = {};
   for (const arq of ARQS) {
@@ -364,9 +485,17 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
     if (mono.length < 2 || ms.length < 2) return { carga: c, insuficiente: true };
     const w = testeWelch(mono, ms);
     const s = testeStudent(mono, ms);
+    // Mesmo motivo da ANOVA: sem variacao dentro dos grupos nao ha erro
+    // amostral, e o t sai NaN ou Infinity. Reportar isso como "significativo"
+    // seria afirmar com confianca total algo que o teste nao mediu.
+    const degenerado = !Number.isFinite(w.t) || !Number.isFinite(w.p);
     return {
       carga: c,
       insuficiente: false,
+      degenerado,
+      motivoDegenerado: degenerado
+        ? 'As repeticoes nao variam dentro dos grupos — o teste t nao se aplica.'
+        : null,
       mediaMono: media(mono),
       mediaMs: media(ms),
       dpMono: dp(mono),
@@ -377,7 +506,7 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
       welch: { t: w.t, df: w.df, p: w.p },
       student: { t: s.t, df: s.df, p: s.p },
       d: cohenD(mono, ms),
-      significativo: w.p < ALFA,
+      significativo: !degenerado && w.p < ALFA,
     };
   });
 
@@ -410,6 +539,7 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
   return {
     maquinas,
     misturaMaquinas: maquinas.length > 1,
+    normalidade: normalidade(celulas),
     metrica,
     log,
     unidade: unidadeDe(metrica, log),

@@ -56,6 +56,19 @@ export interface ParTukey {
   mesmaCarga: boolean;
 }
 
+/** Diagnóstico do pressuposto de normalidade dos resíduos. */
+export interface Normalidade {
+  n: number;
+  degenerado: boolean;
+  assimetria: number | null;
+  curtose: number | null;
+  zAssimetria?: number;
+  zCurtose?: number;
+  aceitavel?: boolean;
+  qq: { teorico: number; observado: number }[];
+  extremos?: number[];
+}
+
 export interface Analise {
   metrica: string;
   log: boolean;
@@ -65,6 +78,7 @@ export interface Analise {
   maquinas: string[];
   /** Mais de um hardware no mesmo acervo infla o resíduo e derruba o poder. */
   misturaMaquinas: boolean;
+  normalidade: Normalidade | null;
   total: number;
   balanceado: boolean;
   completo: boolean;

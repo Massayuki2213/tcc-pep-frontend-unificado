@@ -135,6 +135,27 @@ export class ResultadosComponent implements OnInit {
 
   criteriosOk = computed(() => this.criterios().every(c => c.ok));
 
+  /**
+   * Pontos do Q-Q em coordenadas de um SVG 240x240.
+   *
+   * O Q-Q e a forma honesta de mostrar normalidade: cada ponto e um residuo,
+   * e quanto mais eles seguem a diagonal, mais a distribuicao se parece com a
+   * normal. Desvio sistematico nas pontas e cauda pesada; curvatura e
+   * assimetria. Um p-valor sozinho esconderia qual dos dois e o caso.
+   */
+  qqPontos = computed(() => {
+    const qq = this.analise()?.normalidade?.qq ?? [];
+    if (qq.length === 0) return [];
+    const vals = qq.flatMap(p => [p.teorico, p.observado]);
+    const lim = Math.max(1, ...vals.map(Math.abs)) * 1.1;
+    const esc = (v: number) => 120 + (v / lim) * 110;
+    return qq.map(p => ({ x: esc(p.teorico), y: 240 - esc(p.observado) }));
+  });
+
+  /** A diagonal de referencia, nas mesmas coordenadas. */
+  qqDiagonal = computed(() => (this.qqPontos().length ? 'M 10,230 L 230,10' : ''));
+
+
   ngOnInit() {
     this.carregar();
   }
