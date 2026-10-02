@@ -1,0 +1,7 @@
+timestamp,system_type,scenario,vus_max,label,endpoint,samples,avg_ms,min_ms,med_ms,p90_ms,p95_ms,p99_ms,max_ms,rps,error_rate_pct,slo_pass_pct
+2026-10-01T18-39-42-823Z,microsservicos,emergencia,300,GET atendimento,GET /atendimentos/:id,581,22061.18,6.84,16682.52,53461.82,59993.43,59994.20,59995.39,2.71,8.09,4.30
+2026-10-01T18-39-42-823Z,microsservicos,emergencia,300,GET paciente,GET /pacientes/:id,577,13.75,3.92,8.19,24.57,33.77,124.92,202.50,2.69,0.00,100.00
+2026-10-01T18-39-42-823Z,microsservicos,emergencia,300,POST atendimento (dual-write),POST /atendimentos,497,27105.01,20.51,21698.90,59991.72,59993.71,59994.32,60000.59,2.32,10.46,2.21
+2026-10-01T18-39-42-823Z,microsservicos,emergencia,300,GET atendimentos/medico,GET /atendimentos/medico/:id,401,32389.09,71.29,31475.71,59993.26,59993.78,59994.48,59999.38,1.87,12.72,1.50
+2026-10-01T18-39-42-823Z,microsservicos,emergencia,300,POST medico (baseline),POST /medicos,395,26.02,8.12,14.87,34.64,55.10,232.50,783.44,1.84,0.00,99.75
+2026-10-01T18-39-42-823Z,microsservicos,emergencia,300,GLOBAL,todas as requisicoes,2539,15478.23,3.92,4479.47,51584.29,59993.17,59994.18,60000.59,11.85,5.91,67.61

@@ -1,0 +1,7 @@
+timestamp,system_type,scenario,vus_max,label,endpoint,samples,avg_ms,min_ms,med_ms,p90_ms,p95_ms,p99_ms,max_ms,rps,error_rate_pct,slo_pass_pct
+2026-10-01T18-43-06-194Z,monolito,normal,50,GET atendimento,GET /atendimentos/:id,1061,535.33,2.99,70.09,1642.53,2067.43,2729.52,3788.77,5.74,0.00,64.09
+2026-10-01T18-43-06-194Z,monolito,normal,50,GET paciente,GET /pacientes/:id,1061,45.05,1.80,10.42,128.51,168.75,367.91,623.10,5.74,0.00,99.62
+2026-10-01T18-43-06-194Z,monolito,normal,50,POST atendimento (dual-write),POST /atendimentos,1061,742.70,11.13,483.39,1821.65,2226.59,3374.91,3831.68,5.74,0.00,58.91
+2026-10-01T18-43-06-194Z,monolito,normal,50,GET atendimentos/medico,GET /atendimentos/medico/:id,1061,845.12,8.74,677.90,1992.35,2317.65,2925.63,4115.67,5.74,0.00,51.18
+2026-10-01T18-43-06-194Z,monolito,normal,50,POST medico (baseline),POST /medicos,1061,84.94,5.06,19.15,225.55,291.88,453.24,603.73,5.74,0.00,99.25
+2026-10-01T18-43-06-194Z,monolito,normal,50,GLOBAL,todas as requisicoes,5393,443.68,1.80,75.12,1497.72,1939.72,2792.51,4115.67,29.16,0.00,87.30

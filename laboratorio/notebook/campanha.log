@@ -1,0 +1,121 @@
+2026-10-01T15:45:43.318Z  maquina: NOT-COMERCIAL03 — 8 CPU / 15.88 GB (Docker: 8 CPU / 7.7 GB)
+2026-10-01T15:45:43.330Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-01T15:45:43.331Z    monolito/normal              tem 0, faltam 5
+2026-10-01T15:45:43.332Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-01T15:45:43.334Z    monolito/emergencia          tem 0, faltam 5
+2026-10-01T15:45:43.334Z    microsservicos/normal        tem 0, faltam 5
+2026-10-01T15:45:43.336Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-01T15:45:43.337Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-01T15:45:43.338Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-01T15:45:43.339Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-01T15:45:43.341Z  --dry-run: parando aqui, nada foi executado.
+2026-10-01T17:59:10.324Z  maquina: NOT-COMERCIAL03 — 8 CPU / 15.88 GB (Docker: 8 CPU / 7.7 GB)
+2026-10-01T17:59:10.334Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-01T17:59:10.336Z    monolito/normal              tem 0, faltam 5
+2026-10-01T17:59:10.338Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-01T17:59:10.339Z    monolito/emergencia          tem 0, faltam 5
+2026-10-01T17:59:10.340Z    microsservicos/normal        tem 0, faltam 5
+2026-10-01T17:59:10.341Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-01T17:59:10.343Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-01T17:59:10.344Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-01T17:59:10.345Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-01T17:59:10.346Z  [1/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-01T17:59:17.546Z  [1/30] microsservicos/normal — banco zerado (7 -> 0 linhas)
+2026-10-01T18:02:33.015Z  [1/30] microsservicos/normal — OK  exit=99  samples=2598  avg=2086.6ms  p95=7085.25ms  rps=13.73
+2026-10-01T18:02:43.028Z  [2/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-01T18:02:46.077Z  [2/30] monolito/emergencia — banco zerado (5776 -> 0 linhas)
+2026-10-01T18:06:31.828Z  [2/30] monolito/emergencia — OK  exit=99  samples=7230  avg=5258ms  p95=24196.12ms  rps=33.36
+2026-10-01T18:06:41.832Z  [3/30] monolito/normal — iniciando (reset + k6)
+2026-10-01T18:06:44.163Z  [3/30] monolito/normal — banco zerado (7468 -> 0 linhas)
+2026-10-01T18:09:54.582Z  [3/30] monolito/normal — OK  exit=99  samples=5453  avg=432.29ms  p95=1930.58ms  rps=29.14
+2026-10-01T18:10:04.589Z  [4/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-01T18:10:06.816Z  [4/30] monolito/emergencia — banco zerado (5591 -> 0 linhas)
+2026-10-01T18:13:37.258Z  [4/30] monolito/emergencia — OK  exit=99  samples=7546  avg=5064.74ms  p95=20457.11ms  rps=36.19
+2026-10-01T18:13:47.266Z  [5/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-01T18:13:50.183Z  [5/30] microsservicos/emergencia — banco zerado (2736 -> 0 linhas)
+2026-10-01T18:17:30.640Z  [5/30] microsservicos/emergencia — OK  exit=99  samples=3450  avg=11800.6ms  p95=40888.9ms  rps=16.18
+2026-10-01T18:17:40.657Z  [6/30] monolito/normal — iniciando (reset + k6)
+2026-10-01T18:17:42.921Z  [6/30] monolito/normal — banco zerado (7707 -> 0 linhas)
+2026-10-01T18:20:53.451Z  [6/30] monolito/normal — OK  exit=99  samples=5493  avg=416.66ms  p95=2167.58ms  rps=29.58
+2026-10-01T18:21:03.464Z  [7/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-01T18:21:06.379Z  [7/30] microsservicos/normal — banco zerado (3675 -> 0 linhas)
+2026-10-01T18:24:32.179Z  [7/30] microsservicos/normal — OK  exit=99  samples=2538  avg=2291.78ms  p95=7487.83ms  rps=12.66
+2026-10-01T18:24:42.189Z  [8/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-01T18:24:45.223Z  [8/30] microsservicos/dia-corrido — banco zerado (2668 -> 0 linhas)
+2026-10-01T18:28:30.736Z  [8/30] microsservicos/dia-corrido — OK  exit=99  samples=2760  avg=7991.37ms  p95=26489.54ms  rps=12.88
+2026-10-01T18:28:40.749Z  [9/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-01T18:28:43.769Z  [9/30] monolito/emergencia — banco zerado (5632 -> 0 linhas)
+2026-10-01T18:32:14.408Z  [9/30] monolito/emergencia — OK  exit=99  samples=5585  avg=7278.25ms  p95=29399.31ms  rps=27.44
+2026-10-01T18:32:24.418Z  [10/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-01T18:32:27.153Z  [10/30] monolito/dia-corrido — banco zerado (5775 -> 0 linhas)
+2026-10-01T18:35:53.119Z  [10/30] monolito/dia-corrido — OK  exit=99  samples=5589  avg=3404.2ms  p95=13571.47ms  rps=28.13
+2026-10-01T18:36:03.127Z  [11/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-01T18:36:05.760Z  [11/30] microsservicos/emergencia — banco zerado (2945 -> 0 linhas)
+2026-10-01T18:39:46.311Z  [11/30] microsservicos/emergencia — OK  exit=99  samples=2539  avg=15478.23ms  p95=59993.17ms  rps=11.85
+2026-10-01T18:39:56.318Z  [12/30] monolito/normal — iniciando (reset + k6)
+2026-10-01T18:39:59.328Z  [12/30] monolito/normal — banco zerado (5735 -> 0 linhas)
+2026-10-01T18:43:09.813Z  [12/30] monolito/normal — OK  exit=99  samples=5393  avg=443.68ms  p95=1939.72ms  rps=29.16
+2026-10-01T18:43:19.825Z  [13/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-01T18:43:21.901Z  [13/30] microsservicos/dia-corrido — banco zerado (2765 -> 0 linhas)
+2026-10-01T18:46:57.307Z  [13/30] microsservicos/dia-corrido — OK  exit=99  samples=3494  avg=6179.41ms  p95=18105.51ms  rps=16.58
+2026-10-01T18:47:07.323Z  [14/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-01T18:47:09.682Z  [14/30] microsservicos/dia-corrido — banco zerado (3649 -> 0 linhas)
+2026-10-01T18:50:50.180Z  [14/30] microsservicos/dia-corrido — OK  exit=99  samples=3711  avg=5735.55ms  p95=19382.67ms  rps=17.55
+2026-10-01T18:51:00.184Z  [15/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-01T18:51:02.240Z  [15/30] monolito/dia-corrido — banco zerado (5544 -> 0 linhas)
+2026-10-01T18:54:17.691Z  [15/30] monolito/dia-corrido — OK  exit=99  samples=7208  avg=2365.66ms  p95=10258.39ms  rps=37.66
+2026-10-01T18:54:27.709Z  [16/30] monolito/normal — iniciando (reset + k6)
+2026-10-01T18:54:29.915Z  [16/30] monolito/normal — banco zerado (7370 -> 0 linhas)
+2026-10-01T18:57:35.340Z  [16/30] monolito/normal — OK  exit=99  samples=5978  avg=298.47ms  p95=1500.78ms  rps=32.59
+2026-10-01T18:57:45.348Z  [17/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-01T18:57:47.388Z  [17/30] monolito/dia-corrido — banco zerado (6106 -> 0 linhas)
+2026-10-01T19:01:17.910Z  [17/30] monolito/dia-corrido — OK  exit=99  samples=7414  avg=2415.87ms  p95=9321.91ms  rps=35.89
+2026-10-01T19:01:27.917Z  [18/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-01T19:01:30.624Z  [18/30] microsservicos/dia-corrido — banco zerado (3880 -> 0 linhas)
+2026-10-01T19:05:11.325Z  [18/30] microsservicos/dia-corrido — OK  exit=99  samples=2447  avg=9156.84ms  p95=27140.27ms  rps=11.46
+2026-10-01T19:05:21.339Z  [19/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-01T19:05:26.141Z  [19/30] microsservicos/normal — FALHA ao iniciar: {"error":"Reset do banco falhou — rodada nao iniciada. postgres (db_postgres_pep_ms): ERROR:  deadlock detected\nDETAIL:  Process 1735 waits for AccessExclusiveLock on relation 16459 of database 16384; blocked by process 1720.\nProcess 1720 waits for RowShareLock on relation 16433 of database 16384; blocked by process 1735.\nHINT:  See server log for query details.\nCONTEXT:  SQL statement \"TRUNCATE TABLE pacientes_pg RESTART IDENTITY CASCADE\"\nPL/pgSQL function inline_code_block line 3 at EXECUTE"}
+2026-10-01T19:05:26.148Z  [19/30] repetindo uma vez...
+2026-10-01T19:05:36.150Z  [19/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-01T19:05:41.558Z  [19/30] microsservicos/normal — banco zerado (2639 -> 0 linhas)
+2026-10-01T19:09:07.356Z  [19/30] microsservicos/normal — OK  exit=99  samples=2148  avg=2814.37ms  p95=8603.4ms  rps=10.84
+2026-10-01T19:09:17.368Z  [20/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-01T19:09:21.109Z  [20/30] microsservicos/emergencia — banco zerado (2293 -> 0 linhas)
+2026-10-01T19:13:06.661Z  [20/30] microsservicos/emergencia — OK  exit=99  samples=2874  avg=14395.1ms  p95=57595.82ms  rps=13.42
+2026-10-01T19:13:16.675Z  [21/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-01T19:13:19.287Z  [21/30] monolito/dia-corrido — banco zerado (7541 -> 0 linhas)
+2026-10-01T19:16:50.029Z  [21/30] monolito/dia-corrido — OK  exit=99  samples=5986  avg=3191.54ms  p95=11793.67ms  rps=29.34
+2026-10-01T19:17:00.038Z  [22/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-01T19:17:03.686Z  [22/30] microsservicos/normal — banco zerado (3087 -> 0 linhas)
+2026-10-01T19:20:24.167Z  [22/30] microsservicos/normal — OK  exit=99  samples=2778  avg=1928.04ms  p95=6503.52ms  rps=14.39
+2026-10-01T19:20:34.176Z  [23/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-01T19:20:37.852Z  [23/30] monolito/emergencia — banco zerado (6127 -> 0 linhas)
+2026-10-01T19:24:13.465Z  [23/30] monolito/emergencia — OK  exit=99  samples=5588  avg=7161.87ms  p95=28096.39ms  rps=26.62
+2026-10-01T19:24:23.476Z  [24/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-01T19:24:26.654Z  [24/30] monolito/dia-corrido — banco zerado (5779 -> 0 linhas)
+2026-10-01T19:27:57.270Z  [24/30] monolito/dia-corrido — OK  exit=99  samples=5931  avg=3219ms  p95=14317.16ms  rps=28.96
+2026-10-01T19:28:07.286Z  [25/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-01T19:28:09.949Z  [25/30] microsservicos/emergencia — banco zerado (2909 -> 0 linhas)
+2026-10-01T19:31:50.602Z  [25/30] microsservicos/emergencia — OK  exit=99  samples=2889  avg=13604.22ms  p95=59995.18ms  rps=13.57
+2026-10-01T19:32:00.613Z  [26/30] monolito/normal — iniciando (reset + k6)
+2026-10-01T19:32:03.595Z  [26/30] monolito/normal — banco zerado (6064 -> 0 linhas)
+2026-10-01T19:35:14.397Z  [26/30] monolito/normal — OK  exit=99  samples=4683  avg=701.04ms  p95=3198.63ms  rps=25.3
+2026-10-01T19:35:24.420Z  [27/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-01T19:35:28.100Z  [27/30] microsservicos/emergencia — banco zerado (3112 -> 0 linhas)
+2026-10-01T19:39:08.695Z  [27/30] microsservicos/emergencia — OK  exit=99  samples=2796  avg=14784.3ms  p95=57094.38ms  rps=13.1
+2026-10-01T19:39:18.705Z  [28/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-01T19:39:23.435Z  [28/30] microsservicos/dia-corrido — banco zerado (2910 -> 6 linhas)
+2026-10-01T19:43:09.026Z  [28/30] microsservicos/dia-corrido — OK  exit=99  samples=2981  avg=7442.97ms  p95=24394.78ms  rps=13.98
+2026-10-01T19:43:19.044Z  [29/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-01T19:43:22.027Z  [29/30] monolito/emergencia — banco zerado (4826 -> 0 linhas)
+2026-10-01T19:46:52.504Z  [29/30] monolito/emergencia — OK  exit=99  samples=7841  avg=4876.86ms  p95=20109.77ms  rps=37.89
+2026-10-01T19:47:02.508Z  [30/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-01T19:47:04.578Z  [30/30] microsservicos/normal — banco zerado (3146 -> 0 linhas)
+2026-10-01T19:50:14.992Z  [30/30] microsservicos/normal — OK  exit=99  samples=3313  avg=1406.44ms  p95=5304.44ms  rps=17.74
+2026-10-01T19:50:14.994Z  === fim: 30 rodadas guardadas, 0 descartadas ===
+2026-10-01T19:50:15.007Z    monolito/normal              5/5
+2026-10-01T19:50:15.008Z    monolito/dia-corrido         5/5
+2026-10-01T19:50:15.009Z    monolito/emergencia          5/5
+2026-10-01T19:50:15.010Z    microsservicos/normal        5/5
+2026-10-01T19:50:15.010Z    microsservicos/dia-corrido   5/5
+2026-10-01T19:50:15.011Z    microsservicos/emergencia    5/5
