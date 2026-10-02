@@ -21,9 +21,29 @@ const crypto = require('crypto');
 const maquina = require('./maquina');
 const hardware = require('./hardware');
 
+/**
+ * Raiz do laboratório. Dentro dela, UMA PASTA POR MÁQUINA:
+ *
+ *   laboratorio/notebook/observacoes.json + csv/
+ *   laboratorio/desktop/observacoes.json  + csv/
+ *
+ * A seção 4.6 do TCC replica os ensaios em hardwares distintos, e as rodadas de
+ * uma máquina não podem contar como repetição das da outra. Separar no disco,
+ * e não apenas filtrar na hora da análise, resolve dois problemas: o acervo de
+ * cada máquina fica completo e balanceado por construção, e — o que decide na
+ * prática — o git funde os commits das duas máquinas sem conflito, porque elas
+ * tocam arquivos diferentes. Num índice único, cada observação nova entra no
+ * topo do mesmo array e todo merge daria conflito na linha 2.
+ */
 const LAB_DIR = process.env.LAB_DIR || path.resolve(__dirname, '..', 'laboratorio');
-const CSV_DIR = path.join(LAB_DIR, 'csv');
-const INDEX_FILE = path.join(LAB_DIR, 'observacoes.json');
+
+/** A pasta desta máquina — onde toda escrita cai. */
+const PASTA = maquina.pasta();
+const ACERVO_DIR = path.join(LAB_DIR, PASTA);
+
+const dirDe = pasta => path.join(LAB_DIR, pasta);
+const indiceDe = pasta => path.join(dirDe(pasta), 'observacoes.json');
+const csvDirDe = pasta => path.join(dirDe(pasta), 'csv');
 
 const ARQUITETURAS = ['monolito', 'microsservicos'];
 const CARGAS = ['normal', 'dia-corrido', 'emergencia'];
@@ -48,24 +68,74 @@ const COLUNAS_METRICAS = [...NUMERICAS, ...HARDWARE];
 
 // --- Persistência -----------------------------------------------------------
 
-function garantirDirs() {
-  fs.mkdirSync(CSV_DIR, { recursive: true });
-  if (!fs.existsSync(INDEX_FILE)) fs.writeFileSync(INDEX_FILE, '[]', 'utf8');
+function garantirDirs(pasta = PASTA) {
+  fs.mkdirSync(csvDirDe(pasta), { recursive: true });
+  const idx = indiceDe(pasta);
+  if (!fs.existsSync(idx)) fs.writeFileSync(idx, '[]', 'utf8');
 }
 
-function listar() {
-  garantirDirs();
+/** Pastas de máquina presentes no laboratório, em ordem estável. */
+function pastas() {
   try {
-    const dados = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
+    return fs.readdirSync(LAB_DIR, { withFileTypes: true })
+      .filter(e => e.isDirectory() && fs.existsSync(indiceDe(e.name)))
+      .map(e => e.name)
+      .sort();
+  } catch {
+    return [];
+  }
+}
+
+/** O acervo de uma máquina específica. */
+function listarDe(pasta) {
+  try {
+    const dados = JSON.parse(fs.readFileSync(indiceDe(pasta), 'utf8'));
     return Array.isArray(dados) ? dados : [];
   } catch {
     return [];
   }
 }
 
-function gravar(lista) {
+/**
+ * O acervo DESTA máquina. É o padrão em todo lugar de propósito: é o único
+ * conjunto que a inferência de dois fatores pode consumir sem inflar o resíduo
+ * com variação entre hardwares.
+ */
+function listar() {
   garantirDirs();
-  fs.writeFileSync(INDEX_FILE, JSON.stringify(lista, null, 2), 'utf8');
+  return listarDe(PASTA);
+}
+
+/** Todas as máquinas juntas — só para quem trata `maquina` como fator. */
+function listarTodas() {
+  return pastas().flatMap(listarDe);
+}
+
+function gravar(lista, pasta = PASTA) {
+  garantirDirs(pasta);
+  fs.writeFileSync(indiceDe(pasta), JSON.stringify(lista, null, 2), 'utf8');
+}
+
+/**
+ * Em qual pasta mora uma observação. Vem do apelido gravado nela, não da
+ * máquina atual: ler ou apagar a observação de outra máquina tem de funcionar.
+ */
+function pastaDaObs(obs) {
+  return maquina.pastaDe(obs?.maquina?.apelido) || PASTA;
+}
+
+function caminhoCsv(obs) {
+  return path.join(dirDe(pastaDaObs(obs)), obs.csvRel);
+}
+
+/** Acha uma observação em qualquer máquina e devolve o contexto para regravar. */
+function localizar(id) {
+  for (const pasta of pastas()) {
+    const lista = listarDe(pasta);
+    const i = lista.findIndex(o => o.id === id);
+    if (i >= 0) return { pasta, lista, i };
+  }
+  return null;
 }
 
 // --- Parsing do CSV do k6 ---------------------------------------------------
@@ -190,10 +260,10 @@ function criar(texto, nomeArquivo, opcoes = {}) {
   }
 
   const id = crypto.randomUUID();
-  // Antes de gravar, e nao so no listar/gravar do fim: num LAB_DIR ainda
-  // inexistente a primeira importacao quebraria aqui.
+  // Antes de gravar, e nao so no listar/gravar do fim: numa pasta de maquina
+  // ainda inexistente a primeira importacao quebraria aqui.
   garantirDirs();
-  const destino = path.join(CSV_DIR, `${id}.csv`);
+  const destino = path.join(csvDirDe(PASTA), `${id}.csv`);
   fs.writeFileSync(destino, texto, 'utf8');
 
   const obs = {
@@ -247,9 +317,9 @@ function importarDoResults(rel, caminho, hardwareDaRodada = null) {
 }
 
 function atualizar(id, patch) {
-  const lista = listar();
-  const i = lista.findIndex(o => o.id === id);
-  if (i < 0) return { erro: 'Observação não encontrada.' };
+  const achado = localizar(id);
+  if (!achado) return { erro: 'Observação não encontrada.' };
+  const { pasta, lista, i } = achado;
 
   if (patch.arquitetura !== undefined) {
     const a = normalizarArquitetura(patch.arquitetura);
@@ -263,32 +333,38 @@ function atualizar(id, patch) {
   }
   if (patch.nota !== undefined) lista[i].nota = String(patch.nota).slice(0, 500);
 
-  gravar(lista);
+  gravar(lista, pasta);
   return { obs: lista[i] };
 }
 
 function remover(id) {
-  const lista = listar();
-  const i = lista.findIndex(o => o.id === id);
-  if (i < 0) return { erro: 'Observação não encontrada.' };
+  const achado = localizar(id);
+  if (!achado) return { erro: 'Observação não encontrada.' };
+  const { pasta, lista, i } = achado;
   const [removida] = lista.splice(i, 1);
-  const arquivo = path.join(LAB_DIR, removida.csvRel);
-  // O CSV fica sob LAB_DIR/csv e o nome vem do uuid que geramos — sem entrada do usuário
+  // O CSV fica sob <pasta da maquina>/csv e o nome vem do uuid que geramos —
+  // sem entrada do usuário no caminho
+  const arquivo = caminhoCsv(removida);
   if (fs.existsSync(arquivo)) fs.unlinkSync(arquivo);
-  gravar(lista);
+  gravar(lista, pasta);
   return { removida: true };
 }
 
 function csvDaObservacao(id) {
-  const obs = listar().find(o => o.id === id);
-  if (!obs) return null;
-  const arquivo = path.join(LAB_DIR, obs.csvRel);
+  const achado = localizar(id);
+  if (!achado) return null;
+  const obs = achado.lista[achado.i];
+  const arquivo = caminhoCsv(obs);
   return fs.existsSync(arquivo) ? { caminho: arquivo, nome: obs.arquivo } : null;
 }
 
 /**
  * Dataset tidy: uma linha por observação, pronto para R/Python/pandas.
  * É este arquivo que alimenta o teste t, a ANOVA e o Tukey.
+ *
+ * Exporta TODAS as máquinas, ao contrário do resto do módulo. Aqui `maquina` é
+ * uma coluna como as outras, e quem for rodar a análise fora daqui precisa dela
+ * como fator — exportar só a máquina atual esconderia o delineamento da 4.6.
  */
 function datasetCsv() {
   const colunas = [
@@ -298,7 +374,8 @@ function datasetCsv() {
   const linhas = [colunas.join(',')];
 
   // Ordem estável por célula facilita a leitura do arquivo a olho nu
-  const ordenadas = [...listar()].sort((a, b) =>
+  const ordenadas = [...listarTodas()].sort((a, b) =>
+    (a.maquina?.apelido ?? '').localeCompare(b.maquina?.apelido ?? '') ||
     a.arquitetura.localeCompare(b.arquitetura) ||
     CARGAS.indexOf(a.carga) - CARGAS.indexOf(b.carga) ||
     a.importadoEm.localeCompare(b.importadoEm),
@@ -326,7 +403,12 @@ module.exports = {
   HARDWARE,
   COLUNAS_METRICAS,
   LAB_DIR,
+  ACERVO_DIR,
+  PASTA,
+  pastas,
   listar,
+  listarDe,
+  listarTodas,
   criar,
   importarDoResults,
   atualizar,

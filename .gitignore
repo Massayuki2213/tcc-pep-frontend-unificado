@@ -42,3 +42,15 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Laboratório — o acervo (observacoes.json + csv/) É versionado de propósito:
+# é o dado experimental do TCC. Fora do git fica só o que é local da máquina.
+#
+# maquina.json diz qual máquina é ESTA; versioná-lo faria o desktop se achar o
+# notebook e escrever na pasta errada.
+/laboratorio/maquina.json
+# stdout de terminal, não dado — o campanha.log de cada máquina é o registro
+/laboratorio/*.log
+/laboratorio/*.log.err
+/laboratorio/*/*-stdout.log
+/laboratorio/*/*.log.err

@@ -58,7 +58,10 @@ const INTERVALO_POLL_MS = 5000;
 // Deixa a maquina assentar entre rodadas
 const PAUSA_ENTRE_RODADAS_MS = 10000;
 
-const LOG_FILE = path.resolve(__dirname, '..', 'laboratorio', 'campanha.log');
+// O log vai para a pasta da propria maquina, junto do acervo que ele descreve:
+// e ele a evidencia de como aquelas rodadas foram coletadas.
+const maq = require('./maquina');
+const LOG_FILE = path.resolve(__dirname, '..', 'laboratorio', maq.pasta(), 'campanha.log');
 
 function registrar(msg) {
   const linha = `${new Date().toISOString()}  ${msg}`;
@@ -198,9 +201,9 @@ async function main() {
   // A VM do Docker precisa comportar o orcamento de 4 CPU / 3 GB de UMA stack.
   // Abaixo disso o limite do compose deixa de ser o gargalo e a maquina passa a
   // ser — e ai a rodada nao e comparavel com a de outra maquina.
-  const maq = require('./maquina');
   const p = maq.perfil();
   registrar(`maquina: ${maq.resumo()}`);
+  registrar(`acervo desta maquina: laboratorio/${maq.pasta()}/`);
   if (p.cpusDocker !== null && p.cpusDocker < 4) {
     registrar(`AVISO: a VM do Docker tem ${p.cpusDocker} CPU, abaixo das 4 que uma stack reserva.`);
     registrar('       Os limites do compose nao vao vincular e a medicao nao sera comparavel.');

@@ -22,7 +22,8 @@
  *   POST /stop              → interrompe a rodada em andamento
  *
  *   Laboratório (acervo de observações para o teste t / ANOVA):
- *   GET    /lab/observacoes        → todas as rodadas guardadas
+ *   GET    /lab/observacoes        → as rodadas desta máquina
+ *   GET    /lab/maquinas           → quais máquinas têm acervo e quantas rodadas
  *   POST   /lab/observacoes        → { csv, arquivo, arquitetura, carga, nota }
  *   POST   /lab/importar           → { rel } importa um CSV vindo de /results
  *   PATCH  /lab/observacoes/<id>   → { arquitetura, carga, nota }
@@ -437,6 +438,23 @@ const server = http.createServer(async (req, res) => {
     return json(res, 200, lab.listar());
   }
 
+  // Quais maquinas tem acervo neste laboratorio, e quantas rodadas cada uma.
+  // A analise de dois fatores consome UMA maquina por vez; esta rota e o que
+  // deixa a tela e a campanha saberem o que existe sem misturar nada.
+  if (req.method === 'GET' && pathname === '/lab/maquinas') {
+    const lista = lab.pastas().map(pasta => {
+      const obs = lab.listarDe(pasta);
+      return {
+        pasta,
+        atual: pasta === lab.PASTA,
+        observacoes: obs.length,
+        apelido: obs[0]?.maquina?.apelido ?? pasta,
+        perfil: obs[0]?.maquina ?? null,
+      };
+    });
+    return json(res, 200, { atual: lab.PASTA, maquinas: lista });
+  }
+
   if (req.method === 'GET' && pathname === '/lab/analise') {
     const metrica = searchParams.get('metrica') || 'avg_ms';
     const log = searchParams.get('log') === '1';
@@ -514,6 +532,10 @@ server.listen(PORT, '127.0.0.1', () => {
   for (const [k, c] of Object.entries(STACKS)) {
     console.log(`Stack ${k.padEnd(15)} ${fs.existsSync(c.dir) ? '✓' : '✗ (não encontrada)'} ${c.dir}`);
   }
-  console.log(`Laboratório (acervo):     ${lab.LAB_DIR}`);
+  console.log(`Laboratório (acervo):     ${lab.ACERVO_DIR}`);
   console.log(`Máquina:                  ${maquina.resumo()}`);
+  const outras = lab.pastas().filter(p => p !== lab.PASTA);
+  if (outras.length) {
+    console.log(`Outras máquinas no lab:   ${outras.join(', ')} (não entram na análise de 2 fatores)`);
+  }
 });

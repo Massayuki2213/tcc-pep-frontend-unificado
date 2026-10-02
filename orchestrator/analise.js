@@ -640,11 +640,15 @@ function main() {
   if (soValidar) return;
   if (!ok) process.exit(1);
 
-  const fs = require('fs');
-  const path = require('path');
-  const acervo = JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, '..', 'laboratorio', 'observacoes.json'), 'utf8'),
-  );
+  // Acervo DESTA maquina. Juntar maquinas aqui jogaria a variacao entre
+  // hardwares no residuo da ANOVA de dois fatores — ver lab.js.
+  const lab = require('./lab');
+  const acervo = lab.listar();
+  if (acervo.length === 0) {
+    console.error(`\n  Acervo vazio em ${lab.ACERVO_DIR}\n`);
+    process.exit(1);
+  }
+  console.log(`\nMAQUINA: ${acervo[0].maquina?.apelido ?? lab.PASTA}  (${acervo.length} observacoes)`);
 
   const celulas = {};
   for (const arq of ARQS) {
