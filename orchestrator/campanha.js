@@ -23,6 +23,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const args = process.argv.slice(2);
 function arg(nome, padrao) {
@@ -59,9 +60,11 @@ const INTERVALO_POLL_MS = 5000;
 const PAUSA_ENTRE_RODADAS_MS = 10000;
 
 // O log vai para a pasta da propria maquina, junto do acervo que ele descreve:
-// e ele a evidencia de como aquelas rodadas foram coletadas.
+// e ele a evidencia de como aquelas rodadas foram coletadas. Reusa LAB_DIR do
+// lab para que apontar o laboratorio para outro lugar leve o log tambem.
 const maq = require('./maquina');
-const LOG_FILE = path.resolve(__dirname, '..', 'laboratorio', maq.pasta(), 'campanha.log');
+const lab = require('./lab');
+const LOG_FILE = path.join(lab.ACERVO_DIR, 'campanha.log');
 
 function registrar(msg) {
   const linha = `${new Date().toISOString()}  ${msg}`;
@@ -185,6 +188,57 @@ async function executarRodada(celula, indice, total) {
   return true;
 }
 
+/**
+ * Contentores no ar que não pertencem a nenhuma das duas stacks do experimento.
+ *
+ * Identifica pelo rótulo `com.docker.compose.project`, que o Compose põe em todo
+ * contentor que sobe, e cujo valor é o nome do diretório do projeto. Assim a
+ * verificação não depende de uma lista de nomes mantida à mão: serviço novo no
+ * compose entra sozinho, e contentor de outro projeto é pego sozinho.
+ *
+ * Devolve null se não deu para perguntar ao Docker — "não verificado" é
+ * diferente de "está limpo", e quem chama tem de poder distinguir os dois.
+ */
+function contentoresIntrusos(dirsDasStacks) {
+  const esperados = new Set(dirsDasStacks.map(d => path.basename(d)));
+  try {
+    const bruto = execSync('docker ps --format "{{.Names}}"', {
+      encoding: 'utf8',
+      timeout: 15000,
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    const nomes = bruto.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    if (nomes.length === 0) return [];
+
+    // Uma chamada por projeto esperado, cada uma com aspas simples de verdade —
+    // aninhar aspas no --format do docker é frágil no shell do Windows.
+    const dasStacks = new Set();
+    for (const proj of esperados) {
+      const saida = execSync(
+        `docker ps --filter "label=com.docker.compose.project=${proj}" --format "{{.Names}}"`,
+        { encoding: 'utf8', timeout: 15000, stdio: ['ignore', 'pipe', 'ignore'] },
+      );
+      for (const n of saida.split(/\r?\n/).map(s => s.trim()).filter(Boolean)) dasStacks.add(n);
+    }
+
+    return nomes.filter(n => !dasStacks.has(n)).map(nome => ({ nome, projeto: projetoDe(nome) }));
+  } catch {
+    return null;
+  }
+}
+
+/** Só para a mensagem — dizer de qual projeto o intruso é ajuda a achá-lo. */
+function projetoDe(nome) {
+  try {
+    return execSync(
+      `docker inspect --format "{{index .Config.Labels \\"com.docker.compose.project\\"}}" ${nome}`,
+      { encoding: 'utf8', timeout: 10000, stdio: ['ignore', 'pipe', 'ignore'] },
+    ).trim() || null;
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   const saude = await api('/health');
   if (saude.status !== 200) {
@@ -212,6 +266,26 @@ async function main() {
       registrar('       Interrompido. Use --forcar para coletar mesmo assim.');
       return;
     }
+  }
+
+  // Ambiente limpo. Contentor alheio as duas stacks disputa CPU, memoria e —
+  // o que nenhum limite do compose cobre — disco: os limites declarados ali sao
+  // so de cpus e memory, nunca de I/O. Pior, isso quebra a afirmacao de que a
+  // unica carga na maquina era a stack sob teste, que e o que sustenta comparar
+  // uma maquina com a outra depois.
+  const intrusos = contentoresIntrusos(Object.values(saude.corpo.stacks || {}).map(i => i.dir));
+  if (intrusos === null) {
+    registrar('AVISO: nao consegui listar contentores (docker fora do ar?) — ambiente nao verificado.');
+  } else if (intrusos.length) {
+    registrar(`AVISO: ${intrusos.length} contentor(es) no ar fora das duas stacks do experimento:`);
+    for (const c of intrusos) registrar(`       ${c.nome}  (projeto: ${c.projeto || 'sem compose'})`);
+    registrar('       Pare-os antes de coletar: eles disputam CPU, memoria e disco com a medicao.');
+    if (!args.includes('--forcar')) {
+      registrar('       Interrompido. Use --forcar para coletar mesmo assim.');
+      return;
+    }
+  } else {
+    registrar('ambiente limpo: so os contentores das duas stacks no ar');
   }
 
   const acervo = (await api('/lab/observacoes')).corpo || [];
