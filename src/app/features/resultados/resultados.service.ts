@@ -106,6 +106,13 @@ export class ResultadosService {
     return this.http.get<Resumo>(`${this.base}/lab/resumo`, { context: this.ctx });
   }
 
+  porEndpoint(metrica = 'avg_ms') {
+    return this.http.get<AnaliseEndpoints>(
+      `${this.base}/lab/endpoints?metrica=${encodeURIComponent(metrica)}`,
+      { context: this.ctx },
+    );
+  }
+
   datasetUrl() {
     return `${this.base}/lab/dataset.csv`;
   }
@@ -144,4 +151,50 @@ export interface Resumo {
   metricas: ResumoMetrica[];
   aproveitamento: Aproveitamento[];
   orcamentoCpus: number;
+}
+
+/** Descritiva de uma célula dentro de um endpoint. */
+export interface CelulaEndpoint {
+  n: number;
+  media: number | null;
+  desvio: number | null;
+}
+
+export interface CargaEndpoint {
+  carga: string;
+  monolito: CelulaEndpoint;
+  microsservicos: CelulaEndpoint;
+  razao: number | null;
+  /** Taxa de chegada que cada arquitetura de fato impôs a este endpoint. */
+  chegada: { monolito: number | null; microsservicos: number | null };
+  insuficiente?: boolean;
+  degenerado?: boolean;
+  p?: number;
+  d?: number;
+  significativo?: boolean;
+  vence?: 'monolito' | 'microsservicos' | null;
+}
+
+export interface Endpoint {
+  label: string;
+  endpoint: string;
+  porCarga: CargaEndpoint[];
+  /** Latência em emergência ÷ latência em normal, por arquitetura. */
+  degradacao: Record<string, number | null>;
+  sloEmergencia: Record<string, number | null>;
+  vencedorEmergencia: 'monolito' | 'microsservicos' | null;
+  significativoEmergencia: boolean;
+}
+
+export interface AnaliseEndpoints {
+  metrica: string;
+  unidade: string;
+  alfa: number;
+  total: number;
+  maquinas: string[];
+  endpoints: Endpoint[];
+  isolamento: {
+    ganhosMicrosservicos: string[];
+    piorDegradacao: Record<string, number | null>;
+  };
 }

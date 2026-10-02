@@ -30,6 +30,7 @@
  *   DELETE /lab/observacoes/<id>   → remove do acervo
  *   GET    /lab/observacoes/<id>/csv → baixa o CSV original da rodada
  *   GET    /lab/analise           → teste t, ANOVA e Tukey sobre o acervo
+ *   GET    /lab/endpoints         → a mesma inferência por endpoint, e degradação
  *   GET    /lab/dataset.csv        → dataset tidy consolidado
  */
 const http = require('http');
@@ -472,6 +473,17 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, analise.resumo(lab.listar()));
     } catch (e) {
       return json(res, 500, { error: `Falha ao resumir: ${e.message}` });
+    }
+  }
+
+  // A mesma inferencia por endpoint, nao sobre a media GLOBAL. GLOBAL e a
+  // media das 5 operacoes e esconde que elas se comportam de formas opostas.
+  if (req.method === 'GET' && pathname === '/lab/endpoints') {
+    const metrica = searchParams.get('metrica') || 'avg_ms';
+    try {
+      return json(res, 200, analise.porEndpoint(lab.listar(), metrica));
+    } catch (e) {
+      return json(res, 500, { error: `Falha ao analisar por endpoint: ${e.message}` });
     }
   }
 

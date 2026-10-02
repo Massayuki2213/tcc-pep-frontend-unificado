@@ -446,6 +446,148 @@ function arred(n, c) {
   return Math.round(n * f) / f;
 }
 
+// ─── Análise por endpoint ─────────────────────────────────────────────────
+
+/**
+ * A mesma inferência, mas por endpoint em vez de sobre a linha GLOBAL.
+ *
+ * GLOBAL é a média das cinco operações, e ela esconde que elas se comportam de
+ * maneiras opostas: no acervo do notebook os microsserviços perdem nas três
+ * operações de atendimento e GANHAM nas duas que não passam pelo serviço de
+ * atendimentos. Decidir a pergunta de pesquisa só pela média seria descartar o
+ * achado mais específico que o experimento produziu.
+ *
+ * Duas saídas, que respondem a perguntas diferentes:
+ *
+ * `porCarga` compara as arquiteturas dentro de cada endpoint — quem é mais
+ * rápido naquela operação, com p-valor e d de Cohen.
+ *
+ * `degradacao` compara cada arquitetura CONSIGO MESMA, de carga normal para
+ * emergência. É esta que mede isolamento: um endpoint cujo trabalho não mudou
+ * e cuja taxa de chegada quase não mudou, mas que fica muitas vezes mais lento,
+ * está pagando a conta da saturação de um VIZINHO. No monolito eles dividem
+ * processo e pool de conexões; nos microsserviços, não.
+ *
+ * `chegada` existe para o leitor poder descontar o confundidor: a arquitetura
+ * mais lenta no conjunto entrega menos requisições por segundo em TODO endpoint,
+ * então parte de qualquer vantagem dela vem de ter recebido menos carga. Sem
+ * essa coluna o painel afirmaria mais do que o dado sustenta.
+ */
+function porEndpoint(acervo, metrica = 'avg_ms') {
+  // Labels na ordem em que aparecem no CSV do k6, que é a ordem do cenário
+  const labels = [];
+  const endpointDe = new Map();
+  for (const o of acervo) {
+    for (const j of o.porJoin || []) {
+      if (!endpointDe.has(j.label)) {
+        labels.push(j.label);
+        endpointDe.set(j.label, j.endpoint || '');
+      }
+    }
+  }
+
+  const valores = (label, arq, carga, campo) => acervo
+    .filter(o => o.arquitetura === arq && o.carga === carga)
+    .map(o => (o.porJoin || []).find(j => j.label === label)?.[campo])
+    .filter(x => typeof x === 'number' && Number.isFinite(x));
+
+  const descritiva = v => (v.length
+    ? { n: v.length, media: arred(media(v), 2), desvio: v.length > 1 ? arred(dp(v), 2) : null }
+    : { n: 0, media: null, desvio: null });
+
+  const endpoints = labels.map(label => {
+    const porCarga = CARGAS.map(carga => {
+      const mono = valores(label, 'monolito', carga, metrica);
+      const ms = valores(label, 'microsservicos', carga, metrica);
+      const dMono = descritiva(mono);
+      const dMs = descritiva(ms);
+
+      const base = {
+        carga,
+        monolito: dMono,
+        microsservicos: dMs,
+        razao: dMono.media && dMs.media ? arred(dMs.media / dMono.media, 2) : null,
+        // Quanto cada endpoint de fato recebeu — o confundidor, explícito
+        chegada: {
+          monolito: valores(label, 'monolito', carga, 'rps').length
+            ? arred(media(valores(label, 'monolito', carga, 'rps')), 2) : null,
+          microsservicos: valores(label, 'microsservicos', carga, 'rps').length
+            ? arred(media(valores(label, 'microsservicos', carga, 'rps')), 2) : null,
+        },
+      };
+
+      if (mono.length < 2 || ms.length < 2) return { ...base, insuficiente: true };
+      // Mesmo cuidado dos outros testes: sem variação dentro dos grupos o t sai
+      // NaN ou Infinity, e reportar isso como significativo afirmaria com
+      // confiança total algo que o teste não mediu.
+      const w = testeWelch(mono, ms);
+      if (!Number.isFinite(w.t) || !Number.isFinite(w.p)) {
+        return { ...base, insuficiente: false, degenerado: true };
+      }
+      return {
+        ...base,
+        insuficiente: false,
+        degenerado: false,
+        p: w.p,
+        d: arred(cohenD(mono, ms), 2),
+        significativo: w.p < ALFA,
+        vence: dMono.media === dMs.media ? null : dMono.media < dMs.media ? 'monolito' : 'microsservicos',
+      };
+    });
+
+    // Fator de degradação: a mesma arquitetura, normal -> emergência
+    const degradacao = {};
+    for (const arq of ARQS) {
+      const vn = valores(label, arq, 'normal', metrica);
+      const ve = valores(label, arq, 'emergencia', metrica);
+      const n = vn.length ? media(vn) : null;
+      const e = ve.length ? media(ve) : null;
+      degradacao[arq] = n && e ? arred(e / n, 2) : null;
+    }
+
+    const emerg = porCarga.find(c => c.carga === 'emergencia');
+    const sloEmerg = {};
+    for (const arq of ARQS) {
+      const v = valores(label, arq, 'emergencia', 'slo_pass_pct');
+      sloEmerg[arq] = v.length ? arred(media(v), 1) : null;
+    }
+
+    return {
+      label,
+      endpoint: endpointDe.get(label) || '',
+      porCarga,
+      degradacao,
+      sloEmergencia: sloEmerg,
+      vencedorEmergencia: emerg?.vence ?? null,
+      significativoEmergencia: emerg?.significativo ?? false,
+    };
+  });
+
+  // Leitura consolidada: onde o veredito do GLOBAL se inverte, e qual o pior
+  // fator de degradação de cada arquitetura. É o resumo que o painel abre.
+  const ganhosMs = endpoints.filter(
+    e => e.vencedorEmergencia === 'microsservicos' && e.significativoEmergencia,
+  );
+  const piorDegradacao = {};
+  for (const arq of ARQS) {
+    const fs = endpoints.map(e => e.degradacao[arq]).filter(x => typeof x === 'number');
+    piorDegradacao[arq] = fs.length ? Math.max(...fs) : null;
+  }
+
+  return {
+    metrica,
+    unidade: unidadeDe(metrica, false),
+    alfa: ALFA,
+    total: acervo.length,
+    maquinas: [...new Set(acervo.map(o => o.maquina?.apelido).filter(Boolean))],
+    endpoints,
+    isolamento: {
+      ganhosMicrosservicos: ganhosMs.map(e => e.label),
+      piorDegradacao,
+    },
+  };
+}
+
 
 /**
  * Consolida as quatro familias de metricas que a secao 2.4.1 do trabalho
@@ -734,4 +876,4 @@ function main() {
 if (require.main === module) main();
 
 module.exports = {
-  resumo, analisar, validar, ARQS, CARGAS, ALFA };
+  resumo, analisar, porEndpoint, validar, ARQS, CARGAS, ALFA };

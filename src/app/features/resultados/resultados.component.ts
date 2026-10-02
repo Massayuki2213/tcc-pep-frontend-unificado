@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Analise, Resumo, ResultadosService } from './resultados.service';
+import { Analise, AnaliseEndpoints, Resumo, ResultadosService } from './resultados.service';
 
 /**
  * Métricas que fazem sentido como variável-resposta do experimento — as quatro
@@ -54,6 +54,7 @@ export class ResultadosComponent implements OnInit {
 
   analise = signal<Analise | null>(null);
   resumo = signal<Resumo | null>(null);
+  porEndpoint = signal<AnaliseEndpoints | null>(null);
   carregando = signal(true);
   offline = signal(false);
 
@@ -160,7 +161,67 @@ export class ResultadosComponent implements OnInit {
   ngOnInit() {
     this.carregar();
     this.svc.resumir().subscribe({ next: r => this.resumo.set(r), error: () => this.resumo.set(null) });
+    this.svc.porEndpoint().subscribe({
+      next: r => this.porEndpoint.set(r),
+      error: () => this.porEndpoint.set(null),
+    });
   }
+
+  /**
+   * Linhas do painel por endpoint, já na ordem em que o painel argumenta:
+   * primeiro os endpoints em que os microsserviços vencem, porque são eles que
+   * contradizem a média GLOBAL e carregam o achado do isolamento.
+   */
+  linhasEndpoint = computed(() => {
+    const r = this.porEndpoint();
+    if (!r) return [];
+    return r.endpoints
+      .map(e => {
+        const emerg = e.porCarga.find(c => c.carga === 'emergencia');
+        const normal = e.porCarga.find(c => c.carga === 'normal');
+        return {
+          label: e.label,
+          rota: e.endpoint,
+          mono: emerg?.monolito.media ?? null,
+          ms: emerg?.microsservicos.media ?? null,
+          p: emerg?.p ?? null,
+          d: emerg?.d ?? null,
+          significativo: emerg?.significativo ?? false,
+          vence: e.vencedorEmergencia,
+          degMono: e.degradacao['monolito'] ?? null,
+          degMs: e.degradacao['microsservicos'] ?? null,
+          sloMono: e.sloEmergencia['monolito'] ?? null,
+          sloMs: e.sloEmergencia['microsservicos'] ?? null,
+          // A taxa de chegada é o confundidor: quem entrega menos vazão no
+          // conjunto impõe menos carga a cada endpoint. Fica à vista.
+          chegadaMono: emerg?.chegada.monolito ?? null,
+          chegadaMs: emerg?.chegada.microsservicos ?? null,
+          chegadaMonoNormal: normal?.chegada.monolito ?? null,
+        };
+      })
+      .sort((a, b) => Number(b.vence === 'microsservicos') - Number(a.vence === 'microsservicos'));
+  });
+
+  /** Os endpoints em que o veredito do GLOBAL se inverte. */
+  inversoes = computed(() => this.porEndpoint()?.isolamento.ganhosMicrosservicos ?? []);
+
+  piorDegradacaoMono = computed(() => this.porEndpoint()?.isolamento.piorDegradacao['monolito'] ?? null);
+  piorDegradacaoMs = computed(() => this.porEndpoint()?.isolamento.piorDegradacao['microsservicos'] ?? null);
+
+  /**
+   * A operação que melhor ilustra o acoplamento, escolhida por critério e não
+   * por posição na lista: a maior razão entre o fator de degradação do monolito
+   * e o dos microsserviços. Essa razão isola o quanto a MESMA operação sofreu
+   * mais num lado do que no outro — o caminho quente degrada nas duas
+   * arquiteturas e por isso não serve de exemplo.
+   */
+  exemploIsolamento = computed(() => {
+    const ls = this.linhasEndpoint().filter(
+      l => l.degMono !== null && l.degMs !== null && l.degMs > 0,
+    );
+    if (!ls.length) return null;
+    return ls.reduce((a, b) => (b.degMono! / b.degMs! > a.degMono! / a.degMs! ? b : a));
+  });
 
   /**
    * O veredito da pergunta de pesquisa (p.18), em tres linhas: tempo de

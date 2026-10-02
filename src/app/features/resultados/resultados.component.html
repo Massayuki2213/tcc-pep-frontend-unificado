@@ -134,6 +134,127 @@
         </div>
       }
 
+      @if (linhasEndpoint().length) {
+        <div class="card">
+          <h2>O que a média GLOBAL esconde</h2>
+          <p class="res-nota">
+            Tudo acima usa a linha <b>GLOBAL</b> do k6, que é a média das cinco operações. Abrindo
+            por operação, elas se comportam de maneiras <b>opostas</b> — e isso muda a resposta da
+            pergunta de pesquisa.
+          </p>
+          <div class="res-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Operação</th><th>Monolito</th><th>Microsserviços</th>
+                  <th>p</th><th>d</th><th>Vence</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (l of linhasEndpoint(); track l.label) {
+                  <tr>
+                    <td>
+                      <b>{{ l.label }}</b>
+                      <div class="res-secundario">{{ l.rota }}</div>
+                    </td>
+                    <td class="mono">{{ l.mono !== null ? (l.mono | number:'1.0-0') : 'sem dado' }} ms</td>
+                    <td class="mono">{{ l.ms !== null ? (l.ms | number:'1.0-0') : 'sem dado' }} ms</td>
+                    <td class="mono">{{ l.p !== null ? fmtP(l.p) : '—' }}</td>
+                    <td class="mono">{{ l.d !== null ? (l.d | number:'1.1-1') : '—' }}</td>
+                    <td>
+                      @if (l.vence) {
+                        <span class="badge" [class.badge-success]="l.vence === 'monolito'"
+                              [class.badge-danger]="l.vence !== 'monolito'">
+                          {{ l.vence === 'monolito' ? 'Monolito' : 'Microsserviços' }}
+                        </span>
+                        @if (!l.significativo) { <span class="res-secundario"> n.s.</span> }
+                      } @else { <span class="res-secundario">—</span> }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="res-nota">
+            Valores sob carga de <b>emergência</b> (300 VUs). Os microsserviços <b>vencem</b> em
+            {{ inversoes().length }} das {{ linhasEndpoint().length }} operações, com significância
+            estatística. Perdem nas três que passam pelo serviço de atendimentos; ganham nas duas
+            que não passam por ele.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Isolamento: quanto cada operação piora sob carga</h2>
+          <p class="res-nota">
+            Aqui cada arquitetura é comparada <b>consigo mesma</b>, da carga normal para a de
+            emergência. É esta leitura que mede acoplamento: se uma operação cujo trabalho não
+            mudou fica muitas vezes mais lenta, ela está pagando a conta da saturação de uma
+            <b>vizinha</b>.
+          </p>
+          <div class="res-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Operação</th>
+                  <th>Monolito (normal → emergência)</th>
+                  <th>Microsserviços (normal → emergência)</th>
+                  <th>SLO atendido em emergência</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (l of linhasEndpoint(); track l.label) {
+                  <tr>
+                    <td><b>{{ l.label }}</b></td>
+                    <td class="mono">
+                      {{ l.degMono !== null ? (l.degMono | number:'1.1-1') + '× pior' : '—' }}
+                    </td>
+                    <td class="mono">
+                      {{ l.degMs !== null ? (l.degMs | number:'1.1-1') + '× pior' : '—' }}
+                    </td>
+                    <td class="mono">
+                      {{ l.sloMono !== null ? (l.sloMono | number:'1.0-0') + '%' : '—' }}
+                      <span class="res-secundario">mono</span>
+                      ·
+                      {{ l.sloMs !== null ? (l.sloMs | number:'1.0-0') + '%' : '—' }}
+                      <span class="res-secundario">ms</span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="res-nota">
+            No monolito, as cinco operações dividem processo, pool de threads e conexão com o
+            banco: quando <code>/atendimentos</code> satura, ela consome esse pool e as demais
+            esperam numa fila que não é delas. A pior degradação do monolito chega a
+            <b>{{ piorDegradacaoMono() | number:'1.1-1' }}×</b>, contra
+            <b>{{ piorDegradacaoMs() | number:'1.1-1' }}×</b> nos microsserviços, onde cada serviço
+            tem processo e limite próprios.
+          </p>
+          <p class="res-nota">
+            <b>Isto também responde à objeção do limite de 0,3 core.</b> Todos os seis serviços do
+            MS operam sob o mesmo teto de 0,3 core — pacientes e médicos inclusive. Compare as duas
+            colunas de microsserviços na tabela acima: o mesmo limite produz dezenas de
+            milissegundos em algumas operações e dezenas de segundos em outras. Logo o limite não é
+            a causa; a causa é a concentração de trabalho no serviço que compõe a requisição, que
+            faz três chamadas de rede encadeadas enquanto os outros fazem uma consulta direta.
+          </p>
+          @if (exemploIsolamento(); as ex) {
+            <p class="res-nota res-secundario">
+              Ressalva que o leitor precisa ter: os microsserviços entregam menos vazão no
+              conjunto, então impuseram menos carga a cada operação — em emergência o
+              <i>{{ ex.label }}</i> recebeu {{ ex.chegadaMs | number:'1.1-1' }} req/s contra
+              {{ ex.chegadaMono | number:'1.1-1' }} req/s do monolito, e parte da vantagem vem daí.
+              O argumento interno ao monolito, porém, não depende dessa comparação: a taxa de
+              chegada nessa operação subiu de {{ ex.chegadaMonoNormal | number:'1.1-1' }} para
+              {{ ex.chegadaMono | number:'1.1-1' }} req/s — quase nada — enquanto a latência dela
+              subiu {{ ex.degMono | number:'1.1-1' }}×. O trabalho não mudou e a demanda não mudou;
+              só o vizinho saturou.
+            </p>
+          }
+        </div>
+      }
+
       <div class="card">
         <h2>Onde cada teste estatistico entra</h2>
         <div class="res-scroll">
