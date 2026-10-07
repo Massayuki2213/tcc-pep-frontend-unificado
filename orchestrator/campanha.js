@@ -97,12 +97,70 @@ function embaralhar(lista, semente) {
   return out;
 }
 
+/** Quantas vezes insistir numa leitura antes de desistir dela. */
+const TENTATIVAS_LEITURA = 4;
+
+/** `fetch failed` é o texto que o undici dá a QUALQUER falha de rede. */
+function codigoDeRede(e) {
+  return e?.cause?.code ?? e?.code ?? 'sem codigo';
+}
+
+/**
+ * Chamada ao orquestrador, resistente a soluço de rede.
+ *
+ * Antes, um `fetch` que falhasse derrubava a campanha inteira: a exceção subia
+ * até o `main().catch()` e o processo morria no meio da coleta. São ~1.400
+ * chamadas de poll numa campanha de 2h, e bastava UMA falhar — foi assim que a
+ * primeira coleta do desktop morreu na rodada 1, aos 10 segundos.
+ *
+ * Só leitura (GET) é repetida. POST não pode ser: se a requisição chegou ao
+ * servidor e só a resposta se perdeu, repetir dispararia uma segunda rodada ou
+ * importaria a mesma observação duas vezes. Em vez disso, a falha de rede num
+ * POST vira `status: 0`, que os chamadores já tratam como rodada falha — e aí a
+ * repetição acontece no nível da rodada, que é idempotente porque zera o banco.
+ */
 async function api(caminho, opcoes) {
-  const r = await fetch(`${BASE}${caminho}`, opcoes);
-  const texto = await r.text();
-  let corpo = null;
-  try { corpo = JSON.parse(texto); } catch { corpo = texto; }
-  return { status: r.status, corpo };
+  const ehLeitura = !opcoes || !opcoes.method || opcoes.method === 'GET';
+  const tentativas = ehLeitura ? TENTATIVAS_LEITURA : 1;
+  let ultimoErro;
+
+  /*
+   * `connection: close` nas leituras não é detalhe de estilo, é o conserto de
+   * uma corrida: o poll roda a cada INTERVALO_POLL_MS (5s) e o
+   * `server.keepAliveTimeout` padrão do Node é exatamente 5s. O socket que o
+   * `fetch` guarda no pool morre no mesmo instante em que a leitura seguinte o
+   * reutiliza, e o resultado é ECONNRESET em TODA poll — observado aqui, 100%
+   * das vezes. Fora do pool, não há socket reaproveitado para o servidor
+   * fechar. O retry acima continua valendo para falha de rede de verdade.
+   */
+  const envio = ehLeitura
+    ? { ...opcoes, headers: { ...(opcoes?.headers ?? {}), connection: 'close' } }
+    : opcoes;
+
+  for (let n = 1; n <= tentativas; n++) {
+    try {
+      const r = await fetch(`${BASE}${caminho}`, envio);
+      const texto = await r.text();
+      let corpo = null;
+      try { corpo = JSON.parse(texto); } catch { corpo = texto; }
+      return { status: r.status, corpo };
+    } catch (e) {
+      ultimoErro = e;
+      const codigo = codigoDeRede(e);
+      if (n < tentativas) {
+        const espera = 1000 * 2 ** (n - 1);
+        registrar(`  rede: ${caminho} falhou (${codigo}) — tentativa ${n}/${tentativas}, repetindo em ${espera}ms`);
+        await dormir(espera);
+      } else {
+        registrar(`  rede: ${caminho} falhou (${codigo}) apos ${tentativas} tentativa(s)`);
+      }
+    }
+  }
+
+  // Leitura esgotada ainda derruba: sem /status não dá para saber se a rodada
+  // terminou, e seguir cego produziria observação sem procedência.
+  if (ehLeitura) throw ultimoErro;
+  return { status: 0, corpo: { error: `rede: ${codigoDeRede(ultimoErro)}` } };
 }
 
 async function esperarFim() {
