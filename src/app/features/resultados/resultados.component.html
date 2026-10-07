@@ -518,10 +518,74 @@
       </div>
     </div>
 
+    <!-- ANOVA de três fatores: o modelo correto quando há mais de uma máquina -->
+    @if (a.anova3; as av3) {
+      <div class="card">
+        <h2>ANOVA de três fatores</h2>
+        @if (av3.indisponivel) {
+          <p class="empty">{{ av3.motivo }}</p>
+        } @else {
+          <p class="res-nota">
+            Arquitetura (2) × carga (3) × máquina ({{ a.maquinas.length }}), n = {{ av3.n }} por célula.
+            Com hardwares distintos no acervo, <b>é este o modelo válido</b>: o de dois fatores joga a
+            variação entre máquinas no resíduo e a credita à arquitetura.
+          </p>
+          <div class="res-scroll">
+            <table class="table">
+              <thead>
+                <tr><th>Fonte</th><th>SQ</th><th>gl</th><th>QM</th><th>F</th><th>p</th><th>η²p</th></tr>
+              </thead>
+              <tbody>
+                @for (f of av3.fatores; track f.nome) {
+                  <tr>
+                    <td><b>{{ f.nome }}</b></td>
+                    <td class="mono">{{ f.ss | number:'1.2-2' }}</td>
+                    <td class="mono">{{ f.df }}</td>
+                    <td class="mono">{{ f.ms | number:'1.4-4' }}</td>
+                    <td class="mono">{{ f.F !== null ? (f.F | number:'1.2-2') : '—' }}</td>
+                    <td class="mono">
+                      {{ f.p !== null ? fmtP(f.p) : '—' }}
+                      @if (f.p !== null && f.p < a.alfa) { <span class="res-star">*</span> }
+                    </td>
+                    <td class="mono">{{ f.etaP !== null ? (f.etaP | number:'1.3-3') : '—' }}</td>
+                  </tr>
+                }
+                <tr class="res-residuo">
+                  <td>Resíduo</td>
+                  <td class="mono">{{ av3.residuo!.ss | number:'1.2-2' }}</td>
+                  <td class="mono">{{ av3.residuo!.df }}</td>
+                  <td class="mono">{{ av3.residuo!.ms | number:'1.4-4' }}</td>
+                  <td colspan="3"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="res-nota">
+            <span class="res-star">*</span> significativo a {{ a.alfa * 100 }}%.
+            O termo <b>Arquitetura × Máquina</b> é o que a replicação existe para testar: significativo
+            ali quer dizer que o <em>tamanho</em> da vantagem muda com o hardware — o que não é o mesmo
+            que mudar de lado. Confira a direção nas descritivas antes de concluir.
+            @if (av3.decomposicaoExata) {
+              <br>Decomposição conferida: a soma dos quadrados dos sete efeitos mais o resíduo
+              reproduz a soma total.
+            }
+          </p>
+        }
+      </div>
+    }
+
     <!-- ANOVA -->
     @if (a.anova; as av) {
-      <div class="card">
+      <div class="card" [class.res-secundaria]="a.misturaMaquinas">
         <h2>ANOVA de dois fatores</h2>
+        @if (a.misturaMaquinas) {
+          <div class="res-aviso">
+            <strong>Mantida apenas para comparação.</strong>
+            Com {{ a.maquinas.length }} máquinas no acervo este modelo está incompleto: ele não tem o
+            fator máquina, então a variação entre hardwares entra no resíduo. Use a tabela de três
+            fatores acima.
+          </div>
+        }
         <p class="res-nota">
           Arquitetura (2 níveis) × carga (3 níveis), n = {{ av.n }} por célula, com termo de interação.
         </p>

@@ -259,6 +259,126 @@ function anovaDoisFatores(celulas) {
   };
 }
 
+/**
+ * ANOVA de três fatores: arquitetura × carga × máquina, com todas as interações.
+ *
+ * Necessária porque a seção 4.6 prevê replicar os ensaios em hardwares
+ * distintos. Rodando o modelo de dois fatores sobre o acervo combinado, a
+ * variação entre máquinas não some — ela cai no resíduo, inflando o
+ * denominador de todo teste F e atribuindo à arquitetura uma variação que é da
+ * máquina.
+ *
+ * Tratar máquina como fator faz mais do que limpar o resíduo: o termo
+ * arquitetura × máquina responde à pergunta que justifica a replicação — se a
+ * vantagem de uma arquitetura se mantém quando o hardware muda. Não
+ * significativo ali é um bom resultado: indica que a conclusão não depende da
+ * máquina em que foi medida.
+ *
+ * `celulas` tem chave `arquitetura|carga|maquina`. Exige delineamento
+ * balanceado — o mesmo n em todas as a×b×c células.
+ */
+function anovaTresFatores(celulas, maquinas) {
+  const A = ARQS;
+  const B = CARGAS;
+  const C = maquinas;
+  const a = A.length;
+  const b = B.length;
+  const c = C.length;
+
+  const chave = (i, j, k) => `${i}|${j}|${k}`;
+  const todos = [];
+  for (const i of A) for (const j of B) for (const k of C) todos.push(...celulas[chave(i, j, k)]);
+  const N = todos.length;
+  const n = celulas[chave(A[0], B[0], C[0])].length;
+  const mu = media(todos);
+
+  // Médias marginais em cada combinação de fatores
+  const juntar = pred => {
+    const v = [];
+    for (const i of A) for (const j of B) for (const k of C) {
+      if (pred(i, j, k)) v.push(...celulas[chave(i, j, k)]);
+    }
+    return media(v);
+  };
+  const mA = {}; for (const i of A) mA[i] = juntar(x => x === i);
+  const mB = {}; for (const j of B) mB[j] = juntar((_, y) => y === j);
+  const mC = {}; for (const k of C) mC[k] = juntar((_, __, z) => z === k);
+  const mAB = {}; for (const i of A) for (const j of B) mAB[`${i}|${j}`] = juntar((x, y) => x === i && y === j);
+  const mAC = {}; for (const i of A) for (const k of C) mAC[`${i}|${k}`] = juntar((x, _, z) => x === i && z === k);
+  const mBC = {}; for (const j of B) for (const k of C) mBC[`${j}|${k}`] = juntar((_, y, z) => y === j && z === k);
+
+  // Cada SS é a soma dos efeitos ao quadrado, multiplicada pelas observações
+  // que compartilham aquele efeito.
+  let ssA = 0; for (const i of A) ssA += n * b * c * (mA[i] - mu) ** 2;
+  let ssB = 0; for (const j of B) ssB += n * a * c * (mB[j] - mu) ** 2;
+  let ssC = 0; for (const k of C) ssC += n * a * b * (mC[k] - mu) ** 2;
+
+  let ssAB = 0;
+  for (const i of A) for (const j of B) ssAB += n * c * (mAB[`${i}|${j}`] - mA[i] - mB[j] + mu) ** 2;
+  let ssAC = 0;
+  for (const i of A) for (const k of C) ssAC += n * b * (mAC[`${i}|${k}`] - mA[i] - mC[k] + mu) ** 2;
+  let ssBC = 0;
+  for (const j of B) for (const k of C) ssBC += n * a * (mBC[`${j}|${k}`] - mB[j] - mC[k] + mu) ** 2;
+
+  let ssABC = 0;
+  let ssDentro = 0;
+  for (const i of A) for (const j of B) for (const k of C) {
+    const v = celulas[chave(i, j, k)];
+    const mCel = media(v);
+    ssABC += n * (mCel - mAB[`${i}|${j}`] - mAC[`${i}|${k}`] - mBC[`${j}|${k}`]
+      + mA[i] + mB[j] + mC[k] - mu) ** 2;
+    ssDentro += soma(v.map(x => (x - mCel) ** 2));
+  }
+
+  const ssTotal = soma(todos.map(x => (x - mu) ** 2));
+
+  const dfA = a - 1, dfB = b - 1, dfC = c - 1;
+  const dfAB = dfA * dfB, dfAC = dfA * dfC, dfBC = dfB * dfC;
+  const dfABC = dfA * dfB * dfC;
+  const dfErro = N - a * b * c;
+  const msErro = ssDentro / dfErro;
+
+  // Mesma degeneração do modelo de dois fatores: sem variação entre repetições
+  // não há erro amostral contra o qual comparar efeito nenhum.
+  const degenerado = !Number.isFinite(msErro) || msErro === 0;
+  const linha = (nome, ss, df) => {
+    const ms = ss / df;
+    return {
+      nome, ss, df, ms,
+      F: degenerado ? null : ms / msErro,
+      p: degenerado ? null : pValorF(ms / msErro, df, dfErro),
+      etaP: ss + ssDentro === 0 ? null : ss / (ss + ssDentro),
+    };
+  };
+
+  // Conferência interna: num delineamento balanceado a decomposição é exata.
+  // Divergência aqui denuncia erro na soma de quadrados antes que ela vire
+  // p-valor no capítulo de resultados.
+  const somaEfeitos = ssA + ssB + ssC + ssAB + ssAC + ssBC + ssABC + ssDentro;
+  const residuoDecomposicao = Math.abs(ssTotal - somaEfeitos);
+  const decomposicaoExata = residuoDecomposicao < Math.max(1e-6, ssTotal * 1e-9);
+
+  return {
+    n, N, ssTotal, msErro, dfErro,
+    degenerado,
+    motivoDegenerado: degenerado
+      ? 'As repeticoes nao variam dentro das celulas — o teste F nao se aplica.'
+      : null,
+    decomposicaoExata,
+    residuoDecomposicao,
+    fatores: [
+      linha('Arquitetura', ssA, dfA),
+      linha('Carga', ssB, dfB),
+      linha('Máquina', ssC, dfC),
+      linha('Arquitetura × Carga', ssAB, dfAB),
+      linha('Arquitetura × Máquina', ssAC, dfAC),
+      linha('Carga × Máquina', ssBC, dfBC),
+      linha('Arquitetura × Carga × Máquina', ssABC, dfABC),
+    ],
+    residuo: { ss: ssDentro, df: dfErro, ms: msErro },
+  };
+}
+
 function tukey(celulas, msErro, dfErro, n) {
   const chaves = [];
   for (const arq of ARQS) for (const c of CARGAS) chaves.push(`${arq}|${c}`);
@@ -746,11 +866,46 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
   // Quais maquinas produziram este acervo. Misturar hardwares sem tratar
   // "maquina" como fator infla o residuo e derruba o poder dos testes: a
   // variacao entre maquinas entra como se fosse ruido da arquitetura.
-  const maquinas = [...new Set(acervo.map(o => o.maquina?.apelido).filter(Boolean))];
+  const maquinas = [...new Set(acervo.map(o => o.maquina?.apelido).filter(Boolean))].sort();
+
+  // Com mais de uma maquina, o modelo de dois fatores deixa de ser o correto:
+  // ele joga a variacao entre hardwares no residuo. O de tres fatores separa
+  // esse efeito e, sobretudo, testa se a vantagem da arquitetura se mantem
+  // quando a maquina muda — que e a pergunta que a replicacao existe para
+  // responder.
+  let anova3 = null;
+  if (maquinas.length > 1) {
+    const cel3 = {};
+    let ok = true;
+    for (const arq of ARQS) {
+      for (const c of CARGAS) {
+        for (const m of maquinas) {
+          const v = acervo
+            .filter(o => o.arquitetura === arq && o.carga === c && o.maquina?.apelido === m)
+            .map(o => o.metricas?.[metrica])
+            .filter(x => typeof x === 'number' && Number.isFinite(x))
+            .map(x => (log ? Math.log(x) : x));
+          cel3[`${arq}|${c}|${m}`] = v;
+          if (v.length < 2) ok = false;
+        }
+      }
+    }
+    const ns = Object.values(cel3).map(v => v.length);
+    const balanceado3 = ns.every(t => t === ns[0]);
+    anova3 = ok && balanceado3
+      ? anovaTresFatores(cel3, maquinas)
+      : {
+          indisponivel: true,
+          motivo: balanceado3
+            ? 'Alguma celula arquitetura x carga x maquina tem menos de duas rodadas.'
+            : `Delineamento desbalanceado entre maquinas (n de ${Math.min(...ns)} a ${Math.max(...ns)}).`,
+        };
+  }
 
   return {
     maquinas,
     misturaMaquinas: maquinas.length > 1,
+    anova3,
     normalidade: normalidade(celulas),
     metrica,
     log,

@@ -85,7 +85,25 @@ export interface Analise {
   descritivas: Descritiva[];
   testesT: TesteT[];
   anova: Anova | null;
+  /**
+   * Modelo de três fatores — só existe quando o acervo tem mais de uma máquina.
+   * Com hardwares distintos, é ele o modelo correto: o de dois fatores joga a
+   * variação entre máquinas no resíduo e a credita à arquitetura.
+   */
+  anova3: Anova3 | null;
   posthoc: { qCrit: number; hsd: number; pares: ParTukey[] } | null;
+}
+
+export interface Anova3 {
+  indisponivel?: boolean;
+  motivo?: string;
+  n?: number;
+  N?: number;
+  /** Conferência interna: num delineamento balanceado a decomposição é exata. */
+  decomposicaoExata?: boolean;
+  degenerado?: boolean;
+  fatores?: FatorAnova[];
+  residuo?: { ss: number; df: number; ms: number };
 }
 
 @Injectable({ providedIn: 'root' })

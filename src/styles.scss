@@ -831,6 +831,14 @@ fieldset {
   margin-top: -.3rem;
 }
 
+/* Modelo mantido so para comparacao — recuado para nao competir com o correto */
+.res-secundaria {
+  opacity: .72;
+  border-left: 3px solid #cbd5e1;
+
+  &:hover, &:focus-within { opacity: 1; }
+}
+
 /* ── Scrollbar sutil ────────────────────────────────────── */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }

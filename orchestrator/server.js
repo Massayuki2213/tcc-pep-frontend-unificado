@@ -107,6 +107,21 @@ const STACKS = {
 };
 const CARGAS = ['1', '2', '3'];
 
+/**
+ * Acervo que alimenta as analises.
+ *
+ * Por padrao sao TODAS as maquinas: com a replicacao em hardwares distintos, o
+ * experimento completo e o conjunto, e analisar so a maquina local daria um
+ * retrato parcial sem avisar. `?maquina=<apelido>` restringe a uma delas, que e
+ * o caminho para comparar as conclusoes lado a lado.
+ */
+function acervoDa(searchParams) {
+  const filtro = searchParams.get('maquina');
+  const todas = lab.listarTodas();
+  if (!filtro || filtro === 'todas') return todas;
+  return todas.filter(o => o.maquina?.apelido === filtro);
+}
+
 function resultsDirDe(stack) {
   return path.join(STACKS[stack].dir, 'k6-scripts', 'results');
 }
@@ -460,7 +475,7 @@ const server = http.createServer(async (req, res) => {
     const metrica = searchParams.get('metrica') || 'avg_ms';
     const log = searchParams.get('log') === '1';
     try {
-      return json(res, 200, analise.analisar(lab.listar(), metrica, log));
+      return json(res, 200, analise.analisar(acervoDa(searchParams), metrica, log));
     } catch (e) {
       return json(res, 500, { error: `Falha ao analisar: ${e.message}` });
     }
@@ -470,7 +485,7 @@ const server = http.createServer(async (req, res) => {
   // pesquisa numa tela so em vez de quatro chamadas a /lab/analise.
   if (req.method === 'GET' && pathname === '/lab/resumo') {
     try {
-      return json(res, 200, analise.resumo(lab.listar()));
+      return json(res, 200, analise.resumo(acervoDa(searchParams)));
     } catch (e) {
       return json(res, 500, { error: `Falha ao resumir: ${e.message}` });
     }
@@ -481,7 +496,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/lab/endpoints') {
     const metrica = searchParams.get('metrica') || 'avg_ms';
     try {
-      return json(res, 200, analise.porEndpoint(lab.listar(), metrica));
+      return json(res, 200, analise.porEndpoint(acervoDa(searchParams), metrica));
     } catch (e) {
       return json(res, 500, { error: `Falha ao analisar por endpoint: ${e.message}` });
     }
