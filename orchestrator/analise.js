@@ -842,27 +842,6 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
     };
   });
 
-  let anova = null;
-  let posthoc = null;
-  if (balanceado) {
-    anova = anovaDoisFatores(celulas);
-    const tk = tukey(celulas, anova.msErro, anova.dfErro, anova.n);
-    posthoc = {
-      qCrit: tk.qCrit,
-      hsd: tk.hsd,
-      pares: tk.pares.map(p => ({
-        a: p.a.replace('|', '/'),
-        b: p.b.replace('|', '/'),
-        dif: p.dif,
-        q: p.q,
-        p: p.p,
-        significativo: p.significativo,
-        // Marca as comparações que confrontam arquiteturas na mesma carga
-        mesmaCarga: p.a.split('|')[1] === p.b.split('|')[1],
-      })),
-    };
-  }
-
   // Quais maquinas produziram este acervo. Misturar hardwares sem tratar
   // "maquina" como fator infla o residuo e derruba o poder dos testes: a
   // variacao entre maquinas entra como se fosse ruido da arquitetura.
@@ -900,6 +879,38 @@ function analisar(acervo, metrica = 'avg_ms', log = false) {
             ? 'Alguma celula arquitetura x carga x maquina tem menos de duas rodadas.'
             : `Delineamento desbalanceado entre maquinas (n de ${Math.min(...ns)} a ${Math.max(...ns)}).`,
         };
+  }
+
+  let anova = null;
+  let posthoc = null;
+  if (balanceado) {
+    anova = anovaDoisFatores(celulas);
+    // O Tukey precisa do erro do modelo CORRETO. Com mais de uma maquina, o
+    // residuo de dois fatores carrega a variacao entre hardwares e sai inflado
+    // — a faixa HSD fica larga demais e diferenças reais passam por nao
+    // significativas. Quando ha o modelo de tres fatores, e o residuo dele que
+    // vale. As celulas comparadas seguem sendo arquitetura x carga, agora com
+    // as medias tomadas sobre as duas maquinas.
+    const erro = anova3 && !anova3.indisponivel && !anova3.degenerado
+      ? { ms: anova3.residuo.ms, df: anova3.residuo.df, modelo: 'tres fatores' }
+      : { ms: anova.msErro, df: anova.dfErro, modelo: 'dois fatores' };
+    const tk = tukey(celulas, erro.ms, erro.df, anova.n);
+    posthoc = {
+      modeloErro: erro.modelo,
+      glErro: erro.df,
+      qCrit: tk.qCrit,
+      hsd: tk.hsd,
+      pares: tk.pares.map(p => ({
+        a: p.a.replace('|', '/'),
+        b: p.b.replace('|', '/'),
+        dif: p.dif,
+        q: p.q,
+        p: p.p,
+        significativo: p.significativo,
+        // Marca as comparações que confrontam arquiteturas na mesma carga
+        mesmaCarga: p.a.split('|')[1] === p.b.split('|')[1],
+      })),
+    };
   }
 
   return {
