@@ -1,0 +1,224 @@
+2026-10-07T00:34:08.529Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T00:34:08.533Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T00:34:08.594Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T00:34:08.599Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T00:34:08.600Z    monolito/normal              tem 0, faltam 5
+2026-10-07T00:34:08.601Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T00:34:08.601Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T00:34:08.602Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T00:34:08.602Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T00:34:08.603Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T00:34:08.603Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T00:34:08.604Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T00:34:08.604Z  --dry-run: parando aqui, nada foi executado.
+2026-10-07T00:40:39.612Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T00:40:39.615Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T00:40:39.680Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T00:40:39.686Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T00:40:39.687Z    monolito/normal              tem 0, faltam 5
+2026-10-07T00:40:39.688Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T00:40:39.689Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T00:40:39.690Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T00:40:39.691Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T00:40:39.692Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T00:40:39.694Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T00:40:39.695Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T00:40:39.696Z  [1/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T00:40:39.891Z  [1/30] microsservicos/normal — FALHA ao iniciar: {"error":"Reset do banco falhou — rodada nao iniciada. postgres (db_postgres_pep_ms): Error response from daemon: No such container: db_postgres_pep_ms | mongo (db_mongo_ms): Error response from daemon: No such container: db_mongo_ms"}
+2026-10-07T00:40:39.892Z  [1/30] repetindo uma vez...
+2026-10-07T00:40:49.907Z  [1/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T00:40:50.269Z  [1/30] microsservicos/normal — FALHA ao iniciar: {"error":"Reset do banco falhou — rodada nao iniciada. postgres (db_postgres_pep_ms): Error response from daemon: No such container: db_postgres_pep_ms | mongo (db_mongo_ms): Error response from daemon: No such container: db_mongo_ms"}
+2026-10-07T00:41:00.272Z  [2/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-07T00:41:00.641Z  [2/30] monolito/emergencia — FALHA ao iniciar: {"error":"Reset do banco falhou — rodada nao iniciada. postgres (db_postgres_monolito): Error response from daemon: No such container: db_postgres_monolito | mongo (db_mongo_monolito): Error response from daemon: No such container: db_mongo_monolito"}
+2026-10-07T00:41:00.643Z  [2/30] repetindo uma vez...
+2026-10-07T00:52:13.851Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T00:52:13.861Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T00:52:14.181Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T00:52:14.199Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T00:52:14.200Z    monolito/normal              tem 0, faltam 5
+2026-10-07T00:52:14.200Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T00:52:14.201Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T00:52:14.201Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T00:52:14.202Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T00:52:14.202Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T00:52:14.204Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T00:52:14.204Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T00:52:14.205Z  --dry-run: parando aqui, nada foi executado.
+2026-10-07T00:52:36.034Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T00:52:36.038Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T00:52:36.309Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T00:52:36.314Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T00:52:36.315Z    monolito/normal              tem 0, faltam 5
+2026-10-07T00:52:36.315Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T00:52:36.316Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T00:52:36.317Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T00:52:36.318Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T00:52:36.319Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T00:52:36.320Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T00:52:36.321Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T00:52:36.321Z  [1/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T00:52:37.465Z  [1/30] microsservicos/normal — banco zerado (0 -> 0 linhas)
+2026-10-07T00:52:47.497Z  ERRO FATAL: fetch failed
+2026-10-07T02:11:45.938Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T02:11:45.941Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T02:11:46.212Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T02:11:46.217Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T02:11:46.217Z    monolito/normal              tem 0, faltam 5
+2026-10-07T02:11:46.218Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T02:11:46.218Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T02:11:46.219Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T02:11:46.219Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T02:11:46.219Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T02:11:46.220Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T02:11:46.221Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T02:11:46.221Z  --dry-run: parando aqui, nada foi executado.
+2026-10-07T02:11:49.988Z    rede: /health falhou (ECONNREFUSED) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T02:11:51.003Z    rede: /health falhou (ECONNREFUSED) — tentativa 2/4, repetindo em 2000ms
+2026-10-07T02:11:53.006Z    rede: /health falhou (ECONNREFUSED) — tentativa 3/4, repetindo em 4000ms
+2026-10-07T02:11:57.012Z    rede: /health falhou (ECONNREFUSED) apos 4 tentativa(s)
+2026-10-07T02:11:57.013Z  ERRO FATAL: fetch failed
+2026-10-07T04:36:17.925Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T04:36:17.939Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T04:36:18.443Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T04:36:18.454Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T04:36:18.455Z    monolito/normal              tem 0, faltam 5
+2026-10-07T04:36:18.456Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T04:36:18.456Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T04:36:18.457Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T04:36:18.458Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T04:36:18.459Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T04:36:18.460Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T04:36:18.461Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T04:36:18.462Z  --dry-run: parando aqui, nada foi executado.
+2026-10-07T04:36:29.072Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T04:36:29.078Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T04:36:29.577Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T04:36:29.586Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T04:36:29.588Z    monolito/normal              tem 0, faltam 5
+2026-10-07T04:36:29.589Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T04:36:29.591Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T04:36:29.593Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T04:36:29.594Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T04:36:29.596Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T04:36:29.597Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T04:36:29.599Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T04:36:29.600Z  [1/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T04:36:32.516Z  [1/30] microsservicos/normal — banco zerado (0 -> 0 linhas)
+2026-10-07T04:36:42.545Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:36:58.612Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:04.640Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:10.658Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:16.686Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:22.719Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:28.737Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:44.783Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:37:50.803Z    rede: /status falhou (ECONNRESET) — tentativa 1/4, repetindo em 1000ms
+2026-10-07T04:39:42.801Z  maquina: desktop — 16 CPU / 15.87 GB (Docker: 8 CPU / 7.76 GB)
+2026-10-07T04:39:42.806Z  acervo desta maquina: laboratorio/desktop/
+2026-10-07T04:39:43.349Z  ambiente limpo: so os contentores das duas stacks no ar
+2026-10-07T04:39:43.359Z  === campanha: 5 repeticoes por celula, semente 42 ===
+2026-10-07T04:39:43.361Z    monolito/normal              tem 0, faltam 5
+2026-10-07T04:39:43.362Z    monolito/dia-corrido         tem 0, faltam 5
+2026-10-07T04:39:43.364Z    monolito/emergencia          tem 0, faltam 5
+2026-10-07T04:39:43.365Z    microsservicos/normal        tem 0, faltam 5
+2026-10-07T04:39:43.367Z    microsservicos/dia-corrido   tem 0, faltam 5
+2026-10-07T04:39:43.368Z    microsservicos/emergencia    tem 0, faltam 5
+2026-10-07T04:39:43.370Z  30 rodadas pendentes — estimativa ~126 min (~2.1h)
+2026-10-07T04:39:43.371Z  ordem sorteada: MS1 MONO3 MONO1 MONO3 MS3 MONO1 MS1 MS2 MONO3 MONO2 MS3 MONO1 MS2 MS2 MONO2 MONO1 MONO2 MS2 MS1 MS3 MONO2 MS1 MONO3 MONO2 MS3 MONO1 MS3 MS2 MONO3 MS1
+2026-10-07T04:39:43.372Z  [1/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T04:39:45.357Z  [1/30] microsservicos/normal — banco zerado (1727 -> 0 linhas)
+2026-10-07T04:43:00.961Z  [1/30] microsservicos/normal — OK  exit=99  samples=3298  avg=1450.96ms  p95=5006.38ms  rps=17.22
+2026-10-07T04:43:10.981Z  [2/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-07T04:43:12.949Z  [2/30] monolito/emergencia — banco zerado (0 -> 0 linhas)
+2026-10-07T04:46:43.518Z  [2/30] monolito/emergencia — OK  exit=99  samples=8185  avg=4653.76ms  p95=19637.2ms  rps=39.78
+2026-10-07T04:46:53.521Z  [3/30] monolito/normal — iniciando (reset + k6)
+2026-10-07T04:46:55.451Z  [3/30] monolito/normal — banco zerado (8409 -> 0 linhas)
+2026-10-07T04:50:05.926Z  [3/30] monolito/normal — OK  exit=99  samples=6243  avg=245.16ms  p95=1365.68ms  rps=33.73
+2026-10-07T04:50:15.934Z  [4/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-07T04:50:17.829Z  [4/30] monolito/emergencia — banco zerado (6406 -> 0 linhas)
+2026-10-07T04:53:48.405Z  [4/30] monolito/emergencia — OK  exit=99  samples=8317  avg=4556.89ms  p95=19401.7ms  rps=40.63
+2026-10-07T04:53:58.413Z  [5/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-07T04:54:00.332Z  [5/30] microsservicos/emergencia — banco zerado (3435 -> 0 linhas)
+2026-10-07T04:57:35.873Z  [5/30] microsservicos/emergencia — OK  exit=99  samples=3378  avg=12085.17ms  p95=45985.34ms  rps=15.85
+2026-10-07T04:57:45.883Z  [6/30] monolito/normal — iniciando (reset + k6)
+2026-10-07T04:57:47.994Z  [6/30] monolito/normal — banco zerado (8460 -> 0 linhas)
+2026-10-07T05:00:53.538Z  [6/30] monolito/normal — OK  exit=99  samples=6148  avg=262.79ms  p95=1392.78ms  rps=33.47
+2026-10-07T05:01:03.553Z  [7/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T05:01:05.576Z  [7/30] microsservicos/normal — banco zerado (3639 -> 0 linhas)
+2026-10-07T05:04:21.082Z  [7/30] microsservicos/normal — OK  exit=99  samples=3283  avg=1466.4ms  p95=6788.35ms  rps=17.27
+2026-10-07T05:04:31.090Z  [8/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:04:33.210Z  [8/30] microsservicos/dia-corrido — banco zerado (3420 -> 0 linhas)
+2026-10-07T05:08:08.836Z  [8/30] microsservicos/dia-corrido — OK  exit=99  samples=3309  avg=6661.13ms  p95=21773.51ms  rps=15.58
+2026-10-07T05:08:18.840Z  [9/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-07T05:08:20.986Z  [9/30] monolito/emergencia — banco zerado (6299 -> 0 linhas)
+2026-10-07T05:11:51.572Z  [9/30] monolito/emergencia — OK  exit=99  samples=7973  avg=4787.63ms  p95=20496.28ms  rps=38.69
+2026-10-07T05:12:01.579Z  [10/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:12:03.644Z  [10/30] monolito/dia-corrido — banco zerado (8116 -> 0 linhas)
+2026-10-07T05:15:21.514Z  [10/30] monolito/dia-corrido — OK  exit=99  samples=8098  avg=1997.21ms  p95=9694.84ms  rps=42.04
+2026-10-07T05:15:31.526Z  [11/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-07T05:15:33.676Z  [11/30] microsservicos/emergencia — banco zerado (3492 -> 0 linhas)
+2026-10-07T05:19:09.257Z  [11/30] microsservicos/emergencia — OK  exit=99  samples=3308  avg=12379.82ms  p95=43009.24ms  rps=15.54
+2026-10-07T05:19:19.287Z  [12/30] monolito/normal — iniciando (reset + k6)
+2026-10-07T05:19:21.221Z  [12/30] monolito/normal — banco zerado (8226 -> 0 linhas)
+2026-10-07T05:22:31.714Z  [12/30] monolito/normal — OK  exit=99  samples=6153  avg=261.63ms  p95=1325.26ms  rps=33.11
+2026-10-07T05:22:41.716Z  [13/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:22:43.682Z  [13/30] microsservicos/dia-corrido — banco zerado (3550 -> 0 linhas)
+2026-10-07T05:26:19.277Z  [13/30] microsservicos/dia-corrido — OK  exit=99  samples=3609  avg=5939.36ms  p95=22988.71ms  rps=16.99
+2026-10-07T05:26:29.285Z  [14/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:26:31.268Z  [14/30] microsservicos/dia-corrido — banco zerado (3830 -> 0 linhas)
+2026-10-07T05:30:11.878Z  [14/30] microsservicos/dia-corrido — OK  exit=99  samples=3270  avg=6728.65ms  p95=20944.39ms  rps=15.38
+2026-10-07T05:30:21.890Z  [15/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:30:23.867Z  [15/30] monolito/dia-corrido — banco zerado (6287 -> 0 linhas)
+2026-10-07T05:33:39.357Z  [15/30] monolito/dia-corrido — OK  exit=99  samples=7843  avg=2082.07ms  p95=8905.98ms  rps=41.59
+2026-10-07T05:33:49.363Z  [16/30] monolito/normal — iniciando (reset + k6)
+2026-10-07T05:33:51.328Z  [16/30] monolito/normal — banco zerado (8006 -> 0 linhas)
+2026-10-07T05:37:01.774Z  [16/30] monolito/normal — OK  exit=99  samples=6203  avg=249.33ms  p95=1353.75ms  rps=33.51
+2026-10-07T05:37:11.779Z  [17/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:37:13.646Z  [17/30] monolito/dia-corrido — banco zerado (6345 -> 0 linhas)
+2026-10-07T05:40:29.163Z  [17/30] monolito/dia-corrido — OK  exit=99  samples=7883  avg=2072.5ms  p95=8829.65ms  rps=41.07
+2026-10-07T05:40:39.174Z  [18/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:40:41.168Z  [18/30] microsservicos/dia-corrido — banco zerado (3445 -> 0 linhas)
+2026-10-07T05:44:11.774Z  [18/30] microsservicos/dia-corrido — OK  exit=99  samples=3374  avg=6559.14ms  p95=20480.18ms  rps=16.38
+2026-10-07T05:44:21.787Z  [19/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T05:44:23.804Z  [19/30] microsservicos/normal — banco zerado (3508 -> 0 linhas)
+2026-10-07T05:47:39.292Z  [19/30] microsservicos/normal — OK  exit=99  samples=3138  avg=1591.22ms  p95=6281.88ms  rps=16.39
+2026-10-07T05:47:49.310Z  [20/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-07T05:47:51.280Z  [20/30] microsservicos/emergencia — banco zerado (3282 -> 0 linhas)
+2026-10-07T05:51:26.878Z  [20/30] microsservicos/emergencia — OK  exit=99  samples=3380  avg=12065.57ms  p95=42098.51ms  rps=15.89
+2026-10-07T05:51:36.886Z  [21/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-07T05:51:38.887Z  [21/30] monolito/dia-corrido — banco zerado (8033 -> 0 linhas)
+2026-10-07T05:54:54.445Z  [21/30] monolito/dia-corrido — OK  exit=99  samples=8063  avg=1995.39ms  p95=8530.74ms  rps=42.19
+2026-10-07T05:55:04.452Z  [22/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T05:55:06.406Z  [22/30] microsservicos/normal — banco zerado (3611 -> 0 linhas)
+2026-10-07T05:58:26.929Z  [22/30] microsservicos/normal — OK  exit=99  samples=3038  avg=1673.47ms  p95=5890.89ms  rps=15.83
+2026-10-07T05:58:36.932Z  [23/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-07T05:58:39.046Z  [23/30] monolito/emergencia — banco zerado (8209 -> 0 linhas)
+2026-10-07T06:02:09.674Z  [23/30] monolito/emergencia — OK  exit=99  samples=8160  avg=4639.93ms  p95=19835.04ms  rps=39.65
+2026-10-07T06:02:19.677Z  [24/30] monolito/dia-corrido — iniciando (reset + k6)
+2026-10-07T06:02:21.656Z  [24/30] monolito/dia-corrido — banco zerado (8353 -> 0 linhas)
+2026-10-07T06:05:37.168Z  [24/30] monolito/dia-corrido — OK  exit=99  samples=8608  avg=1823.07ms  p95=7481.03ms  rps=44.49
+2026-10-07T06:05:47.175Z  [25/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-07T06:05:49.183Z  [25/30] microsservicos/emergencia — banco zerado (3169 -> 0 linhas)
+2026-10-07T06:09:24.744Z  [25/30] microsservicos/emergencia — OK  exit=99  samples=3384  avg=12125.46ms  p95=41495.79ms  rps=15.92
+2026-10-07T06:09:34.756Z  [26/30] monolito/normal — iniciando (reset + k6)
+2026-10-07T06:09:36.738Z  [26/30] monolito/normal — banco zerado (8744 -> 0 linhas)
+2026-10-07T06:12:47.311Z  [26/30] monolito/normal — OK  exit=99  samples=6123  avg=269.34ms  p95=1329.37ms  rps=33.13
+2026-10-07T06:12:57.319Z  [27/30] microsservicos/emergencia — iniciando (reset + k6)
+2026-10-07T06:12:59.353Z  [27/30] microsservicos/emergencia — banco zerado (3624 -> 0 linhas)
+2026-10-07T06:16:34.988Z  [27/30] microsservicos/emergencia — OK  exit=99  samples=3384  avg=12123.42ms  p95=44076.86ms  rps=15.94
+2026-10-07T06:16:45.002Z  [28/30] microsservicos/dia-corrido — iniciando (reset + k6)
+2026-10-07T06:16:47.183Z  [28/30] microsservicos/dia-corrido — banco zerado (3523 -> 5 linhas)
+2026-10-07T06:20:22.764Z  [28/30] microsservicos/dia-corrido — OK  exit=99  samples=3414  avg=6397.19ms  p95=22593.12ms  rps=16.17
+2026-10-07T06:20:32.774Z  [29/30] monolito/emergencia — iniciando (reset + k6)
+2026-10-07T06:20:34.707Z  [29/30] monolito/emergencia — banco zerado (6276 -> 0 linhas)
+2026-10-07T06:24:05.344Z  [29/30] monolito/emergencia — OK  exit=99  samples=8155  avg=4607.49ms  p95=19910.37ms  rps=39.89
+2026-10-07T06:24:15.349Z  [30/30] microsservicos/normal — iniciando (reset + k6)
+2026-10-07T06:24:17.285Z  [30/30] microsservicos/normal — banco zerado (3577 -> 0 linhas)
+2026-10-07T06:27:32.813Z  [30/30] microsservicos/normal — OK  exit=99  samples=3018  avg=1667.79ms  p95=6079ms  rps=15.81
+2026-10-07T06:27:32.814Z  === fim: 30 rodadas guardadas, 0 descartadas ===
+2026-10-07T06:27:32.829Z    monolito/normal              5/5
+2026-10-07T06:27:32.830Z    monolito/dia-corrido         5/5
+2026-10-07T06:27:32.833Z    monolito/emergencia          5/5
+2026-10-07T06:27:32.834Z    microsservicos/normal        5/5
+2026-10-07T06:27:32.835Z    microsservicos/dia-corrido   5/5
+2026-10-07T06:27:32.836Z    microsservicos/emergencia    5/5

@@ -1,0 +1,5912 @@
+[
+  {
+    "id": "98ef5679-c935-422d-b66e-d4bef6572545",
+    "importadoEm": "2026-10-07T06:27:32.804Z",
+    "arquitetura": "microsservicos",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/normal/microsservicos_normal_2026-10-07T06-27-29-347Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_normal_2026-10-07T06-27-29-347Z.csv",
+    "csvRel": "csv/98ef5679-c935-422d-b66e-d4bef6572545.csv",
+    "timestampRodada": "2026-10-07T06-27-29-347Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 3018,
+      "avg_ms": 1667.79,
+      "min_ms": 4.48,
+      "med_ms": 586.98,
+      "p90_ms": 4780.61,
+      "p95_ms": 6079,
+      "p99_ms": 7553.5,
+      "max_ms": 8590.24,
+      "rps": 15.81,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 75.29,
+      "cpu_cores_avg": 0.613,
+      "cpu_cores_max": 1.022,
+      "cpu_pct_avg": 15.33,
+      "cpu_pct_max": 25.56,
+      "mem_mb_avg": 868.3,
+      "mem_mb_max": 885.3,
+      "mem_pct_avg": 28.27,
+      "mem_pct_max": 28.82
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 586,
+        "avg_ms": 2316.33,
+        "min_ms": 8.14,
+        "med_ms": 2078.71,
+        "p90_ms": 4830.09,
+        "p95_ms": 5687.37,
+        "p99_ms": 7020.7,
+        "max_ms": 7563.41,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 18.09
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 586,
+        "avg_ms": 12.76,
+        "min_ms": 4.48,
+        "med_ms": 5.78,
+        "p90_ms": 9.97,
+        "p95_ms": 48.66,
+        "p99_ms": 195.04,
+        "max_ms": 305.15,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 586,
+        "avg_ms": 3519.68,
+        "min_ms": 21.86,
+        "med_ms": 3486.03,
+        "p90_ms": 6932.95,
+        "p95_ms": 7570.15,
+        "p99_ms": 8097.95,
+        "max_ms": 8590.24,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 14.16
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 586,
+        "avg_ms": 2722.51,
+        "min_ms": 15.9,
+        "med_ms": 2497.83,
+        "p90_ms": 5306.81,
+        "p95_ms": 6211.12,
+        "p99_ms": 7217.1,
+        "max_ms": 7492.5,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 20.65
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 586,
+        "avg_ms": 12.63,
+        "min_ms": 8.58,
+        "med_ms": 10.21,
+        "p90_ms": 12.37,
+        "p95_ms": 14.18,
+        "p99_ms": 99.33,
+        "max_ms": 233.74,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.613,
+        "cpu_cores_max": 1.022,
+        "cpu_pct_avg": 15.33,
+        "cpu_pct_max": 25.56,
+        "mem_mb_avg": 868.3,
+        "mem_mb_max": 885.3,
+        "mem_pct_avg": 28.27,
+        "mem_pct_max": 28.82
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.041,
+          "cpu_cores_max": 0.115,
+          "mem_mb_avg": 51.5,
+          "mem_mb_max": 52.9
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.013,
+          "cpu_cores_max": 0.049,
+          "mem_mb_avg": 278.5,
+          "mem_mb_max": 278.9
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.029,
+          "cpu_cores_max": 0.118,
+          "mem_mb_avg": 57,
+          "mem_mb_max": 67.2
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.273,
+          "cpu_cores_max": 0.325,
+          "mem_mb_avg": 96.8,
+          "mem_mb_max": 105.1
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.047,
+          "cpu_cores_max": 0.249,
+          "mem_mb_avg": 79,
+          "mem_mb_max": 80
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.133,
+          "cpu_cores_max": 0.273,
+          "mem_mb_avg": 80.5,
+          "mem_mb_max": 83.9
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.02,
+          "cpu_cores_max": 0.074,
+          "mem_mb_avg": 73.7,
+          "mem_mb_max": 75
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.035,
+          "cpu_cores_max": 0.149,
+          "mem_mb_avg": 75,
+          "mem_mb_max": 76.8
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.021,
+          "cpu_cores_max": 0.236,
+          "mem_mb_avg": 76.4,
+          "mem_mb_max": 77.7
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:24:17.271Z",
+        "fim": "2026-10-07T06:27:29.939Z",
+        "amostras": 56,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "9cd56df4-0dfd-4a72-b502-7e0f5a117d9b",
+    "importadoEm": "2026-10-07T06:24:05.337Z",
+    "arquitetura": "monolito",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "monolito/emergencia/monolito_emergencia_2026-10-07T06-24-00-088Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_emergencia_2026-10-07T06-24-00-088Z.csv",
+    "csvRel": "csv/9cd56df4-0dfd-4a72-b502-7e0f5a117d9b.csv",
+    "timestampRodada": "2026-10-07T06-24-00-088Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 8155,
+      "avg_ms": 4607.49,
+      "min_ms": 2.59,
+      "med_ms": 716.37,
+      "p90_ms": 15093.74,
+      "p95_ms": 19910.37,
+      "p99_ms": 23365.6,
+      "max_ms": 24303.14,
+      "rps": 39.89,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.62,
+      "cpu_cores_avg": 1.538,
+      "cpu_cores_max": 2.255,
+      "cpu_pct_avg": 38.45,
+      "cpu_pct_max": 56.38,
+      "mem_mb_avg": 600.1,
+      "mem_mb_max": 856.2,
+      "mem_pct_avg": 19.53,
+      "mem_pct_max": 27.87
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 1645,
+        "avg_ms": 3533.3,
+        "min_ms": 4.29,
+        "med_ms": 2155.73,
+        "p90_ms": 9210.41,
+        "p95_ms": 11410.98,
+        "p99_ms": 14288.88,
+        "max_ms": 16469.86,
+        "rps": 8.05,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 29.67
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 1645,
+        "avg_ms": 389.52,
+        "min_ms": 2.59,
+        "med_ms": 94.07,
+        "p90_ms": 1291.59,
+        "p95_ms": 1335.65,
+        "p99_ms": 1399.05,
+        "max_ms": 3832.7,
+        "rps": 8.05,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 64.5
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 1622,
+        "avg_ms": 11010.14,
+        "min_ms": 13.75,
+        "med_ms": 12752.1,
+        "p90_ms": 22186.15,
+        "p95_ms": 23363.42,
+        "p99_ms": 23942.77,
+        "max_ms": 24155.13,
+        "rps": 7.93,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 19.42
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 1581,
+        "avg_ms": 8215.07,
+        "min_ms": 11.31,
+        "med_ms": 7825.75,
+        "p90_ms": 17099.2,
+        "p95_ms": 19408.39,
+        "p99_ms": 22507.88,
+        "max_ms": 24303.14,
+        "rps": 7.73,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 17.71
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 1574,
+        "avg_ms": 173.58,
+        "min_ms": 5.78,
+        "med_ms": 110.6,
+        "p90_ms": 282.49,
+        "p95_ms": 464.37,
+        "p99_ms": 1762.33,
+        "max_ms": 4743.84,
+        "rps": 7.7,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 95.68
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.538,
+        "cpu_cores_max": 2.255,
+        "cpu_pct_avg": 38.45,
+        "cpu_pct_max": 56.38,
+        "mem_mb_avg": 600.1,
+        "mem_mb_max": 856.2,
+        "mem_pct_avg": 19.53,
+        "mem_pct_max": 27.87
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.18,
+          "cpu_cores_max": 1.92,
+          "mem_mb_avg": 314.1,
+          "mem_mb_max": 591.8
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.29,
+          "cpu_cores_max": 0.513,
+          "mem_mb_avg": 202.3,
+          "mem_mb_max": 204.2
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.068,
+          "cpu_cores_max": 0.334,
+          "mem_mb_avg": 83.6,
+          "mem_mb_max": 91.7
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:20:34.688Z",
+        "fim": "2026-10-07T06:24:03.298Z",
+        "amostras": 62,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "9d16ed78-1865-4ce7-aa40-3a3be4f2da53",
+    "importadoEm": "2026-10-07T06:20:22.754Z",
+    "arquitetura": "microsservicos",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/dia-corrido/microsservicos_dia-corrido_2026-10-07T06-20-19-517Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_dia-corrido_2026-10-07T06-20-19-517Z.csv",
+    "csvRel": "csv/9d16ed78-1865-4ce7-aa40-3a3be4f2da53.csv",
+    "timestampRodada": "2026-10-07T06-20-19-517Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 3414,
+      "avg_ms": 6397.19,
+      "min_ms": 4.69,
+      "med_ms": 1098.32,
+      "p90_ms": 18278.08,
+      "p95_ms": 22593.12,
+      "p99_ms": 27589.48,
+      "max_ms": 29476.81,
+      "rps": 16.17,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 73.72,
+      "cpu_cores_avg": 0.641,
+      "cpu_cores_max": 1.086,
+      "cpu_pct_avg": 16.02,
+      "cpu_pct_max": 27.15,
+      "mem_mb_avg": 872.7,
+      "mem_mb_max": 889.9,
+      "mem_pct_avg": 28.41,
+      "mem_pct_max": 28.97
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 698,
+        "avg_ms": 9314.24,
+        "min_ms": 6.96,
+        "med_ms": 9690.14,
+        "p90_ms": 18691.54,
+        "p95_ms": 21801.02,
+        "p99_ms": 26997.12,
+        "max_ms": 28985.43,
+        "rps": 3.31,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 13.04
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 698,
+        "avg_ms": 12.77,
+        "min_ms": 4.69,
+        "med_ms": 6.16,
+        "p90_ms": 9.77,
+        "p95_ms": 47.1,
+        "p99_ms": 156.72,
+        "max_ms": 296.72,
+        "rps": 3.31,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 671,
+        "avg_ms": 12195.1,
+        "min_ms": 20.18,
+        "med_ms": 12903.62,
+        "p90_ms": 23207.61,
+        "p95_ms": 27295.04,
+        "p99_ms": 29010.67,
+        "max_ms": 29476.81,
+        "rps": 3.18,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 12.07
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 631,
+        "avg_ms": 11304.61,
+        "min_ms": 11.85,
+        "med_ms": 11697.19,
+        "p90_ms": 20603.58,
+        "p95_ms": 23144.01,
+        "p99_ms": 27214.52,
+        "max_ms": 29392.06,
+        "rps": 2.99,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 12.68
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 628,
+        "avg_ms": 18.5,
+        "min_ms": 7.95,
+        "med_ms": 10.2,
+        "p90_ms": 13.32,
+        "p95_ms": 29.06,
+        "p99_ms": 300.45,
+        "max_ms": 375,
+        "rps": 2.98,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.641,
+        "cpu_cores_max": 1.086,
+        "cpu_pct_avg": 16.02,
+        "cpu_pct_max": 27.15,
+        "mem_mb_avg": 872.7,
+        "mem_mb_max": 889.9,
+        "mem_pct_avg": 28.41,
+        "mem_pct_max": 28.97
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.041,
+          "cpu_cores_max": 0.146,
+          "mem_mb_avg": 52.6,
+          "mem_mb_max": 55.3
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.013,
+          "cpu_cores_max": 0.056,
+          "mem_mb_avg": 278.2,
+          "mem_mb_max": 278.9
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.031,
+          "cpu_cores_max": 0.133,
+          "mem_mb_avg": 55.5,
+          "mem_mb_max": 69.5
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.283,
+          "cpu_cores_max": 0.32,
+          "mem_mb_avg": 101.9,
+          "mem_mb_max": 107.1
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.051,
+          "cpu_cores_max": 0.241,
+          "mem_mb_avg": 77.7,
+          "mem_mb_max": 81.3
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.143,
+          "cpu_cores_max": 0.294,
+          "mem_mb_avg": 83.2,
+          "mem_mb_max": 84.8
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.023,
+          "cpu_cores_max": 0.15,
+          "mem_mb_avg": 73.9,
+          "mem_mb_max": 75.3
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.033,
+          "cpu_cores_max": 0.084,
+          "mem_mb_avg": 74.3,
+          "mem_mb_max": 79.8
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.021,
+          "cpu_cores_max": 0.153,
+          "mem_mb_avg": 75.5,
+          "mem_mb_max": 76.9
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:16:47.170Z",
+        "fim": "2026-10-07T06:20:20.172Z",
+        "amostras": 64,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "39ae525a-162d-4555-8d91-02b466fcbf33",
+    "importadoEm": "2026-10-07T06:16:34.982Z",
+    "arquitetura": "microsservicos",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/emergencia/microsservicos_emergencia_2026-10-07T06-16-32-941Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_emergencia_2026-10-07T06-16-32-941Z.csv",
+    "csvRel": "csv/39ae525a-162d-4555-8d91-02b466fcbf33.csv",
+    "timestampRodada": "2026-10-07T06-16-32-941Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 3384,
+      "avg_ms": 12123.42,
+      "min_ms": 4.2,
+      "med_ms": 3091.09,
+      "p90_ms": 37693.47,
+      "p95_ms": 44076.86,
+      "p99_ms": 47737.49,
+      "max_ms": 49108.4,
+      "rps": 15.94,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.06,
+      "cpu_cores_avg": 0.648,
+      "cpu_cores_max": 0.902,
+      "cpu_pct_avg": 16.21,
+      "cpu_pct_max": 22.54,
+      "mem_mb_avg": 872.3,
+      "mem_mb_max": 882.8,
+      "mem_pct_avg": 28.39,
+      "mem_pct_max": 28.74
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 768,
+        "avg_ms": 18766.13,
+        "min_ms": 7.8,
+        "med_ms": 12975.3,
+        "p90_ms": 42813.24,
+        "p95_ms": 44965.74,
+        "p99_ms": 47490.46,
+        "max_ms": 48874.87,
+        "rps": 3.62,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 8.33
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 765,
+        "avg_ms": 9.39,
+        "min_ms": 4.2,
+        "med_ms": 5.92,
+        "p90_ms": 8.88,
+        "p95_ms": 10.95,
+        "p99_ms": 140.24,
+        "max_ms": 381.53,
+        "rps": 3.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 654,
+        "avg_ms": 20687.71,
+        "min_ms": 21.74,
+        "med_ms": 18671.69,
+        "p90_ms": 43268.54,
+        "p95_ms": 46119.05,
+        "p99_ms": 48626.22,
+        "max_ms": 49108.4,
+        "rps": 3.08,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 6.42
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 556,
+        "avg_ms": 23503.19,
+        "min_ms": 14.33,
+        "med_ms": 24166.27,
+        "p90_ms": 44096.29,
+        "p95_ms": 46116.78,
+        "p99_ms": 48223.4,
+        "max_ms": 48993.79,
+        "rps": 2.62,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 5.4
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 553,
+        "avg_ms": 11.34,
+        "min_ms": 8.1,
+        "med_ms": 9.51,
+        "p90_ms": 11.45,
+        "p95_ms": 13.22,
+        "p99_ms": 48.55,
+        "max_ms": 199.44,
+        "rps": 2.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.648,
+        "cpu_cores_max": 0.902,
+        "cpu_pct_avg": 16.21,
+        "cpu_pct_max": 22.54,
+        "mem_mb_avg": 872.3,
+        "mem_mb_max": 882.8,
+        "mem_pct_avg": 28.39,
+        "mem_pct_max": 28.74
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.047,
+          "cpu_cores_max": 0.138,
+          "mem_mb_avg": 55.4,
+          "mem_mb_max": 57.2
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.014,
+          "cpu_cores_max": 0.038,
+          "mem_mb_avg": 277.9,
+          "mem_mb_max": 278.8
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.031,
+          "cpu_cores_max": 0.121,
+          "mem_mb_avg": 54.8,
+          "mem_mb_max": 65.8
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.288,
+          "cpu_cores_max": 0.317,
+          "mem_mb_avg": 98.2,
+          "mem_mb_max": 106.8
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.046,
+          "cpu_cores_max": 0.179,
+          "mem_mb_avg": 80.2,
+          "mem_mb_max": 81.7
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.146,
+          "cpu_cores_max": 0.289,
+          "mem_mb_avg": 81.2,
+          "mem_mb_max": 84.8
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.023,
+          "cpu_cores_max": 0.061,
+          "mem_mb_avg": 73.8,
+          "mem_mb_max": 75.5
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.027,
+          "cpu_cores_max": 0.144,
+          "mem_mb_avg": 76.7,
+          "mem_mb_max": 78.7
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.027,
+          "cpu_cores_max": 0.146,
+          "mem_mb_avg": 74.1,
+          "mem_mb_max": 79.3
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:12:59.335Z",
+        "fim": "2026-10-07T06:16:33.564Z",
+        "amostras": 63,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "910b7c98-bb50-4965-96da-a948b2a33a10",
+    "importadoEm": "2026-10-07T06:12:47.302Z",
+    "arquitetura": "monolito",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "monolito/normal/monolito_normal_2026-10-07T06-12-42-436Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_normal_2026-10-07T06-12-42-436Z.csv",
+    "csvRel": "csv/910b7c98-bb50-4965-96da-a948b2a33a10.csv",
+    "timestampRodada": "2026-10-07T06-12-42-436Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 6123,
+      "avg_ms": 269.34,
+      "min_ms": 2.34,
+      "med_ms": 17.86,
+      "p90_ms": 1071.55,
+      "p95_ms": 1329.37,
+      "p99_ms": 1721.62,
+      "max_ms": 2314.74,
+      "rps": 33.13,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 91.02,
+      "cpu_cores_avg": 0.895,
+      "cpu_cores_max": 1.797,
+      "cpu_pct_avg": 22.39,
+      "cpu_pct_max": 44.92,
+      "mem_mb_avg": 410.1,
+      "mem_mb_max": 459.9,
+      "mem_pct_avg": 13.35,
+      "mem_pct_max": 14.97
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 1207,
+        "avg_ms": 420.6,
+        "min_ms": 3.9,
+        "med_ms": 35.54,
+        "p90_ms": 1289.71,
+        "p95_ms": 1460.75,
+        "p99_ms": 1809.18,
+        "max_ms": 2003.26,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 63.88
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 1207,
+        "avg_ms": 11.72,
+        "min_ms": 2.34,
+        "med_ms": 3.89,
+        "p90_ms": 39.49,
+        "p95_ms": 52.1,
+        "p99_ms": 95.46,
+        "max_ms": 277.8,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 1207,
+        "avg_ms": 373.41,
+        "min_ms": 12.73,
+        "med_ms": 128.27,
+        "p90_ms": 1174.66,
+        "p95_ms": 1325.63,
+        "p99_ms": 1595.26,
+        "max_ms": 2314.74,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 81.69
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 1207,
+        "avg_ms": 536.06,
+        "min_ms": 10.83,
+        "med_ms": 310.32,
+        "p90_ms": 1392.13,
+        "p95_ms": 1569.54,
+        "p99_ms": 1929.27,
+        "max_ms": 2186.16,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 64.62
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 1207,
+        "avg_ms": 23.42,
+        "min_ms": 5.7,
+        "med_ms": 7.43,
+        "p90_ms": 94.97,
+        "p95_ms": 113.24,
+        "p99_ms": 146.63,
+        "max_ms": 373.23,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.895,
+        "cpu_cores_max": 1.797,
+        "cpu_pct_avg": 22.39,
+        "cpu_pct_max": 44.92,
+        "mem_mb_avg": 410.1,
+        "mem_mb_max": 459.9,
+        "mem_pct_avg": 13.35,
+        "mem_pct_max": 14.97
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 0.682,
+          "cpu_cores_max": 1.374,
+          "mem_mb_avg": 130,
+          "mem_mb_max": 166.4
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.16,
+          "cpu_cores_max": 0.463,
+          "mem_mb_avg": 203,
+          "mem_mb_max": 203.8
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.053,
+          "cpu_cores_max": 0.163,
+          "mem_mb_avg": 77.1,
+          "mem_mb_max": 91.4
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:09:36.723Z",
+        "fim": "2026-10-07T06:12:42.868Z",
+        "amostras": 55,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "87190d63-7a87-4de3-84a2-d1c2d41c4ad1",
+    "importadoEm": "2026-10-07T06:09:24.736Z",
+    "arquitetura": "microsservicos",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/emergencia/microsservicos_emergencia_2026-10-07T06-09-23-113Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_emergencia_2026-10-07T06-09-23-113Z.csv",
+    "csvRel": "csv/87190d63-7a87-4de3-84a2-d1c2d41c4ad1.csv",
+    "timestampRodada": "2026-10-07T06-09-23-113Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 3384,
+      "avg_ms": 12125.46,
+      "min_ms": 4.4,
+      "med_ms": 3842.35,
+      "p90_ms": 39110.1,
+      "p95_ms": 41495.79,
+      "p99_ms": 44777.95,
+      "max_ms": 46080.12,
+      "rps": 15.92,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72,
+      "cpu_cores_avg": 0.647,
+      "cpu_cores_max": 1.166,
+      "cpu_pct_avg": 16.17,
+      "cpu_pct_max": 29.16,
+      "mem_mb_avg": 874.8,
+      "mem_mb_max": 897.9,
+      "mem_pct_avg": 28.48,
+      "mem_pct_max": 29.23
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 770,
+        "avg_ms": 18812.21,
+        "min_ms": 8.58,
+        "med_ms": 15650.96,
+        "p90_ms": 40287.87,
+        "p95_ms": 42235.82,
+        "p99_ms": 44623.78,
+        "max_ms": 45275.09,
+        "rps": 3.62,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 8.44
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 765,
+        "avg_ms": 17.08,
+        "min_ms": 4.4,
+        "med_ms": 5.79,
+        "p90_ms": 8.77,
+        "p95_ms": 53.95,
+        "p99_ms": 293.83,
+        "max_ms": 648.37,
+        "rps": 3.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 99.87
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 648,
+        "avg_ms": 20733.7,
+        "min_ms": 22.32,
+        "med_ms": 17774.56,
+        "p90_ms": 41086.18,
+        "p95_ms": 42850.65,
+        "p99_ms": 45004.16,
+        "max_ms": 46080.12,
+        "rps": 3.05,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 6.17
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 558,
+        "avg_ms": 23456.04,
+        "min_ms": 24.85,
+        "med_ms": 24140.11,
+        "p90_ms": 41888.74,
+        "p95_ms": 43290.19,
+        "p99_ms": 45047.08,
+        "max_ms": 45497.44,
+        "rps": 2.62,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 4.66
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 555,
+        "avg_ms": 13.7,
+        "min_ms": 8.05,
+        "med_ms": 9.59,
+        "p90_ms": 11.7,
+        "p95_ms": 14,
+        "p99_ms": 174.89,
+        "max_ms": 305.33,
+        "rps": 2.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.647,
+        "cpu_cores_max": 1.166,
+        "cpu_pct_avg": 16.17,
+        "cpu_pct_max": 29.16,
+        "mem_mb_avg": 874.8,
+        "mem_mb_max": 897.9,
+        "mem_pct_avg": 28.48,
+        "mem_pct_max": 29.23
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.046,
+          "cpu_cores_max": 0.121,
+          "mem_mb_avg": 54.8,
+          "mem_mb_max": 57.1
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.013,
+          "cpu_cores_max": 0.042,
+          "mem_mb_avg": 277.7,
+          "mem_mb_max": 278.3
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.03,
+          "cpu_cores_max": 0.107,
+          "mem_mb_avg": 55.8,
+          "mem_mb_max": 74.1
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.291,
+          "cpu_cores_max": 0.325,
+          "mem_mb_avg": 98,
+          "mem_mb_max": 105.2
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.046,
+          "cpu_cores_max": 0.262,
+          "mem_mb_avg": 79.9,
+          "mem_mb_max": 81
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.144,
+          "cpu_cores_max": 0.255,
+          "mem_mb_avg": 81.2,
+          "mem_mb_max": 84.9
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.022,
+          "cpu_cores_max": 0.056,
+          "mem_mb_avg": 73.8,
+          "mem_mb_max": 75
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.03,
+          "cpu_cores_max": 0.151,
+          "mem_mb_avg": 76.7,
+          "mem_mb_max": 78.5
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.024,
+          "cpu_cores_max": 0.154,
+          "mem_mb_avg": 77,
+          "mem_mb_max": 78.3
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:05:49.166Z",
+        "fim": "2026-10-07T06:09:23.693Z",
+        "amostras": 63,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "00d4e54d-3d4d-4d75-b4cb-bf979a0b8b94",
+    "importadoEm": "2026-10-07T06:05:37.161Z",
+    "arquitetura": "monolito",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "monolito/dia-corrido/monolito_dia-corrido_2026-10-07T06-05-36-056Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_dia-corrido_2026-10-07T06-05-36-056Z.csv",
+    "csvRel": "csv/00d4e54d-3d4d-4d75-b4cb-bf979a0b8b94.csv",
+    "timestampRodada": "2026-10-07T06-05-36-056Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 8608,
+      "avg_ms": 1823.07,
+      "min_ms": 0.92,
+      "med_ms": 221.44,
+      "p90_ms": 5788.53,
+      "p95_ms": 7481.03,
+      "p99_ms": 9088.09,
+      "max_ms": 12756.97,
+      "rps": 44.49,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 77.44,
+      "cpu_cores_avg": 1.445,
+      "cpu_cores_max": 1.881,
+      "cpu_pct_avg": 36.12,
+      "cpu_pct_max": 47.02,
+      "mem_mb_avg": 504,
+      "mem_mb_max": 713.1,
+      "mem_pct_avg": 16.41,
+      "mem_pct_max": 23.21
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 1704,
+        "avg_ms": 1352.21,
+        "min_ms": 1.66,
+        "med_ms": 743.48,
+        "p90_ms": 3545.2,
+        "p95_ms": 4312.9,
+        "p99_ms": 5832.2,
+        "max_ms": 8696.36,
+        "rps": 8.81,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 43.78
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 1704,
+        "avg_ms": 156.9,
+        "min_ms": 0.92,
+        "med_ms": 19.45,
+        "p90_ms": 619.41,
+        "p95_ms": 913.07,
+        "p99_ms": 1449.37,
+        "max_ms": 2353.15,
+        "rps": 8.81,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 87.38
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 1704,
+        "avg_ms": 4035.8,
+        "min_ms": 5.79,
+        "med_ms": 4085.15,
+        "p90_ms": 8337.02,
+        "p95_ms": 8890.26,
+        "p99_ms": 12160.51,
+        "max_ms": 12279.22,
+        "rps": 8.81,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 24.65
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 1704,
+        "avg_ms": 3569.79,
+        "min_ms": 12.28,
+        "med_ms": 3379.59,
+        "p90_ms": 7238.16,
+        "p95_ms": 8266.38,
+        "p99_ms": 10877.71,
+        "max_ms": 12756.97,
+        "rps": 8.81,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 19.01
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 1704,
+        "avg_ms": 94.03,
+        "min_ms": 3,
+        "med_ms": 95.6,
+        "p90_ms": 156.38,
+        "p95_ms": 238.39,
+        "p99_ms": 341.35,
+        "max_ms": 829.21,
+        "rps": 8.81,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 99.59
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.445,
+        "cpu_cores_max": 1.881,
+        "cpu_pct_avg": 36.12,
+        "cpu_pct_max": 47.02,
+        "mem_mb_avg": 504,
+        "mem_mb_max": 713.1,
+        "mem_pct_avg": 16.41,
+        "mem_pct_max": 23.21
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.094,
+          "cpu_cores_max": 1.799,
+          "mem_mb_avg": 215.6,
+          "mem_mb_max": 419.9
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.288,
+          "cpu_cores_max": 0.511,
+          "mem_mb_avg": 201.6,
+          "mem_mb_max": 202.9
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.063,
+          "cpu_cores_max": 0.18,
+          "mem_mb_avg": 86.8,
+          "mem_mb_max": 91.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T06:02:21.641Z",
+        "fim": "2026-10-07T06:05:36.501Z",
+        "amostras": 58,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "f37950dd-7995-4ff2-af1c-609eddddd7f2",
+    "importadoEm": "2026-10-07T06:02:09.667Z",
+    "arquitetura": "monolito",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "monolito/emergencia/monolito_emergencia_2026-10-07T06-02-05-874Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_emergencia_2026-10-07T06-02-05-874Z.csv",
+    "csvRel": "csv/f37950dd-7995-4ff2-af1c-609eddddd7f2.csv",
+    "timestampRodada": "2026-10-07T06-02-05-874Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 8160,
+      "avg_ms": 4639.93,
+      "min_ms": 2.5,
+      "med_ms": 824.11,
+      "p90_ms": 15935.87,
+      "p95_ms": 19835.04,
+      "p99_ms": 25013.66,
+      "max_ms": 26023.55,
+      "rps": 39.65,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 73.14,
+      "cpu_cores_avg": 1.632,
+      "cpu_cores_max": 2.153,
+      "cpu_pct_avg": 40.79,
+      "cpu_pct_max": 53.81,
+      "mem_mb_avg": 603.7,
+      "mem_mb_max": 875.7,
+      "mem_pct_avg": 19.65,
+      "mem_pct_max": 28.5
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 1651,
+        "avg_ms": 3548.9,
+        "min_ms": 4.51,
+        "med_ms": 2091.29,
+        "p90_ms": 9244.2,
+        "p95_ms": 11458.51,
+        "p99_ms": 15641.72,
+        "max_ms": 17972.8,
+        "rps": 8.02,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 30.71
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 1651,
+        "avg_ms": 380.97,
+        "min_ms": 2.5,
+        "med_ms": 82.03,
+        "p90_ms": 1172.3,
+        "p95_ms": 1328.88,
+        "p99_ms": 1651.44,
+        "max_ms": 3964.86,
+        "rps": 8.02,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 69.9
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 1627,
+        "avg_ms": 10996.84,
+        "min_ms": 14.02,
+        "med_ms": 11936.83,
+        "p90_ms": 21203.26,
+        "p95_ms": 24975.87,
+        "p99_ms": 25712.49,
+        "max_ms": 25755.19,
+        "rps": 7.91,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 19.3
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 1576,
+        "avg_ms": 8377.03,
+        "min_ms": 11.35,
+        "med_ms": 7768.26,
+        "p90_ms": 17682.32,
+        "p95_ms": 20034.14,
+        "p99_ms": 24295.91,
+        "max_ms": 26023.55,
+        "rps": 7.66,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 16.88
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 1567,
+        "avg_ms": 177.5,
+        "min_ms": 6.01,
+        "med_ms": 108.38,
+        "p90_ms": 254.16,
+        "p95_ms": 474.61,
+        "p99_ms": 2574.8,
+        "max_ms": 5114.44,
+        "rps": 7.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 95.34
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.632,
+        "cpu_cores_max": 2.153,
+        "cpu_pct_avg": 40.79,
+        "cpu_pct_max": 53.81,
+        "mem_mb_avg": 603.7,
+        "mem_mb_max": 875.7,
+        "mem_pct_avg": 19.65,
+        "mem_pct_max": 28.5
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.267,
+          "cpu_cores_max": 1.969,
+          "mem_mb_avg": 318.3,
+          "mem_mb_max": 584.5
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.279,
+          "cpu_cores_max": 0.511,
+          "mem_mb_avg": 200.8,
+          "mem_mb_max": 203
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.085,
+          "cpu_cores_max": 0.389,
+          "mem_mb_avg": 84.7,
+          "mem_mb_max": 92.7
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:58:39.030Z",
+        "fim": "2026-10-07T06:02:06.361Z",
+        "amostras": 63,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "107957c2-1c48-47f6-b6a5-532f4f4a60db",
+    "importadoEm": "2026-10-07T05:58:26.922Z",
+    "arquitetura": "microsservicos",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/normal/microsservicos_normal_2026-10-07T05-58-19-532Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_normal_2026-10-07T05-58-19-532Z.csv",
+    "csvRel": "csv/107957c2-1c48-47f6-b6a5-532f4f4a60db.csv",
+    "timestampRodada": "2026-10-07T05-58-19-532Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 3038,
+      "avg_ms": 1673.47,
+      "min_ms": 4.47,
+      "med_ms": 601.12,
+      "p90_ms": 4888.58,
+      "p95_ms": 5890.89,
+      "p99_ms": 7587.42,
+      "max_ms": 8006.77,
+      "rps": 15.83,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 75.32,
+      "cpu_cores_avg": 0.587,
+      "cpu_cores_max": 1.012,
+      "cpu_pct_avg": 14.67,
+      "cpu_pct_max": 25.3,
+      "mem_mb_avg": 867.3,
+      "mem_mb_max": 884.6,
+      "mem_pct_avg": 28.23,
+      "mem_pct_max": 28.79
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 590,
+        "avg_ms": 2272.66,
+        "min_ms": 8.39,
+        "med_ms": 1980.31,
+        "p90_ms": 4687.09,
+        "p95_ms": 5481.31,
+        "p99_ms": 6815.03,
+        "max_ms": 7572.3,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 18.14
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 590,
+        "avg_ms": 10.33,
+        "min_ms": 4.47,
+        "med_ms": 5.84,
+        "p90_ms": 10.08,
+        "p95_ms": 15.24,
+        "p99_ms": 146.47,
+        "max_ms": 280.52,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 590,
+        "avg_ms": 3559.6,
+        "min_ms": 21.74,
+        "med_ms": 3537.14,
+        "p90_ms": 6212.72,
+        "p95_ms": 7498.97,
+        "p99_ms": 7813.09,
+        "max_ms": 8006.77,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 13.39
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 590,
+        "avg_ms": 2757.9,
+        "min_ms": 14.24,
+        "med_ms": 2509.04,
+        "p90_ms": 5493.23,
+        "p95_ms": 6014.03,
+        "p99_ms": 7406.73,
+        "max_ms": 7689.18,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 21.69
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 590,
+        "avg_ms": 11.55,
+        "min_ms": 7.75,
+        "med_ms": 9.34,
+        "p90_ms": 11.12,
+        "p95_ms": 12.51,
+        "p99_ms": 56.97,
+        "max_ms": 303.7,
+        "rps": 3.07,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.587,
+        "cpu_cores_max": 1.012,
+        "cpu_pct_avg": 14.67,
+        "cpu_pct_max": 25.3,
+        "mem_mb_avg": 867.3,
+        "mem_mb_max": 884.6,
+        "mem_pct_avg": 28.23,
+        "mem_pct_max": 28.79
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.042,
+          "cpu_cores_max": 0.138,
+          "mem_mb_avg": 51.7,
+          "mem_mb_max": 55.4
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.012,
+          "cpu_cores_max": 0.038,
+          "mem_mb_avg": 277.5,
+          "mem_mb_max": 278.1
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.03,
+          "cpu_cores_max": 0.163,
+          "mem_mb_avg": 54.5,
+          "mem_mb_max": 67.3
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.263,
+          "cpu_cores_max": 0.328,
+          "mem_mb_avg": 96.5,
+          "mem_mb_max": 104
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.042,
+          "cpu_cores_max": 0.274,
+          "mem_mb_avg": 80.2,
+          "mem_mb_max": 81.2
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.126,
+          "cpu_cores_max": 0.292,
+          "mem_mb_avg": 80.2,
+          "mem_mb_max": 83.7
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.022,
+          "cpu_cores_max": 0.139,
+          "mem_mb_avg": 73.5,
+          "mem_mb_max": 75.3
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.029,
+          "cpu_cores_max": 0.183,
+          "mem_mb_avg": 76.8,
+          "mem_mb_max": 78.3
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.021,
+          "cpu_cores_max": 0.166,
+          "mem_mb_avg": 76.4,
+          "mem_mb_max": 78
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:55:06.391Z",
+        "fim": "2026-10-07T05:58:22.965Z",
+        "amostras": 57,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "72a0c2e2-ae9b-4a98-9361-64a8955f8053",
+    "importadoEm": "2026-10-07T05:54:54.436Z",
+    "arquitetura": "monolito",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "monolito/dia-corrido/monolito_dia-corrido_2026-10-07T05-54-50-963Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_dia-corrido_2026-10-07T05-54-50-963Z.csv",
+    "csvRel": "csv/72a0c2e2-ae9b-4a98-9361-64a8955f8053.csv",
+    "timestampRodada": "2026-10-07T05-54-50-963Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 8063,
+      "avg_ms": 1995.39,
+      "min_ms": 1.96,
+      "med_ms": 188.99,
+      "p90_ms": 6516.44,
+      "p95_ms": 8530.74,
+      "p99_ms": 10963.6,
+      "max_ms": 11869.49,
+      "rps": 42.19,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 77.8,
+      "cpu_cores_avg": 1.527,
+      "cpu_cores_max": 1.878,
+      "cpu_pct_avg": 38.17,
+      "cpu_pct_max": 46.95,
+      "mem_mb_avg": 503,
+      "mem_mb_max": 651.1,
+      "mem_pct_avg": 16.37,
+      "mem_pct_max": 21.19
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 1595,
+        "avg_ms": 1472.3,
+        "min_ms": 1.96,
+        "med_ms": 873.06,
+        "p90_ms": 3866.3,
+        "p95_ms": 4767.98,
+        "p99_ms": 5932.75,
+        "max_ms": 7540.1,
+        "rps": 8.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 44.33
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 1595,
+        "avg_ms": 166.03,
+        "min_ms": 2.32,
+        "med_ms": 11.73,
+        "p90_ms": 594.96,
+        "p95_ms": 1072.95,
+        "p99_ms": 1829.18,
+        "max_ms": 2234.41,
+        "rps": 8.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 88.46
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 1595,
+        "avg_ms": 4475.53,
+        "min_ms": 6.56,
+        "med_ms": 4445.13,
+        "p90_ms": 9651.07,
+        "p95_ms": 10960.75,
+        "p99_ms": 11184.21,
+        "max_ms": 11217.14,
+        "rps": 8.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 25.2
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 1595,
+        "avg_ms": 3873.09,
+        "min_ms": 12.23,
+        "med_ms": 3751.26,
+        "p90_ms": 7773.9,
+        "p95_ms": 8998.23,
+        "p99_ms": 10895.06,
+        "max_ms": 11869.49,
+        "rps": 8.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 20.44
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 1595,
+        "avg_ms": 99.16,
+        "min_ms": 3.11,
+        "med_ms": 98.19,
+        "p90_ms": 172.86,
+        "p95_ms": 240.78,
+        "p99_ms": 344.96,
+        "max_ms": 1254.67,
+        "rps": 8.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 99.56
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.527,
+        "cpu_cores_max": 1.878,
+        "cpu_pct_avg": 38.17,
+        "cpu_pct_max": 46.95,
+        "mem_mb_avg": 503,
+        "mem_mb_max": 651.1,
+        "mem_pct_avg": 16.37,
+        "mem_pct_max": 21.19
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.18,
+          "cpu_cores_max": 1.744,
+          "mem_mb_avg": 214.9,
+          "mem_mb_max": 360.4
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.288,
+          "cpu_cores_max": 0.532,
+          "mem_mb_avg": 200.7,
+          "mem_mb_max": 202
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.059,
+          "cpu_cores_max": 0.255,
+          "mem_mb_avg": 87.4,
+          "mem_mb_max": 91.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:51:38.870Z",
+        "fim": "2026-10-07T05:54:53.471Z",
+        "amostras": 57,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "71c74456-b474-4131-aeb8-95f547fd469b",
+    "importadoEm": "2026-10-07T05:51:26.871Z",
+    "arquitetura": "microsservicos",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/emergencia/microsservicos_emergencia_2026-10-07T05-51-25-249Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_emergencia_2026-10-07T05-51-25-249Z.csv",
+    "csvRel": "csv/71c74456-b474-4131-aeb8-95f547fd469b.csv",
+    "timestampRodada": "2026-10-07T05-51-25-249Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 3380,
+      "avg_ms": 12065.57,
+      "min_ms": 4.89,
+      "med_ms": 3356.72,
+      "p90_ms": 38789.13,
+      "p95_ms": 42098.51,
+      "p99_ms": 48901.49,
+      "max_ms": 50379.22,
+      "rps": 15.89,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.1,
+      "cpu_cores_avg": 0.682,
+      "cpu_cores_max": 1.037,
+      "cpu_pct_avg": 17.04,
+      "cpu_pct_max": 25.92,
+      "mem_mb_avg": 869.8,
+      "mem_mb_max": 889.9,
+      "mem_pct_avg": 28.31,
+      "mem_pct_max": 28.97
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 768,
+        "avg_ms": 18751.73,
+        "min_ms": 8.42,
+        "med_ms": 13919.29,
+        "p90_ms": 41165.53,
+        "p95_ms": 45344.55,
+        "p99_ms": 48783.2,
+        "max_ms": 49487.01,
+        "rps": 3.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 8.33
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 765,
+        "avg_ms": 13.22,
+        "min_ms": 4.89,
+        "med_ms": 6.15,
+        "p90_ms": 10.19,
+        "p95_ms": 26.86,
+        "p99_ms": 202.43,
+        "max_ms": 295.75,
+        "rps": 3.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 648,
+        "avg_ms": 20666.54,
+        "min_ms": 21.81,
+        "med_ms": 17432.06,
+        "p90_ms": 41690.46,
+        "p95_ms": 47587.2,
+        "p99_ms": 49316.99,
+        "max_ms": 50379.22,
+        "rps": 3.05,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 6.17
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 557,
+        "avg_ms": 23282.75,
+        "min_ms": 14.44,
+        "med_ms": 23216.97,
+        "p90_ms": 42029.29,
+        "p95_ms": 46798.3,
+        "p99_ms": 49333.27,
+        "max_ms": 49670.47,
+        "rps": 2.62,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 5.75
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 554,
+        "avg_ms": 12.84,
+        "min_ms": 8.15,
+        "med_ms": 9.66,
+        "p90_ms": 12.04,
+        "p95_ms": 13.83,
+        "p99_ms": 94.41,
+        "max_ms": 376,
+        "rps": 2.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.682,
+        "cpu_cores_max": 1.037,
+        "cpu_pct_avg": 17.04,
+        "cpu_pct_max": 25.92,
+        "mem_mb_avg": 869.8,
+        "mem_mb_max": 889.9,
+        "mem_pct_avg": 28.31,
+        "mem_pct_max": 28.97
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.05,
+          "cpu_cores_max": 0.135,
+          "mem_mb_avg": 54.6,
+          "mem_mb_max": 56.8
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.015,
+          "cpu_cores_max": 0.036,
+          "mem_mb_avg": 277.2,
+          "mem_mb_max": 277.7
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.031,
+          "cpu_cores_max": 0.125,
+          "mem_mb_avg": 52.7,
+          "mem_mb_max": 66.6
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.295,
+          "cpu_cores_max": 0.329,
+          "mem_mb_avg": 98.2,
+          "mem_mb_max": 106.5
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.049,
+          "cpu_cores_max": 0.175,
+          "mem_mb_avg": 79.8,
+          "mem_mb_max": 80.9
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.154,
+          "cpu_cores_max": 0.283,
+          "mem_mb_avg": 80.8,
+          "mem_mb_max": 83.9
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.028,
+          "cpu_cores_max": 0.16,
+          "mem_mb_avg": 73.7,
+          "mem_mb_max": 74.8
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.028,
+          "cpu_cores_max": 0.158,
+          "mem_mb_avg": 76.4,
+          "mem_mb_max": 78.1
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.029,
+          "cpu_cores_max": 0.255,
+          "mem_mb_avg": 76.3,
+          "mem_mb_max": 78
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:47:51.264Z",
+        "fim": "2026-10-07T05:51:25.855Z",
+        "amostras": 62,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "c6521a61-fb85-4fa4-926a-fbb801667093",
+    "importadoEm": "2026-10-07T05:47:39.284Z",
+    "arquitetura": "microsservicos",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/normal/microsservicos_normal_2026-10-07T05-47-36-440Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_normal_2026-10-07T05-47-36-440Z.csv",
+    "csvRel": "csv/c6521a61-fb85-4fa4-926a-fbb801667093.csv",
+    "timestampRodada": "2026-10-07T05-47-36-440Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 3138,
+      "avg_ms": 1591.22,
+      "min_ms": 4.45,
+      "med_ms": 290.96,
+      "p90_ms": 4903.63,
+      "p95_ms": 6281.88,
+      "p99_ms": 7494.75,
+      "max_ms": 8377.55,
+      "rps": 16.39,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 77.11,
+      "cpu_cores_avg": 0.621,
+      "cpu_cores_max": 1.052,
+      "cpu_pct_avg": 15.53,
+      "cpu_pct_max": 26.31,
+      "mem_mb_avg": 868.6,
+      "mem_mb_max": 888.1,
+      "mem_pct_avg": 28.27,
+      "mem_pct_max": 28.91
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 610,
+        "avg_ms": 2137.55,
+        "min_ms": 7.25,
+        "med_ms": 1697.76,
+        "p90_ms": 4570.27,
+        "p95_ms": 5634.57,
+        "p99_ms": 6880.85,
+        "max_ms": 7680.53,
+        "rps": 3.19,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 22.3
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 610,
+        "avg_ms": 14.68,
+        "min_ms": 4.45,
+        "med_ms": 5.99,
+        "p90_ms": 10.66,
+        "p95_ms": 81.13,
+        "p99_ms": 191.67,
+        "max_ms": 297.78,
+        "rps": 3.19,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 610,
+        "avg_ms": 3332.91,
+        "min_ms": 20.11,
+        "med_ms": 2993.01,
+        "p90_ms": 6978.38,
+        "p95_ms": 7379.52,
+        "p99_ms": 7768.31,
+        "max_ms": 8377.55,
+        "rps": 3.19,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 22.62
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 610,
+        "avg_ms": 2683.05,
+        "min_ms": 12.15,
+        "med_ms": 2345.37,
+        "p90_ms": 5499.5,
+        "p95_ms": 6616.35,
+        "p99_ms": 7509.13,
+        "max_ms": 7994.41,
+        "rps": 3.19,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 26.23
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 610,
+        "avg_ms": 13.72,
+        "min_ms": 7.99,
+        "med_ms": 9.64,
+        "p90_ms": 11.85,
+        "p95_ms": 15.58,
+        "p99_ms": 170.3,
+        "max_ms": 292.53,
+        "rps": 3.19,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.621,
+        "cpu_cores_max": 1.052,
+        "cpu_pct_avg": 15.53,
+        "cpu_pct_max": 26.31,
+        "mem_mb_avg": 868.6,
+        "mem_mb_max": 888.1,
+        "mem_pct_avg": 28.27,
+        "mem_pct_max": 28.91
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.044,
+          "cpu_cores_max": 0.13,
+          "mem_mb_avg": 50.8,
+          "mem_mb_max": 52.9
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.015,
+          "cpu_cores_max": 0.047,
+          "mem_mb_avg": 277,
+          "mem_mb_max": 277.6
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.032,
+          "cpu_cores_max": 0.138,
+          "mem_mb_avg": 56.5,
+          "mem_mb_max": 70.1
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.272,
+          "cpu_cores_max": 0.331,
+          "mem_mb_avg": 99.8,
+          "mem_mb_max": 106.4
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.041,
+          "cpu_cores_max": 0.24,
+          "mem_mb_avg": 79.9,
+          "mem_mb_max": 80.9
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.146,
+          "cpu_cores_max": 0.291,
+          "mem_mb_avg": 80.3,
+          "mem_mb_max": 83.7
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.021,
+          "cpu_cores_max": 0.083,
+          "mem_mb_avg": 73.3,
+          "mem_mb_max": 75.2
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.032,
+          "cpu_cores_max": 0.143,
+          "mem_mb_avg": 76.5,
+          "mem_mb_max": 77.9
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.018,
+          "cpu_cores_max": 0.199,
+          "mem_mb_avg": 74.5,
+          "mem_mb_max": 79.4
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:44:23.790Z",
+        "fim": "2026-10-07T05:47:37.020Z",
+        "amostras": 57,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "f2018d8e-4d04-421c-a685-b98ea3a6a90c",
+    "importadoEm": "2026-10-07T05:44:11.771Z",
+    "arquitetura": "microsservicos",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/dia-corrido/microsservicos_dia-corrido_2026-10-07T05-44-08-364Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_dia-corrido_2026-10-07T05-44-08-364Z.csv",
+    "csvRel": "csv/f2018d8e-4d04-421c-a685-b98ea3a6a90c.csv",
+    "timestampRodada": "2026-10-07T05-44-08-364Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 3374,
+      "avg_ms": 6559.14,
+      "min_ms": 2.26,
+      "med_ms": 2606.62,
+      "p90_ms": 17394.84,
+      "p95_ms": 20480.18,
+      "p99_ms": 23625.28,
+      "max_ms": 24700.23,
+      "rps": 16.38,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72,
+      "cpu_cores_avg": 0.627,
+      "cpu_cores_max": 0.974,
+      "cpu_pct_avg": 15.68,
+      "cpu_pct_max": 24.35,
+      "mem_mb_avg": 865.1,
+      "mem_mb_max": 879.2,
+      "mem_pct_avg": 28.16,
+      "mem_pct_max": 28.62
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 671,
+        "avg_ms": 10279.54,
+        "min_ms": 8.4,
+        "med_ms": 11086.86,
+        "p90_ms": 18408.46,
+        "p95_ms": 21478.63,
+        "p99_ms": 23725.94,
+        "max_ms": 24373.91,
+        "rps": 3.26,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 8.49
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 671,
+        "avg_ms": 10.07,
+        "min_ms": 2.26,
+        "med_ms": 5.58,
+        "p90_ms": 7.82,
+        "p95_ms": 11.28,
+        "p99_ms": 177.89,
+        "max_ms": 372.76,
+        "rps": 3.26,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 663,
+        "avg_ms": 11460.03,
+        "min_ms": 23.59,
+        "med_ms": 11886.88,
+        "p90_ms": 19460.02,
+        "p95_ms": 22176.95,
+        "p99_ms": 24426.46,
+        "max_ms": 24700.23,
+        "rps": 3.22,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 6.79
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 643,
+        "avg_ms": 11847.37,
+        "min_ms": 11.86,
+        "med_ms": 12084.55,
+        "p90_ms": 20499.28,
+        "p95_ms": 22105.86,
+        "p99_ms": 23891.7,
+        "max_ms": 24675.22,
+        "rps": 3.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 5.44
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 638,
+        "avg_ms": 12.45,
+        "min_ms": 4.25,
+        "med_ms": 9.65,
+        "p90_ms": 11.58,
+        "p95_ms": 13.69,
+        "p99_ms": 110.46,
+        "max_ms": 275.33,
+        "rps": 3.1,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.627,
+        "cpu_cores_max": 0.974,
+        "cpu_pct_avg": 15.68,
+        "cpu_pct_max": 24.35,
+        "mem_mb_avg": 865.1,
+        "mem_mb_max": 879.2,
+        "mem_pct_avg": 28.16,
+        "mem_pct_max": 28.62
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.045,
+          "cpu_cores_max": 0.158,
+          "mem_mb_avg": 52.4,
+          "mem_mb_max": 53.9
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.014,
+          "cpu_cores_max": 0.054,
+          "mem_mb_avg": 276.6,
+          "mem_mb_max": 277.3
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.03,
+          "cpu_cores_max": 0.139,
+          "mem_mb_avg": 52.2,
+          "mem_mb_max": 59.8
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.278,
+          "cpu_cores_max": 0.325,
+          "mem_mb_avg": 97.4,
+          "mem_mb_max": 104.4
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.044,
+          "cpu_cores_max": 0.212,
+          "mem_mb_avg": 79.9,
+          "mem_mb_max": 81.1
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.137,
+          "cpu_cores_max": 0.239,
+          "mem_mb_avg": 81,
+          "mem_mb_max": 83.4
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.024,
+          "cpu_cores_max": 0.153,
+          "mem_mb_avg": 73.3,
+          "mem_mb_max": 75.3
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.034,
+          "cpu_cores_max": 0.149,
+          "mem_mb_avg": 76,
+          "mem_mb_max": 78.2
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.021,
+          "cpu_cores_max": 0.152,
+          "mem_mb_avg": 76.3,
+          "mem_mb_max": 77.5
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:40:41.158Z",
+        "fim": "2026-10-07T05:44:10.580Z",
+        "amostras": 63,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "475b200f-630d-4cc8-b88c-77962c678fa2",
+    "importadoEm": "2026-10-07T05:40:29.162Z",
+    "arquitetura": "monolito",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "monolito/dia-corrido/monolito_dia-corrido_2026-10-07T05-40-26-484Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_dia-corrido_2026-10-07T05-40-26-484Z.csv",
+    "csvRel": "csv/475b200f-630d-4cc8-b88c-77962c678fa2.csv",
+    "timestampRodada": "2026-10-07T05-40-26-484Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 7883,
+      "avg_ms": 2072.5,
+      "min_ms": 2.3,
+      "med_ms": 197.96,
+      "p90_ms": 6937.91,
+      "p95_ms": 8829.65,
+      "p99_ms": 10951.92,
+      "max_ms": 11616.38,
+      "rps": 41.07,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 77.68,
+      "cpu_cores_avg": 1.478,
+      "cpu_cores_max": 1.898,
+      "cpu_pct_avg": 36.95,
+      "cpu_pct_max": 47.45,
+      "mem_mb_avg": 502.2,
+      "mem_mb_max": 685.8,
+      "mem_pct_avg": 16.35,
+      "mem_pct_max": 22.33
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 1559,
+        "avg_ms": 1535.22,
+        "min_ms": 3.72,
+        "med_ms": 881.91,
+        "p90_ms": 4029.96,
+        "p95_ms": 4772.99,
+        "p99_ms": 6086.41,
+        "max_ms": 7369.12,
+        "rps": 8.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 43.3
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 1559,
+        "avg_ms": 153.83,
+        "min_ms": 2.3,
+        "med_ms": 11.24,
+        "p90_ms": 637.76,
+        "p95_ms": 978.65,
+        "p99_ms": 1637.43,
+        "max_ms": 2297.75,
+        "rps": 8.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 87.88
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 1559,
+        "avg_ms": 4717.59,
+        "min_ms": 13.29,
+        "med_ms": 4573.47,
+        "p90_ms": 10077.83,
+        "p95_ms": 10949.36,
+        "p99_ms": 11017.13,
+        "max_ms": 11025.13,
+        "rps": 8.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 25.02
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 1559,
+        "avg_ms": 3969.02,
+        "min_ms": 9.88,
+        "med_ms": 3790.12,
+        "p90_ms": 8123.43,
+        "p95_ms": 9200.32,
+        "p99_ms": 10824.45,
+        "max_ms": 11616.38,
+        "rps": 8.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 20.97
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 1559,
+        "avg_ms": 103.17,
+        "min_ms": 5.62,
+        "med_ms": 104.73,
+        "p90_ms": 177.54,
+        "p95_ms": 242.34,
+        "p99_ms": 317.89,
+        "max_ms": 743.14,
+        "rps": 8.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 99.68
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.478,
+        "cpu_cores_max": 1.898,
+        "cpu_pct_avg": 36.95,
+        "cpu_pct_max": 47.45,
+        "mem_mb_avg": 502.2,
+        "mem_mb_max": 685.8,
+        "mem_pct_avg": 16.35,
+        "mem_pct_max": 22.33
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.13,
+          "cpu_cores_max": 1.763,
+          "mem_mb_avg": 216,
+          "mem_mb_max": 395.5
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.286,
+          "cpu_cores_max": 0.513,
+          "mem_mb_avg": 199.2,
+          "mem_mb_max": 199.8
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.062,
+          "cpu_cores_max": 0.182,
+          "mem_mb_avg": 87,
+          "mem_mb_max": 91.5
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:37:13.631Z",
+        "fim": "2026-10-07T05:40:26.943Z",
+        "amostras": 57,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "e0cfa42d-0947-4648-bea5-9024d38c20c8",
+    "importadoEm": "2026-10-07T05:37:01.768Z",
+    "arquitetura": "monolito",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "monolito/normal/monolito_normal_2026-10-07T05-36-57-310Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_normal_2026-10-07T05-36-57-310Z.csv",
+    "csvRel": "csv/e0cfa42d-0947-4648-bea5-9024d38c20c8.csv",
+    "timestampRodada": "2026-10-07T05-36-57-310Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 6203,
+      "avg_ms": 249.33,
+      "min_ms": 2.03,
+      "med_ms": 18.9,
+      "p90_ms": 1062.95,
+      "p95_ms": 1353.75,
+      "p99_ms": 1747.91,
+      "max_ms": 2418.85,
+      "rps": 33.51,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 91.84,
+      "cpu_cores_avg": 0.908,
+      "cpu_cores_max": 1.821,
+      "cpu_pct_avg": 22.7,
+      "cpu_pct_max": 45.53,
+      "mem_mb_avg": 403.6,
+      "mem_mb_max": 456.4,
+      "mem_pct_avg": 13.14,
+      "mem_pct_max": 14.86
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 1223,
+        "avg_ms": 363.73,
+        "min_ms": 3.12,
+        "med_ms": 23.93,
+        "p90_ms": 1266.3,
+        "p95_ms": 1437.25,
+        "p99_ms": 1855.47,
+        "max_ms": 2165.14,
+        "rps": 6.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 71.22
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 1223,
+        "avg_ms": 14.78,
+        "min_ms": 2.03,
+        "med_ms": 4.05,
+        "p90_ms": 45.17,
+        "p95_ms": 58.25,
+        "p99_ms": 110.38,
+        "max_ms": 372.67,
+        "rps": 6.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 1223,
+        "avg_ms": 361.69,
+        "min_ms": 9.51,
+        "med_ms": 45.81,
+        "p90_ms": 1239.95,
+        "p95_ms": 1404.42,
+        "p99_ms": 1746.74,
+        "max_ms": 2418.85,
+        "rps": 6.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 79.31
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 1223,
+        "avg_ms": 497.72,
+        "min_ms": 6.51,
+        "med_ms": 179.84,
+        "p90_ms": 1392.62,
+        "p95_ms": 1590.4,
+        "p99_ms": 1959.19,
+        "max_ms": 2299.54,
+        "rps": 6.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 67.87
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 1223,
+        "avg_ms": 25.57,
+        "min_ms": 4.48,
+        "med_ms": 7.71,
+        "p90_ms": 100.75,
+        "p95_ms": 117.8,
+        "p99_ms": 143.3,
+        "max_ms": 420.21,
+        "rps": 6.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.908,
+        "cpu_cores_max": 1.821,
+        "cpu_pct_avg": 22.7,
+        "cpu_pct_max": 45.53,
+        "mem_mb_avg": 403.6,
+        "mem_mb_max": 456.4,
+        "mem_pct_avg": 13.14,
+        "mem_pct_max": 14.86
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 0.677,
+          "cpu_cores_max": 1.455,
+          "mem_mb_avg": 129.9,
+          "mem_mb_max": 166.5
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.178,
+          "cpu_cores_max": 0.45,
+          "mem_mb_avg": 199.3,
+          "mem_mb_max": 199.9
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.053,
+          "cpu_cores_max": 0.166,
+          "mem_mb_avg": 74.4,
+          "mem_mb_max": 91.5
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:33:51.313Z",
+        "fim": "2026-10-07T05:37:00.240Z",
+        "amostras": 56,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "09584c9c-a937-4220-8cca-32a6009d6fb6",
+    "importadoEm": "2026-10-07T05:33:39.350Z",
+    "arquitetura": "monolito",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "monolito/dia-corrido/monolito_dia-corrido_2026-10-07T05-33-33-396Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_dia-corrido_2026-10-07T05-33-33-396Z.csv",
+    "csvRel": "csv/09584c9c-a937-4220-8cca-32a6009d6fb6.csv",
+    "timestampRodada": "2026-10-07T05-33-33-396Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 7843,
+      "avg_ms": 2082.07,
+      "min_ms": 1.44,
+      "med_ms": 221.16,
+      "p90_ms": 6854.33,
+      "p95_ms": 8905.98,
+      "p99_ms": 10570.49,
+      "max_ms": 11832.71,
+      "rps": 41.59,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 77.08,
+      "cpu_cores_avg": 1.483,
+      "cpu_cores_max": 1.849,
+      "cpu_pct_avg": 37.08,
+      "cpu_pct_max": 46.23,
+      "mem_mb_avg": 499.1,
+      "mem_mb_max": 673.3,
+      "mem_pct_avg": 16.25,
+      "mem_pct_max": 21.92
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 1551,
+        "avg_ms": 1546.81,
+        "min_ms": 3.78,
+        "med_ms": 937.45,
+        "p90_ms": 4060.71,
+        "p95_ms": 4951.1,
+        "p99_ms": 6042.29,
+        "max_ms": 7354.6,
+        "rps": 8.22,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 42.68
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 1551,
+        "avg_ms": 165.82,
+        "min_ms": 1.44,
+        "med_ms": 8.89,
+        "p90_ms": 637.94,
+        "p95_ms": 1081.66,
+        "p99_ms": 1708.8,
+        "max_ms": 2025.17,
+        "rps": 8.22,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 86.07
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 1551,
+        "avg_ms": 4708.26,
+        "min_ms": 13.06,
+        "med_ms": 4606.95,
+        "p90_ms": 9892.8,
+        "p95_ms": 10549.76,
+        "p99_ms": 11169.36,
+        "max_ms": 11177.93,
+        "rps": 8.22,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 23.86
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 1551,
+        "avg_ms": 4004.3,
+        "min_ms": 11.84,
+        "med_ms": 3807.59,
+        "p90_ms": 8208.65,
+        "p95_ms": 9352.74,
+        "p99_ms": 10705.5,
+        "max_ms": 11832.71,
+        "rps": 8.22,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 18.5
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 1551,
+        "avg_ms": 102.41,
+        "min_ms": 3.21,
+        "med_ms": 102.64,
+        "p90_ms": 182.47,
+        "p95_ms": 247.67,
+        "p99_ms": 358.31,
+        "max_ms": 796.97,
+        "rps": 8.22,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 99.68
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.483,
+        "cpu_cores_max": 1.849,
+        "cpu_pct_avg": 37.08,
+        "cpu_pct_max": 46.23,
+        "mem_mb_avg": 499.1,
+        "mem_mb_max": 673.3,
+        "mem_pct_avg": 16.25,
+        "mem_pct_max": 21.92
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.14,
+          "cpu_cores_max": 1.731,
+          "mem_mb_avg": 212.5,
+          "mem_mb_max": 383.4
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.29,
+          "cpu_cores_max": 0.504,
+          "mem_mb_avg": 199,
+          "mem_mb_max": 200.1
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.054,
+          "cpu_cores_max": 0.158,
+          "mem_mb_avg": 87.6,
+          "mem_mb_max": 91.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:30:23.852Z",
+        "fim": "2026-10-07T05:33:36.565Z",
+        "amostras": 57,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "b5389e19-d97a-4de9-bce5-b0ab04d3a189",
+    "importadoEm": "2026-10-07T05:30:11.873Z",
+    "arquitetura": "microsservicos",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/dia-corrido/microsservicos_dia-corrido_2026-10-07T05-30-05-128Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_dia-corrido_2026-10-07T05-30-05-128Z.csv",
+    "csvRel": "csv/b5389e19-d97a-4de9-bce5-b0ab04d3a189.csv",
+    "timestampRodada": "2026-10-07T05-30-05-128Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 3270,
+      "avg_ms": 6728.65,
+      "min_ms": 4.55,
+      "med_ms": 2360.51,
+      "p90_ms": 18075.2,
+      "p95_ms": 20944.39,
+      "p99_ms": 25269.41,
+      "max_ms": 27195.9,
+      "rps": 15.38,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.19,
+      "cpu_cores_avg": 0.62,
+      "cpu_cores_max": 0.953,
+      "cpu_pct_avg": 15.5,
+      "cpu_pct_max": 23.83,
+      "mem_mb_avg": 864.1,
+      "mem_mb_max": 877.6,
+      "mem_pct_avg": 28.13,
+      "mem_pct_max": 28.57
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 671,
+        "avg_ms": 10453.24,
+        "min_ms": 8.09,
+        "med_ms": 10880.7,
+        "p90_ms": 19172.45,
+        "p95_ms": 21583.13,
+        "p99_ms": 25410.5,
+        "max_ms": 25881.41,
+        "rps": 3.16,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 8.94
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 671,
+        "avg_ms": 11.09,
+        "min_ms": 4.55,
+        "med_ms": 5.74,
+        "p90_ms": 9.28,
+        "p95_ms": 14.72,
+        "p99_ms": 191.05,
+        "max_ms": 388.44,
+        "rps": 3.16,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 639,
+        "avg_ms": 11632.27,
+        "min_ms": 23.89,
+        "med_ms": 12073.78,
+        "p90_ms": 20807.86,
+        "p95_ms": 22991.57,
+        "p99_ms": 26045.25,
+        "max_ms": 27195.9,
+        "rps": 3.01,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 7.67
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 602,
+        "avg_ms": 12519.87,
+        "min_ms": 15.59,
+        "med_ms": 13211.36,
+        "p90_ms": 20811.15,
+        "p95_ms": 22705.08,
+        "p99_ms": 25715.74,
+        "max_ms": 26116.42,
+        "rps": 2.83,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 5.48
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 599,
+        "avg_ms": 14.29,
+        "min_ms": 8.04,
+        "med_ms": 10.14,
+        "p90_ms": 12.4,
+        "p95_ms": 15.08,
+        "p99_ms": 187.81,
+        "max_ms": 294.89,
+        "rps": 2.82,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.62,
+        "cpu_cores_max": 0.953,
+        "cpu_pct_avg": 15.5,
+        "cpu_pct_max": 23.83,
+        "mem_mb_avg": 864.1,
+        "mem_mb_max": 877.6,
+        "mem_pct_avg": 28.13,
+        "mem_pct_max": 28.57
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.042,
+          "cpu_cores_max": 0.112,
+          "mem_mb_avg": 52.1,
+          "mem_mb_max": 54
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.013,
+          "cpu_cores_max": 0.049,
+          "mem_mb_avg": 276.4,
+          "mem_mb_max": 277.1
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.027,
+          "cpu_cores_max": 0.11,
+          "mem_mb_avg": 52.9,
+          "mem_mb_max": 60.2
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.284,
+          "cpu_cores_max": 0.332,
+          "mem_mb_avg": 98,
+          "mem_mb_max": 105.2
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.039,
+          "cpu_cores_max": 0.186,
+          "mem_mb_avg": 79,
+          "mem_mb_max": 80.1
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.144,
+          "cpu_cores_max": 0.308,
+          "mem_mb_avg": 80.9,
+          "mem_mb_max": 83.8
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.02,
+          "cpu_cores_max": 0.143,
+          "mem_mb_avg": 73.3,
+          "mem_mb_max": 75
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.031,
+          "cpu_cores_max": 0.148,
+          "mem_mb_avg": 75.6,
+          "mem_mb_max": 77.3
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.019,
+          "cpu_cores_max": 0.135,
+          "mem_mb_avg": 75.8,
+          "mem_mb_max": 77.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:26:31.251Z",
+        "fim": "2026-10-07T05:30:08.504Z",
+        "amostras": 64,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "6da9512b-8b2d-42a6-aa9f-57e78e981673",
+    "importadoEm": "2026-10-07T05:26:19.270Z",
+    "arquitetura": "microsservicos",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/dia-corrido/microsservicos_dia-corrido_2026-10-07T05-26-17-214Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_dia-corrido_2026-10-07T05-26-17-214Z.csv",
+    "csvRel": "csv/6da9512b-8b2d-42a6-aa9f-57e78e981673.csv",
+    "timestampRodada": "2026-10-07T05-26-17-214Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 3609,
+      "avg_ms": 5939.36,
+      "min_ms": 1.7,
+      "med_ms": 491.93,
+      "p90_ms": 19805.48,
+      "p95_ms": 22988.71,
+      "p99_ms": 27579.59,
+      "max_ms": 30243.55,
+      "rps": 16.99,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 75.36,
+      "cpu_cores_avg": 0.665,
+      "cpu_cores_max": 1.267,
+      "cpu_pct_avg": 16.63,
+      "cpu_pct_max": 31.67,
+      "mem_mb_avg": 867.6,
+      "mem_mb_max": 882.3,
+      "mem_pct_avg": 28.24,
+      "mem_pct_max": 28.72
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 748,
+        "avg_ms": 8823.38,
+        "min_ms": 3.66,
+        "med_ms": 4381.47,
+        "p90_ms": 19920.13,
+        "p95_ms": 22874.82,
+        "p99_ms": 26853.64,
+        "max_ms": 29270.91,
+        "rps": 3.52,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 17.78
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 748,
+        "avg_ms": 8.7,
+        "min_ms": 1.7,
+        "med_ms": 5.24,
+        "p90_ms": 7.77,
+        "p95_ms": 11.28,
+        "p99_ms": 153.52,
+        "max_ms": 233.6,
+        "rps": 3.52,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 700,
+        "avg_ms": 11172.51,
+        "min_ms": 10.8,
+        "med_ms": 11183.11,
+        "p90_ms": 25032.35,
+        "p95_ms": 27386.02,
+        "p99_ms": 28497.54,
+        "max_ms": 30243.55,
+        "rps": 3.3,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 18.71
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 663,
+        "avg_ms": 10556.6,
+        "min_ms": 9.62,
+        "med_ms": 11705.63,
+        "p90_ms": 21603.86,
+        "p95_ms": 24596.33,
+        "p99_ms": 27684.58,
+        "max_ms": 29084.7,
+        "rps": 3.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 16.89
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 662,
+        "avg_ms": 10.04,
+        "min_ms": 4.37,
+        "med_ms": 9.65,
+        "p90_ms": 11.63,
+        "p95_ms": 12.63,
+        "p99_ms": 58.12,
+        "max_ms": 177.97,
+        "rps": 3.12,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.665,
+        "cpu_cores_max": 1.267,
+        "cpu_pct_avg": 16.63,
+        "cpu_pct_max": 31.67,
+        "mem_mb_avg": 867.6,
+        "mem_mb_max": 882.3,
+        "mem_pct_avg": 28.24,
+        "mem_pct_max": 28.72
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.039,
+          "cpu_cores_max": 0.096,
+          "mem_mb_avg": 52.3,
+          "mem_mb_max": 55.4
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.015,
+          "cpu_cores_max": 0.05,
+          "mem_mb_avg": 276.1,
+          "mem_mb_max": 277.1
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.035,
+          "cpu_cores_max": 0.157,
+          "mem_mb_avg": 56.2,
+          "mem_mb_max": 68.2
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.287,
+          "cpu_cores_max": 0.333,
+          "mem_mb_avg": 99,
+          "mem_mb_max": 106.1
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.058,
+          "cpu_cores_max": 0.252,
+          "mem_mb_avg": 78.1,
+          "mem_mb_max": 81.1
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.152,
+          "cpu_cores_max": 0.322,
+          "mem_mb_avg": 81.2,
+          "mem_mb_max": 84.1
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.027,
+          "cpu_cores_max": 0.254,
+          "mem_mb_avg": 73.1,
+          "mem_mb_max": 74.2
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.031,
+          "cpu_cores_max": 0.097,
+          "mem_mb_avg": 75.4,
+          "mem_mb_max": 77.4
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.022,
+          "cpu_cores_max": 0.187,
+          "mem_mb_avg": 76.1,
+          "mem_mb_max": 77.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:22:43.669Z",
+        "fim": "2026-10-07T05:26:17.818Z",
+        "amostras": 66,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "1164ba52-fd42-4c35-8527-20aa812235b2",
+    "importadoEm": "2026-10-07T05:22:31.710Z",
+    "arquitetura": "monolito",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "monolito/normal/monolito_normal_2026-10-07T05-22-27-999Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_normal_2026-10-07T05-22-27-999Z.csv",
+    "csvRel": "csv/1164ba52-fd42-4c35-8527-20aa812235b2.csv",
+    "timestampRodada": "2026-10-07T05-22-27-999Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 6153,
+      "avg_ms": 261.63,
+      "min_ms": 2.39,
+      "med_ms": 18.46,
+      "p90_ms": 1054.12,
+      "p95_ms": 1325.26,
+      "p99_ms": 1763.2,
+      "max_ms": 2537.42,
+      "rps": 33.11,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 91.28,
+      "cpu_cores_avg": 1.102,
+      "cpu_cores_max": 1.826,
+      "cpu_pct_avg": 27.55,
+      "cpu_pct_max": 45.66,
+      "mem_mb_avg": 406.9,
+      "mem_mb_max": 459.6,
+      "mem_pct_avg": 13.25,
+      "mem_pct_max": 14.96
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 1213,
+        "avg_ms": 403.49,
+        "min_ms": 3.79,
+        "med_ms": 37.74,
+        "p90_ms": 1241.88,
+        "p95_ms": 1392.86,
+        "p99_ms": 1793.74,
+        "max_ms": 2269.48,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 64.96
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 1213,
+        "avg_ms": 11.31,
+        "min_ms": 2.39,
+        "med_ms": 3.9,
+        "p90_ms": 34.61,
+        "p95_ms": 51.14,
+        "p99_ms": 101.9,
+        "max_ms": 303.9,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 1213,
+        "avg_ms": 364.18,
+        "min_ms": 12.79,
+        "med_ms": 58.16,
+        "p90_ms": 1163.1,
+        "p95_ms": 1448.96,
+        "p99_ms": 1906.54,
+        "max_ms": 2392.62,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 82.77
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 1213,
+        "avg_ms": 524.64,
+        "min_ms": 11.24,
+        "med_ms": 265.76,
+        "p90_ms": 1375.67,
+        "p95_ms": 1555.28,
+        "p99_ms": 2024.79,
+        "max_ms": 2537.42,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 65.05
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 1213,
+        "avg_ms": 22.33,
+        "min_ms": 5.42,
+        "med_ms": 7.9,
+        "p90_ms": 87.4,
+        "p95_ms": 110.03,
+        "p99_ms": 143.53,
+        "max_ms": 454.2,
+        "rps": 6.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.102,
+        "cpu_cores_max": 1.826,
+        "cpu_pct_avg": 27.55,
+        "cpu_pct_max": 45.66,
+        "mem_mb_avg": 406.9,
+        "mem_mb_max": 459.6,
+        "mem_pct_avg": 13.25,
+        "mem_pct_max": 14.96
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 0.84,
+          "cpu_cores_max": 1.412,
+          "mem_mb_avg": 131.7,
+          "mem_mb_max": 170.7
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.213,
+          "cpu_cores_max": 0.5,
+          "mem_mb_avg": 198.7,
+          "mem_mb_max": 199.6
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.049,
+          "cpu_cores_max": 0.126,
+          "mem_mb_avg": 76.6,
+          "mem_mb_max": 90.9
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:19:21.206Z",
+        "fim": "2026-10-07T05:22:28.449Z",
+        "amostras": 57,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "91b2f3fd-a58c-485d-acec-2902d886d8da",
+    "importadoEm": "2026-10-07T05:19:09.248Z",
+    "arquitetura": "microsservicos",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/emergencia/microsservicos_emergencia_2026-10-07T05-19-07-903Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_emergencia_2026-10-07T05-19-07-903Z.csv",
+    "csvRel": "csv/91b2f3fd-a58c-485d-acec-2902d886d8da.csv",
+    "timestampRodada": "2026-10-07T05-19-07-903Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 3308,
+      "avg_ms": 12379.82,
+      "min_ms": 4.77,
+      "med_ms": 3506.51,
+      "p90_ms": 40321.32,
+      "p95_ms": 43009.24,
+      "p99_ms": 48052.16,
+      "max_ms": 50388.09,
+      "rps": 15.54,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 71.97,
+      "cpu_cores_avg": 0.66,
+      "cpu_cores_max": 1.017,
+      "cpu_pct_avg": 16.49,
+      "cpu_pct_max": 25.43,
+      "mem_mb_avg": 863.5,
+      "mem_mb_max": 882.5,
+      "mem_pct_avg": 28.11,
+      "mem_pct_max": 28.73
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 753,
+        "avg_ms": 19114.86,
+        "min_ms": 9.39,
+        "med_ms": 13731.39,
+        "p90_ms": 41761.19,
+        "p95_ms": 44787.87,
+        "p99_ms": 47789.71,
+        "max_ms": 49777.51,
+        "rps": 3.54,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 7.57
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 751,
+        "avg_ms": 18.52,
+        "min_ms": 4.77,
+        "med_ms": 6.33,
+        "p90_ms": 10.83,
+        "p95_ms": 92.66,
+        "p99_ms": 288.43,
+        "max_ms": 478.1,
+        "rps": 3.53,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 632,
+        "avg_ms": 21307.21,
+        "min_ms": 24.77,
+        "med_ms": 19953.14,
+        "p90_ms": 42582.92,
+        "p95_ms": 45093.23,
+        "p99_ms": 49730.81,
+        "max_ms": 50388.09,
+        "rps": 2.97,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 6.17
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 543,
+        "avg_ms": 24063.82,
+        "min_ms": 42.95,
+        "med_ms": 23588.07,
+        "p90_ms": 43073.79,
+        "p95_ms": 45797.94,
+        "p99_ms": 48314.65,
+        "max_ms": 49987.31,
+        "rps": 2.55,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 4.97
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 541,
+        "avg_ms": 17.46,
+        "min_ms": 8.4,
+        "med_ms": 10.71,
+        "p90_ms": 14.25,
+        "p95_ms": 24.87,
+        "p99_ms": 221.77,
+        "max_ms": 398.54,
+        "rps": 2.54,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.66,
+        "cpu_cores_max": 1.017,
+        "cpu_pct_avg": 16.49,
+        "cpu_pct_max": 25.43,
+        "mem_mb_avg": 863.5,
+        "mem_mb_max": 882.5,
+        "mem_pct_avg": 28.11,
+        "mem_pct_max": 28.73
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.046,
+          "cpu_cores_max": 0.126,
+          "mem_mb_avg": 54.8,
+          "mem_mb_max": 57.3
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.015,
+          "cpu_cores_max": 0.036,
+          "mem_mb_avg": 275.1,
+          "mem_mb_max": 275.8
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.03,
+          "cpu_cores_max": 0.116,
+          "mem_mb_avg": 54.2,
+          "mem_mb_max": 68.1
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.291,
+          "cpu_cores_max": 0.32,
+          "mem_mb_avg": 97.5,
+          "mem_mb_max": 105.9
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.046,
+          "cpu_cores_max": 0.21,
+          "mem_mb_avg": 79,
+          "mem_mb_max": 80.7
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.149,
+          "cpu_cores_max": 0.29,
+          "mem_mb_avg": 81.2,
+          "mem_mb_max": 85.1
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.026,
+          "cpu_cores_max": 0.1,
+          "mem_mb_avg": 72.6,
+          "mem_mb_max": 73.8
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.032,
+          "cpu_cores_max": 0.169,
+          "mem_mb_avg": 73.9,
+          "mem_mb_max": 77.7
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.024,
+          "cpu_cores_max": 0.15,
+          "mem_mb_avg": 75.2,
+          "mem_mb_max": 76.5
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:15:33.660Z",
+        "fim": "2026-10-07T05:19:08.572Z",
+        "amostras": 62,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "5fc6d287-17fe-4e34-b654-cbab24ccf619",
+    "importadoEm": "2026-10-07T05:15:21.507Z",
+    "arquitetura": "monolito",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "monolito/dia-corrido/monolito_dia-corrido_2026-10-07T05-15-17-271Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_dia-corrido_2026-10-07T05-15-17-271Z.csv",
+    "csvRel": "csv/5fc6d287-17fe-4e34-b654-cbab24ccf619.csv",
+    "timestampRodada": "2026-10-07T05-15-17-271Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 8098,
+      "avg_ms": 1997.21,
+      "min_ms": 0.25,
+      "med_ms": 104.18,
+      "p90_ms": 7758.61,
+      "p95_ms": 9694.84,
+      "p99_ms": 11337.24,
+      "max_ms": 13247.21,
+      "rps": 42.04,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 81.14,
+      "cpu_cores_avg": 1.493,
+      "cpu_cores_max": 1.953,
+      "cpu_pct_avg": 37.33,
+      "cpu_pct_max": 48.84,
+      "mem_mb_avg": 493.8,
+      "mem_mb_max": 678.2,
+      "mem_pct_avg": 16.07,
+      "mem_pct_max": 22.08
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 1602,
+        "avg_ms": 1536.44,
+        "min_ms": 1.59,
+        "med_ms": 390.84,
+        "p90_ms": 4724.06,
+        "p95_ms": 5697.91,
+        "p99_ms": 7312.79,
+        "max_ms": 9074.76,
+        "rps": 8.32,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 51.06
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 1602,
+        "avg_ms": 119.44,
+        "min_ms": 0.9,
+        "med_ms": 7.12,
+        "p90_ms": 368.72,
+        "p95_ms": 1008.07,
+        "p99_ms": 1588.51,
+        "max_ms": 2776.83,
+        "rps": 8.32,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 91.32
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 1602,
+        "avg_ms": 4597.61,
+        "min_ms": 6.07,
+        "med_ms": 2626.97,
+        "p90_ms": 10535.98,
+        "p95_ms": 11303.58,
+        "p99_ms": 12820.55,
+        "max_ms": 12860.26,
+        "rps": 8.32,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 37.77
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 1602,
+        "avg_ms": 3756.92,
+        "min_ms": 7.91,
+        "med_ms": 3195.93,
+        "p90_ms": 8802.8,
+        "p95_ms": 9999.34,
+        "p99_ms": 11626.42,
+        "max_ms": 13247.21,
+        "rps": 8.32,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 31.46
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 1602,
+        "avg_ms": 84.45,
+        "min_ms": 0.25,
+        "med_ms": 91.56,
+        "p90_ms": 144.53,
+        "p95_ms": 220.72,
+        "p99_ms": 364.92,
+        "max_ms": 1499.17,
+        "rps": 8.32,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 99.75
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.493,
+        "cpu_cores_max": 1.953,
+        "cpu_pct_avg": 37.33,
+        "cpu_pct_max": 48.84,
+        "mem_mb_avg": 493.8,
+        "mem_mb_max": 678.2,
+        "mem_pct_avg": 16.07,
+        "mem_pct_max": 22.08
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.163,
+          "cpu_cores_max": 1.855,
+          "mem_mb_avg": 210.9,
+          "mem_mb_max": 388.9
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.279,
+          "cpu_cores_max": 0.553,
+          "mem_mb_avg": 198.1,
+          "mem_mb_max": 199
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.051,
+          "cpu_cores_max": 0.175,
+          "mem_mb_avg": 84.8,
+          "mem_mb_max": 91.1
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:12:03.629Z",
+        "fim": "2026-10-07T05:15:19.567Z",
+        "amostras": 52,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "bdbed8c5-ccbb-4857-8330-ac01cd1dc354",
+    "importadoEm": "2026-10-07T05:11:51.565Z",
+    "arquitetura": "monolito",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "monolito/emergencia/monolito_emergencia_2026-10-07T05-11-48-287Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_emergencia_2026-10-07T05-11-48-287Z.csv",
+    "csvRel": "csv/bdbed8c5-ccbb-4857-8330-ac01cd1dc354.csv",
+    "timestampRodada": "2026-10-07T05-11-48-287Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 7973,
+      "avg_ms": 4787.63,
+      "min_ms": 2.85,
+      "med_ms": 913.77,
+      "p90_ms": 16559.92,
+      "p95_ms": 20496.28,
+      "p99_ms": 26859.08,
+      "max_ms": 27525.77,
+      "rps": 38.69,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.75,
+      "cpu_cores_avg": 1.564,
+      "cpu_cores_max": 1.972,
+      "cpu_pct_avg": 39.1,
+      "cpu_pct_max": 49.29,
+      "mem_mb_avg": 593.1,
+      "mem_mb_max": 938.8,
+      "mem_pct_avg": 19.31,
+      "mem_pct_max": 30.56
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 1608,
+        "avg_ms": 3535,
+        "min_ms": 4.36,
+        "med_ms": 2073.84,
+        "p90_ms": 9279.49,
+        "p95_ms": 11676.88,
+        "p99_ms": 14417.39,
+        "max_ms": 18893.29,
+        "rps": 7.8,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 31.78
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 1608,
+        "avg_ms": 463.51,
+        "min_ms": 2.85,
+        "med_ms": 149.38,
+        "p90_ms": 1432.3,
+        "p95_ms": 1470.68,
+        "p99_ms": 1769.44,
+        "max_ms": 2013.19,
+        "rps": 7.8,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 66.67
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 1596,
+        "avg_ms": 11366.24,
+        "min_ms": 15.62,
+        "med_ms": 10796.29,
+        "p90_ms": 21976.91,
+        "p95_ms": 26779.04,
+        "p99_ms": 27307.69,
+        "max_ms": 27342.61,
+        "rps": 7.74,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 18.98
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 1541,
+        "avg_ms": 8633.04,
+        "min_ms": 11.64,
+        "med_ms": 8001.85,
+        "p90_ms": 18064.91,
+        "p95_ms": 20637.43,
+        "p99_ms": 25832,
+        "max_ms": 27525.77,
+        "rps": 7.48,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 16.09
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 1532,
+        "avg_ms": 193.09,
+        "min_ms": 6.64,
+        "med_ms": 117.85,
+        "p90_ms": 268.15,
+        "p95_ms": 504.97,
+        "p99_ms": 2037.75,
+        "max_ms": 6069.84,
+        "rps": 7.43,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 94.91
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.564,
+        "cpu_cores_max": 1.972,
+        "cpu_pct_avg": 39.1,
+        "cpu_pct_max": 49.29,
+        "mem_mb_avg": 593.1,
+        "mem_mb_max": 938.8,
+        "mem_pct_avg": 19.31,
+        "mem_pct_max": 30.56
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.204,
+          "cpu_cores_max": 1.936,
+          "mem_mb_avg": 313.6,
+          "mem_mb_max": 652.9
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.292,
+          "cpu_cores_max": 0.523,
+          "mem_mb_avg": 196.6,
+          "mem_mb_max": 197.7
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.068,
+          "cpu_cores_max": 0.309,
+          "mem_mb_avg": 82.9,
+          "mem_mb_max": 90.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:08:20.970Z",
+        "fim": "2026-10-07T05:11:48.787Z",
+        "amostras": 61,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "ee9d80a6-512d-4479-ba86-9d164dbec029",
+    "importadoEm": "2026-10-07T05:08:08.831Z",
+    "arquitetura": "microsservicos",
+    "carga": "dia-corrido",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/dia-corrido/microsservicos_dia-corrido_2026-10-07T05-08-06-965Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_dia-corrido_2026-10-07T05-08-06-965Z.csv",
+    "csvRel": "csv/ee9d80a6-512d-4479-ba86-9d164dbec029.csv",
+    "timestampRodada": "2026-10-07T05-08-06-965Z",
+    "metricas": {
+      "vus_max": 150,
+      "samples": 3309,
+      "avg_ms": 6661.13,
+      "min_ms": 4.33,
+      "med_ms": 1387.86,
+      "p90_ms": 19475.74,
+      "p95_ms": 21773.51,
+      "p99_ms": 27391.45,
+      "max_ms": 29596.17,
+      "rps": 15.58,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 73.25,
+      "cpu_cores_avg": 0.671,
+      "cpu_cores_max": 1.02,
+      "cpu_pct_avg": 16.77,
+      "cpu_pct_max": 25.51,
+      "mem_mb_avg": 861.5,
+      "mem_mb_max": 880.9,
+      "mem_pct_avg": 28.04,
+      "mem_pct_max": 28.68
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 150,
+        "samples": 686,
+        "avg_ms": 10162.95,
+        "min_ms": 7.07,
+        "med_ms": 10977.68,
+        "p90_ms": 20115.36,
+        "p95_ms": 23288.72,
+        "p99_ms": 27269.75,
+        "max_ms": 29381.34,
+        "rps": 3.23,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 12.1
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 150,
+        "samples": 686,
+        "avg_ms": 18.24,
+        "min_ms": 4.33,
+        "med_ms": 6.43,
+        "p90_ms": 11.8,
+        "p95_ms": 66.52,
+        "p99_ms": 441.05,
+        "max_ms": 457.17,
+        "rps": 3.23,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 150,
+        "samples": 648,
+        "avg_ms": 11934.38,
+        "min_ms": 21.05,
+        "med_ms": 12680.29,
+        "p90_ms": 21777.67,
+        "p95_ms": 27294.63,
+        "p99_ms": 28924.41,
+        "max_ms": 29596.17,
+        "rps": 3.05,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 10.34
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 150,
+        "samples": 602,
+        "avg_ms": 12148.15,
+        "min_ms": 11.6,
+        "med_ms": 12735.63,
+        "p90_ms": 21409.47,
+        "p95_ms": 24598.73,
+        "p99_ms": 27299.48,
+        "max_ms": 29593.89,
+        "rps": 2.83,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 10.47
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 150,
+        "samples": 599,
+        "avg_ms": 13.61,
+        "min_ms": 7.9,
+        "med_ms": 10.26,
+        "p90_ms": 12.57,
+        "p95_ms": 15.89,
+        "p99_ms": 99.11,
+        "max_ms": 298.06,
+        "rps": 2.82,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.671,
+        "cpu_cores_max": 1.02,
+        "cpu_pct_avg": 16.77,
+        "cpu_pct_max": 25.51,
+        "mem_mb_avg": 861.5,
+        "mem_mb_max": 880.9,
+        "mem_pct_avg": 28.04,
+        "mem_pct_max": 28.68
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.049,
+          "cpu_cores_max": 0.134,
+          "mem_mb_avg": 52.1,
+          "mem_mb_max": 54.1
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.014,
+          "cpu_cores_max": 0.035,
+          "mem_mb_avg": 274.1,
+          "mem_mb_max": 274.8
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.034,
+          "cpu_cores_max": 0.122,
+          "mem_mb_avg": 54.9,
+          "mem_mb_max": 68.8
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.286,
+          "cpu_cores_max": 0.321,
+          "mem_mb_avg": 100.4,
+          "mem_mb_max": 105.5
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.048,
+          "cpu_cores_max": 0.197,
+          "mem_mb_avg": 78.6,
+          "mem_mb_max": 79.6
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.151,
+          "cpu_cores_max": 0.314,
+          "mem_mb_avg": 82.3,
+          "mem_mb_max": 84.4
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.033,
+          "cpu_cores_max": 0.185,
+          "mem_mb_avg": 70.4,
+          "mem_mb_max": 74.2
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.034,
+          "cpu_cores_max": 0.084,
+          "mem_mb_avg": 75.5,
+          "mem_mb_max": 77.2
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.022,
+          "cpu_cores_max": 0.124,
+          "mem_mb_avg": 73.1,
+          "mem_mb_max": 78
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:04:33.194Z",
+        "fim": "2026-10-07T05:08:07.808Z",
+        "amostras": 63,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "403b8961-d299-459f-9300-f56e95aeacfe",
+    "importadoEm": "2026-10-07T05:04:21.077Z",
+    "arquitetura": "microsservicos",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/normal/microsservicos_normal_2026-10-07T05-04-16-908Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_normal_2026-10-07T05-04-16-908Z.csv",
+    "csvRel": "csv/403b8961-d299-459f-9300-f56e95aeacfe.csv",
+    "timestampRodada": "2026-10-07T05-04-16-908Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 3283,
+      "avg_ms": 1466.4,
+      "min_ms": 1.96,
+      "med_ms": 126.27,
+      "p90_ms": 5307.69,
+      "p95_ms": 6788.35,
+      "p99_ms": 9304.95,
+      "max_ms": 10685.2,
+      "rps": 17.27,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 81.11,
+      "cpu_cores_avg": 0.597,
+      "cpu_cores_max": 1.121,
+      "cpu_pct_avg": 14.93,
+      "cpu_pct_max": 28.02,
+      "mem_mb_avg": 860.8,
+      "mem_mb_max": 879.2,
+      "mem_pct_avg": 28.02,
+      "mem_pct_max": 28.62
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 639,
+        "avg_ms": 1841.46,
+        "min_ms": 3.02,
+        "med_ms": 1105.57,
+        "p90_ms": 5019.38,
+        "p95_ms": 6272.59,
+        "p99_ms": 7951.98,
+        "max_ms": 9496.78,
+        "rps": 3.36,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 37.56
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 639,
+        "avg_ms": 12.38,
+        "min_ms": 1.96,
+        "med_ms": 5.55,
+        "p90_ms": 8.14,
+        "p95_ms": 11.64,
+        "p99_ms": 276.44,
+        "max_ms": 297.41,
+        "rps": 3.36,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 639,
+        "avg_ms": 3230.05,
+        "min_ms": 9.23,
+        "med_ms": 2285.07,
+        "p90_ms": 7626.97,
+        "p95_ms": 8997.15,
+        "p99_ms": 10453.01,
+        "max_ms": 10685.2,
+        "rps": 3.36,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 31.61
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 639,
+        "avg_ms": 2436.46,
+        "min_ms": 16.27,
+        "med_ms": 1690.44,
+        "p90_ms": 5918.38,
+        "p95_ms": 7305.98,
+        "p99_ms": 9302.2,
+        "max_ms": 10505.84,
+        "rps": 3.36,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 41.94
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 639,
+        "avg_ms": 9.86,
+        "min_ms": 4.13,
+        "med_ms": 9.5,
+        "p90_ms": 11.4,
+        "p95_ms": 12.58,
+        "p99_ms": 34.79,
+        "max_ms": 245.39,
+        "rps": 3.36,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.597,
+        "cpu_cores_max": 1.121,
+        "cpu_pct_avg": 14.93,
+        "cpu_pct_max": 28.02,
+        "mem_mb_avg": 860.8,
+        "mem_mb_max": 879.2,
+        "mem_pct_avg": 28.02,
+        "mem_pct_max": 28.62
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.04,
+          "cpu_cores_max": 0.101,
+          "mem_mb_avg": 51.4,
+          "mem_mb_max": 54.8
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.011,
+          "cpu_cores_max": 0.04,
+          "mem_mb_avg": 273.3,
+          "mem_mb_max": 274
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.031,
+          "cpu_cores_max": 0.146,
+          "mem_mb_avg": 57.3,
+          "mem_mb_max": 68.3
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.267,
+          "cpu_cores_max": 0.322,
+          "mem_mb_avg": 97.4,
+          "mem_mb_max": 104.6
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.04,
+          "cpu_cores_max": 0.196,
+          "mem_mb_avg": 79.1,
+          "mem_mb_max": 80.5
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.13,
+          "cpu_cores_max": 0.292,
+          "mem_mb_avg": 79.9,
+          "mem_mb_max": 83.1
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.023,
+          "cpu_cores_max": 0.096,
+          "mem_mb_avg": 72.1,
+          "mem_mb_max": 73.7
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.035,
+          "cpu_cores_max": 0.166,
+          "mem_mb_avg": 74.9,
+          "mem_mb_max": 76.6
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.019,
+          "cpu_cores_max": 0.174,
+          "mem_mb_avg": 75.5,
+          "mem_mb_max": 77
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T05:01:05.560Z",
+        "fim": "2026-10-07T05:04:20.259Z",
+        "amostras": 56,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "a3a5507f-93e3-4e18-8d2d-bf52f20ded4f",
+    "importadoEm": "2026-10-07T05:00:53.535Z",
+    "arquitetura": "monolito",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "monolito/normal/monolito_normal_2026-10-07T05-00-52-668Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_normal_2026-10-07T05-00-52-668Z.csv",
+    "csvRel": "csv/a3a5507f-93e3-4e18-8d2d-bf52f20ded4f.csv",
+    "timestampRodada": "2026-10-07T05-00-52-668Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 6148,
+      "avg_ms": 262.79,
+      "min_ms": 2.31,
+      "med_ms": 18.11,
+      "p90_ms": 1067.24,
+      "p95_ms": 1392.78,
+      "p99_ms": 1868.12,
+      "max_ms": 2596.5,
+      "rps": 33.47,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 91.54,
+      "cpu_cores_avg": 1.001,
+      "cpu_cores_max": 1.811,
+      "cpu_pct_avg": 25.03,
+      "cpu_pct_max": 45.28,
+      "mem_mb_avg": 397.2,
+      "mem_mb_max": 447.3,
+      "mem_pct_avg": 12.93,
+      "mem_pct_max": 14.56
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 1212,
+        "avg_ms": 390.52,
+        "min_ms": 3.96,
+        "med_ms": 23.72,
+        "p90_ms": 1315.17,
+        "p95_ms": 1493.06,
+        "p99_ms": 1974.34,
+        "max_ms": 2222.11,
+        "rps": 6.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 67.74
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 1212,
+        "avg_ms": 14.63,
+        "min_ms": 2.31,
+        "med_ms": 3.81,
+        "p90_ms": 46.06,
+        "p95_ms": 58.38,
+        "p99_ms": 154.39,
+        "max_ms": 333.75,
+        "rps": 6.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 1212,
+        "avg_ms": 375.76,
+        "min_ms": 13.15,
+        "med_ms": 53.15,
+        "p90_ms": 1224.03,
+        "p95_ms": 1464.24,
+        "p99_ms": 1837.78,
+        "max_ms": 2596.5,
+        "rps": 6.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 81.68
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 1212,
+        "avg_ms": 525.9,
+        "min_ms": 11.37,
+        "med_ms": 214.95,
+        "p90_ms": 1437.44,
+        "p95_ms": 1662.9,
+        "p99_ms": 2164.84,
+        "max_ms": 2511.82,
+        "rps": 6.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 66.01
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 1212,
+        "avg_ms": 25.02,
+        "min_ms": 5.55,
+        "med_ms": 7.67,
+        "p90_ms": 100.02,
+        "p95_ms": 115.62,
+        "p99_ms": 147.32,
+        "max_ms": 299.97,
+        "rps": 6.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.001,
+        "cpu_cores_max": 1.811,
+        "cpu_pct_avg": 25.03,
+        "cpu_pct_max": 45.28,
+        "mem_mb_avg": 397.2,
+        "mem_mb_max": 447.3,
+        "mem_pct_avg": 12.93,
+        "mem_pct_max": 14.56
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 0.763,
+          "cpu_cores_max": 1.531,
+          "mem_mb_avg": 128.9,
+          "mem_mb_max": 162.7
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.186,
+          "cpu_cores_max": 0.482,
+          "mem_mb_avg": 194.2,
+          "mem_mb_max": 195
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.052,
+          "cpu_cores_max": 0.166,
+          "mem_mb_avg": 74,
+          "mem_mb_max": 90.6
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T04:57:47.979Z",
+        "fim": "2026-10-07T05:00:53.109Z",
+        "amostras": 56,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "d51e28e9-a71e-4635-a9e6-a810225d6631",
+    "importadoEm": "2026-10-07T04:57:35.868Z",
+    "arquitetura": "microsservicos",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/emergencia/microsservicos_emergencia_2026-10-07T04-57-34-719Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_emergencia_2026-10-07T04-57-34-719Z.csv",
+    "csvRel": "csv/d51e28e9-a71e-4635-a9e6-a810225d6631.csv",
+    "timestampRodada": "2026-10-07T04-57-34-719Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 3378,
+      "avg_ms": 12085.17,
+      "min_ms": 4.96,
+      "med_ms": 3380.38,
+      "p90_ms": 37297.35,
+      "p95_ms": 45985.34,
+      "p99_ms": 50790.14,
+      "max_ms": 52188.47,
+      "rps": 15.85,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.04,
+      "cpu_cores_avg": 0.684,
+      "cpu_cores_max": 1.151,
+      "cpu_pct_avg": 17.09,
+      "cpu_pct_max": 28.78,
+      "mem_mb_avg": 850,
+      "mem_mb_max": 872.6,
+      "mem_pct_avg": 27.67,
+      "mem_pct_max": 28.4
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 768,
+        "avg_ms": 18890.83,
+        "min_ms": 8.69,
+        "med_ms": 13708.6,
+        "p90_ms": 43844.69,
+        "p95_ms": 47657.22,
+        "p99_ms": 50806.81,
+        "max_ms": 51001.32,
+        "rps": 3.6,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 7.68
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 765,
+        "avg_ms": 17.61,
+        "min_ms": 4.96,
+        "med_ms": 6.39,
+        "p90_ms": 11.09,
+        "p95_ms": 46.21,
+        "p99_ms": 293.78,
+        "max_ms": 463.69,
+        "rps": 3.59,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 642,
+        "avg_ms": 20538.52,
+        "min_ms": 23.34,
+        "med_ms": 19393.05,
+        "p90_ms": 44752.44,
+        "p95_ms": 48494.13,
+        "p99_ms": 51545.28,
+        "max_ms": 52188.47,
+        "rps": 3.01,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 5.61
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 558,
+        "avg_ms": 23484.24,
+        "min_ms": 15.62,
+        "med_ms": 24550.47,
+        "p90_ms": 45916.45,
+        "p95_ms": 48526.51,
+        "p99_ms": 51108.37,
+        "max_ms": 51585.79,
+        "rps": 2.62,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 5.91
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 557,
+        "avg_ms": 16.25,
+        "min_ms": 8.61,
+        "med_ms": 10.67,
+        "p90_ms": 13.55,
+        "p95_ms": 17.48,
+        "p99_ms": 239.31,
+        "max_ms": 352.94,
+        "rps": 2.61,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.684,
+        "cpu_cores_max": 1.151,
+        "cpu_pct_avg": 17.09,
+        "cpu_pct_max": 28.78,
+        "mem_mb_avg": 850,
+        "mem_mb_max": 872.6,
+        "mem_pct_avg": 27.67,
+        "mem_pct_max": 28.4
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.047,
+          "cpu_cores_max": 0.126,
+          "mem_mb_avg": 52.7,
+          "mem_mb_max": 57
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.014,
+          "cpu_cores_max": 0.039,
+          "mem_mb_avg": 270.5,
+          "mem_mb_max": 271.5
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.034,
+          "cpu_cores_max": 0.163,
+          "mem_mb_avg": 52.7,
+          "mem_mb_max": 64.8
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.29,
+          "cpu_cores_max": 0.32,
+          "mem_mb_avg": 95.7,
+          "mem_mb_max": 102.4
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.063,
+          "cpu_cores_max": 0.319,
+          "mem_mb_avg": 77.3,
+          "mem_mb_max": 79
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.145,
+          "cpu_cores_max": 0.259,
+          "mem_mb_avg": 79.5,
+          "mem_mb_max": 83.1
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.029,
+          "cpu_cores_max": 0.091,
+          "mem_mb_avg": 72,
+          "mem_mb_max": 73.7
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.034,
+          "cpu_cores_max": 0.176,
+          "mem_mb_avg": 74.2,
+          "mem_mb_max": 76
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.027,
+          "cpu_cores_max": 0.156,
+          "mem_mb_avg": 75.4,
+          "mem_mb_max": 77.8
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T04:54:00.316Z",
+        "fim": "2026-10-07T04:57:35.304Z",
+        "amostras": 63,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "dc11efa3-03d0-4bb5-b25e-1a6f947e7425",
+    "importadoEm": "2026-10-07T04:53:48.399Z",
+    "arquitetura": "monolito",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "monolito/emergencia/monolito_emergencia_2026-10-07T04-53-43-429Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_emergencia_2026-10-07T04-53-43-429Z.csv",
+    "csvRel": "csv/dc11efa3-03d0-4bb5-b25e-1a6f947e7425.csv",
+    "timestampRodada": "2026-10-07T04-53-43-429Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 8317,
+      "avg_ms": 4556.89,
+      "min_ms": 2.51,
+      "med_ms": 685.27,
+      "p90_ms": 15303.49,
+      "p95_ms": 19401.7,
+      "p99_ms": 22428.21,
+      "max_ms": 23098.33,
+      "rps": 40.63,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 73.04,
+      "cpu_cores_avg": 1.616,
+      "cpu_cores_max": 1.932,
+      "cpu_pct_avg": 40.39,
+      "cpu_pct_max": 48.31,
+      "mem_mb_avg": 591.3,
+      "mem_mb_max": 822.4,
+      "mem_pct_avg": 19.25,
+      "mem_pct_max": 26.77
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 1672,
+        "avg_ms": 3330.42,
+        "min_ms": 3.86,
+        "med_ms": 2135.49,
+        "p90_ms": 8803.97,
+        "p95_ms": 10452.15,
+        "p99_ms": 13556.78,
+        "max_ms": 15863.41,
+        "rps": 8.17,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 31.82
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 1672,
+        "avg_ms": 342.69,
+        "min_ms": 2.51,
+        "med_ms": 75.78,
+        "p90_ms": 1044.7,
+        "p95_ms": 1230.09,
+        "p99_ms": 1278.25,
+        "max_ms": 3347.09,
+        "rps": 8.17,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 66.93
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 1668,
+        "avg_ms": 10924.13,
+        "min_ms": 13.31,
+        "med_ms": 13194.34,
+        "p90_ms": 21431.29,
+        "p95_ms": 22390.26,
+        "p99_ms": 22874.26,
+        "max_ms": 22892.52,
+        "rps": 8.15,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 19.18
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 1613,
+        "avg_ms": 8231.7,
+        "min_ms": 11.01,
+        "med_ms": 7778.48,
+        "p90_ms": 17158.69,
+        "p95_ms": 19273.52,
+        "p99_ms": 21990.46,
+        "max_ms": 23098.33,
+        "rps": 7.88,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 16.74
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 1604,
+        "avg_ms": 160.65,
+        "min_ms": 6.08,
+        "med_ms": 103.53,
+        "p90_ms": 234.1,
+        "p95_ms": 384.13,
+        "p99_ms": 2071.34,
+        "max_ms": 4991.92,
+        "rps": 7.84,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 96.7
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.616,
+        "cpu_cores_max": 1.932,
+        "cpu_pct_avg": 40.39,
+        "cpu_pct_max": 48.31,
+        "mem_mb_avg": 591.3,
+        "mem_mb_max": 822.4,
+        "mem_pct_avg": 19.25,
+        "mem_pct_max": 26.77
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.272,
+          "cpu_cores_max": 1.813,
+          "mem_mb_avg": 317,
+          "mem_mb_max": 541.5
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.279,
+          "cpu_cores_max": 0.532,
+          "mem_mb_avg": 192.2,
+          "mem_mb_max": 193.5
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.064,
+          "cpu_cores_max": 0.179,
+          "mem_mb_avg": 82.1,
+          "mem_mb_max": 90.4
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T04:50:17.812Z",
+        "fim": "2026-10-07T04:53:43.934Z",
+        "amostras": 61,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "0d3fa7f0-fca5-4840-8cb1-b77cdb1869b8",
+    "importadoEm": "2026-10-07T04:50:05.920Z",
+    "arquitetura": "monolito",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "monolito/normal/monolito_normal_2026-10-07T04-50-01-407Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_normal_2026-10-07T04-50-01-407Z.csv",
+    "csvRel": "csv/0d3fa7f0-fca5-4840-8cb1-b77cdb1869b8.csv",
+    "timestampRodada": "2026-10-07T04-50-01-407Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 6243,
+      "avg_ms": 245.16,
+      "min_ms": 0.98,
+      "med_ms": 16.62,
+      "p90_ms": 998.84,
+      "p95_ms": 1365.68,
+      "p99_ms": 1849.06,
+      "max_ms": 2441.58,
+      "rps": 33.73,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 92.07,
+      "cpu_cores_avg": 0.937,
+      "cpu_cores_max": 1.811,
+      "cpu_pct_avg": 23.42,
+      "cpu_pct_max": 45.26,
+      "mem_mb_avg": 395.9,
+      "mem_mb_max": 442.9,
+      "mem_pct_avg": 12.89,
+      "mem_pct_max": 14.42
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 1231,
+        "avg_ms": 356.74,
+        "min_ms": 1.98,
+        "med_ms": 21.91,
+        "p90_ms": 1241.56,
+        "p95_ms": 1470.69,
+        "p99_ms": 1899.99,
+        "max_ms": 2319.16,
+        "rps": 6.65,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 71.73
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 1231,
+        "avg_ms": 13.94,
+        "min_ms": 0.98,
+        "med_ms": 3.64,
+        "p90_ms": 42.19,
+        "p95_ms": 59.39,
+        "p99_ms": 136.28,
+        "max_ms": 352.69,
+        "rps": 6.65,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 1231,
+        "avg_ms": 346.47,
+        "min_ms": 6.41,
+        "med_ms": 35.16,
+        "p90_ms": 1189.37,
+        "p95_ms": 1466.56,
+        "p99_ms": 1765.85,
+        "max_ms": 2366.2,
+        "rps": 6.65,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 80.34
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 1231,
+        "avg_ms": 502.06,
+        "min_ms": 9.47,
+        "med_ms": 214.1,
+        "p90_ms": 1410.51,
+        "p95_ms": 1619.83,
+        "p99_ms": 2085.52,
+        "max_ms": 2441.58,
+        "rps": 6.65,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 68.64
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 1231,
+        "avg_ms": 23.19,
+        "min_ms": 2.55,
+        "med_ms": 7.21,
+        "p90_ms": 93.45,
+        "p95_ms": 109.4,
+        "p99_ms": 140.73,
+        "max_ms": 425.94,
+        "rps": 6.65,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.937,
+        "cpu_cores_max": 1.811,
+        "cpu_pct_avg": 23.42,
+        "cpu_pct_max": 45.26,
+        "mem_mb_avg": 395.9,
+        "mem_mb_max": 442.9,
+        "mem_pct_avg": 12.89,
+        "mem_pct_max": 14.42
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 0.702,
+          "cpu_cores_max": 1.58,
+          "mem_mb_avg": 131.5,
+          "mem_mb_max": 162.9
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.184,
+          "cpu_cores_max": 0.479,
+          "mem_mb_avg": 189.9,
+          "mem_mb_max": 190.9
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.051,
+          "cpu_cores_max": 0.151,
+          "mem_mb_avg": 74.5,
+          "mem_mb_max": 89.9
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T04:46:55.432Z",
+        "fim": "2026-10-07T04:50:01.902Z",
+        "amostras": 55,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "053e6264-951a-4324-a1ca-56817b4b40c6",
+    "importadoEm": "2026-10-07T04:46:43.515Z",
+    "arquitetura": "monolito",
+    "carga": "emergencia",
+    "origem": "orquestrador",
+    "origemRel": "monolito/emergencia/monolito_emergencia_2026-10-07T04-46-39-668Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "monolito_emergencia_2026-10-07T04-46-39-668Z.csv",
+    "csvRel": "csv/053e6264-951a-4324-a1ca-56817b4b40c6.csv",
+    "timestampRodada": "2026-10-07T04-46-39-668Z",
+    "metricas": {
+      "vus_max": 300,
+      "samples": 8185,
+      "avg_ms": 4653.76,
+      "min_ms": 2.52,
+      "med_ms": 769.95,
+      "p90_ms": 15886.4,
+      "p95_ms": 19637.2,
+      "p99_ms": 23309.91,
+      "max_ms": 24767.27,
+      "rps": 39.78,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 72.73,
+      "cpu_cores_avg": 1.63,
+      "cpu_cores_max": 2.321,
+      "cpu_pct_avg": 40.74,
+      "cpu_pct_max": 58.03,
+      "mem_mb_avg": 579.8,
+      "mem_mb_max": 859.2,
+      "mem_pct_avg": 18.87,
+      "mem_pct_max": 27.97
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 300,
+        "samples": 1649,
+        "avg_ms": 3414.55,
+        "min_ms": 4.62,
+        "med_ms": 2208.43,
+        "p90_ms": 8767.96,
+        "p95_ms": 10937.66,
+        "p99_ms": 13750.75,
+        "max_ms": 15789.25,
+        "rps": 8.02,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 30.38
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 300,
+        "samples": 1649,
+        "avg_ms": 368.21,
+        "min_ms": 2.52,
+        "med_ms": 83.03,
+        "p90_ms": 1100.09,
+        "p95_ms": 1299.69,
+        "p99_ms": 1646.34,
+        "max_ms": 3062.14,
+        "rps": 8.02,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 66.65
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 300,
+        "samples": 1645,
+        "avg_ms": 11181.59,
+        "min_ms": 15.37,
+        "med_ms": 13284.66,
+        "p90_ms": 21955.83,
+        "p95_ms": 23302.69,
+        "p99_ms": 24618.67,
+        "max_ms": 24653.08,
+        "rps": 8,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 18.6
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 300,
+        "samples": 1582,
+        "avg_ms": 8331.49,
+        "min_ms": 12.7,
+        "med_ms": 7863.49,
+        "p90_ms": 17263.68,
+        "p95_ms": 19609.85,
+        "p99_ms": 22820.55,
+        "max_ms": 24767.27,
+        "rps": 7.69,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 17.13
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 300,
+        "samples": 1572,
+        "avg_ms": 176.43,
+        "min_ms": 6.64,
+        "med_ms": 109.08,
+        "p90_ms": 268.74,
+        "p95_ms": 475.45,
+        "p99_ms": 2232.4,
+        "max_ms": 4687.9,
+        "rps": 7.64,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 95.67
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 1.63,
+        "cpu_cores_max": 2.321,
+        "cpu_pct_avg": 40.74,
+        "cpu_pct_max": 58.03,
+        "mem_mb_avg": 579.8,
+        "mem_mb_max": 859.2,
+        "mem_pct_avg": 18.87,
+        "mem_pct_max": 27.97
+      },
+      "porContainer": [
+        {
+          "nome": "app_nestjs_monolito",
+          "cpu_cores_avg": 1.273,
+          "cpu_cores_max": 1.946,
+          "mem_mb_avg": 312.6,
+          "mem_mb_max": 584.2
+        },
+        {
+          "nome": "db_mongo_monolito",
+          "cpu_cores_avg": 0.287,
+          "cpu_cores_max": 0.501,
+          "mem_mb_avg": 186.4,
+          "mem_mb_max": 188
+        },
+        {
+          "nome": "db_postgres_monolito",
+          "cpu_cores_avg": 0.07,
+          "cpu_cores_max": 0.297,
+          "mem_mb_avg": 80.8,
+          "mem_mb_max": 88
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T04:43:12.933Z",
+        "fim": "2026-10-07T04:46:40.144Z",
+        "amostras": 61,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "app_nestjs_monolito",
+        "db_mongo_monolito",
+        "db_postgres_monolito"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  },
+  {
+    "id": "88e1637a-411f-4da9-8df3-fec47139cc25",
+    "importadoEm": "2026-10-07T04:43:00.957Z",
+    "arquitetura": "microsservicos",
+    "carga": "normal",
+    "origem": "orquestrador",
+    "origemRel": "microsservicos/normal/microsservicos_normal_2026-10-07T04-42-58-098Z.csv",
+    "maquina": {
+      "apelido": "desktop",
+      "hostname": "DESKTOP-H5F0RLH",
+      "plataforma": "win32 10.0.19045",
+      "cpuModelo": "AMD Ryzen 7 5700G with Radeon Graphics",
+      "cpusLogicas": 16,
+      "memoriaGB": 15.87,
+      "cpusDocker": 8,
+      "memoriaDockerGB": 7.76
+    },
+    "arquivo": "microsservicos_normal_2026-10-07T04-42-58-098Z.csv",
+    "csvRel": "csv/88e1637a-411f-4da9-8df3-fec47139cc25.csv",
+    "timestampRodada": "2026-10-07T04-42-58-098Z",
+    "metricas": {
+      "vus_max": 50,
+      "samples": 3298,
+      "avg_ms": 1450.96,
+      "min_ms": 2.4,
+      "med_ms": 584.69,
+      "p90_ms": 4131.63,
+      "p95_ms": 5006.38,
+      "p99_ms": 7894.77,
+      "max_ms": 9002.06,
+      "rps": 17.22,
+      "error_rate_pct": 0,
+      "slo_pass_pct": 76.03,
+      "cpu_cores_avg": 0.622,
+      "cpu_cores_max": 1.136,
+      "cpu_pct_avg": 15.55,
+      "cpu_pct_max": 28.39,
+      "mem_mb_avg": 834.2,
+      "mem_mb_max": 862.8,
+      "mem_pct_avg": 27.15,
+      "mem_pct_max": 28.09
+    },
+    "porJoin": [
+      {
+        "label": "GET atendimento",
+        "endpoint": "GET /atendimentos/:id",
+        "vus_max": 50,
+        "samples": 642,
+        "avg_ms": 1963.13,
+        "min_ms": 3.67,
+        "med_ms": 1699.01,
+        "p90_ms": 3877.52,
+        "p95_ms": 4576.41,
+        "p99_ms": 7787.44,
+        "max_ms": 8483.74,
+        "rps": 3.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 21.03
+      },
+      {
+        "label": "GET paciente",
+        "endpoint": "GET /pacientes/:id",
+        "vus_max": 50,
+        "samples": 642,
+        "avg_ms": 15.31,
+        "min_ms": 2.4,
+        "med_ms": 6.86,
+        "p90_ms": 12.41,
+        "p95_ms": 69.43,
+        "p99_ms": 202.27,
+        "max_ms": 390.54,
+        "rps": 3.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      },
+      {
+        "label": "POST atendimento (dual-write)",
+        "endpoint": "POST /atendimentos",
+        "vus_max": 50,
+        "samples": 642,
+        "avg_ms": 3075.74,
+        "min_ms": 10.86,
+        "med_ms": 2690.94,
+        "p90_ms": 5466.6,
+        "p95_ms": 6898.84,
+        "p99_ms": 8627.39,
+        "max_ms": 9002.06,
+        "rps": 3.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 12.77
+      },
+      {
+        "label": "GET atendimentos/medico",
+        "endpoint": "GET /atendimentos/medico/:id",
+        "vus_max": 50,
+        "samples": 642,
+        "avg_ms": 2381.18,
+        "min_ms": 16.44,
+        "med_ms": 2187.7,
+        "p90_ms": 4604.24,
+        "p95_ms": 5504.68,
+        "p99_ms": 7867.97,
+        "max_ms": 8487.77,
+        "rps": 3.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 26.48
+      },
+      {
+        "label": "POST medico (baseline)",
+        "endpoint": "POST /medicos",
+        "vus_max": 50,
+        "samples": 642,
+        "avg_ms": 13.93,
+        "min_ms": 4.55,
+        "med_ms": 11.11,
+        "p90_ms": 14.02,
+        "p95_ms": 17.39,
+        "p99_ms": 106.59,
+        "max_ms": 236.56,
+        "rps": 3.35,
+        "error_rate_pct": 0,
+        "slo_pass_pct": 100
+      }
+    ],
+    "hardware": {
+      "metricas": {
+        "cpu_cores_avg": 0.622,
+        "cpu_cores_max": 1.136,
+        "cpu_pct_avg": 15.55,
+        "cpu_pct_max": 28.39,
+        "mem_mb_avg": 834.2,
+        "mem_mb_max": 862.8,
+        "mem_pct_avg": 27.15,
+        "mem_pct_max": 28.09
+      },
+      "porContainer": [
+        {
+          "nome": "api_gateway",
+          "cpu_cores_avg": 0.047,
+          "cpu_cores_max": 0.111,
+          "mem_mb_avg": 47.4,
+          "mem_mb_max": 49.6
+        },
+        {
+          "nome": "db_mongo_ms",
+          "cpu_cores_avg": 0.011,
+          "cpu_cores_max": 0.036,
+          "mem_mb_avg": 268.2,
+          "mem_mb_max": 269.8
+        },
+        {
+          "nome": "db_postgres_pep_ms",
+          "cpu_cores_avg": 0.027,
+          "cpu_cores_max": 0.081,
+          "mem_mb_avg": 56.1,
+          "mem_mb_max": 67.3
+        },
+        {
+          "nome": "ms_atendimentos",
+          "cpu_cores_avg": 0.261,
+          "cpu_cores_max": 0.318,
+          "mem_mb_avg": 95.1,
+          "mem_mb_max": 103.3
+        },
+        {
+          "nome": "ms_auditoria",
+          "cpu_cores_avg": 0.059,
+          "cpu_cores_max": 0.265,
+          "mem_mb_avg": 77.1,
+          "mem_mb_max": 79.8
+        },
+        {
+          "nome": "ms_consultas_laudos",
+          "cpu_cores_avg": 0.122,
+          "cpu_cores_max": 0.234,
+          "mem_mb_avg": 77.7,
+          "mem_mb_max": 81.5
+        },
+        {
+          "nome": "ms_historico_clinicos",
+          "cpu_cores_avg": 0.033,
+          "cpu_cores_max": 0.242,
+          "mem_mb_avg": 68.9,
+          "mem_mb_max": 71.9
+        },
+        {
+          "nome": "ms_medicos",
+          "cpu_cores_avg": 0.04,
+          "cpu_cores_max": 0.096,
+          "mem_mb_avg": 72,
+          "mem_mb_max": 75.2
+        },
+        {
+          "nome": "ms_pacientes",
+          "cpu_cores_avg": 0.022,
+          "cpu_cores_max": 0.182,
+          "mem_mb_avg": 71.6,
+          "mem_mb_max": 74.9
+        }
+      ],
+      "janela": {
+        "inicio": "2026-10-07T04:39:45.338Z",
+        "fim": "2026-10-07T04:42:58.729Z",
+        "amostras": 60,
+        "falhas": 0
+      },
+      "containersVistos": [
+        "api_gateway",
+        "db_mongo_ms",
+        "db_postgres_pep_ms",
+        "ms_atendimentos",
+        "ms_auditoria",
+        "ms_consultas_laudos",
+        "ms_historico_clinicos",
+        "ms_medicos",
+        "ms_pacientes"
+      ],
+      "containersAusentes": []
+    },
+    "nota": ""
+  }
+]
