@@ -11,11 +11,15 @@
     </div>
 
     <div class="card">
-      <p>
-        <span [class]="'badge risco-' + a.classificacaoRisco.toLowerCase()">{{ riscoLabel() }}</span>
-      </p>
-      <p><strong>Entrada:</strong> {{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</p>
-      <p><strong>Queixa principal:</strong> {{ a.queixaPrincipal }}</p>
+      <h2>Triagem</h2>
+      <dl class="info-grid">
+        <div>
+          <dt>Classificação de risco</dt>
+          <dd><span [class]="'badge risco-' + a.classificacaoRisco.toLowerCase()">{{ riscoLabel() }}</span></dd>
+        </div>
+        <div><dt>Entrada</dt><dd>{{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</dd></div>
+        <div class="info-wide"><dt>Queixa principal</dt><dd>{{ a.queixaPrincipal }}</dd></div>
+      </dl>
 
       @if (a.pressaoArterial || a.frequenciaCardiaca || a.saturacaoOxigenio || a.temperaturaCorporal || a.frequenciaRespiratoria) {
         <div class="vitals-grid">
@@ -41,17 +45,23 @@
     <h2>Consultas / Laudos</h2>
     @if (a.consultasLaudos?.length) {
       @for (cl of a.consultasLaudos!; track cl._id) {
-        <div class="card">
-          <p><strong>Tipo:</strong> {{ cl.tipoRegistro }}</p>
-          <p><strong>Data:</strong> {{ cl.dataRegistro | date:'dd/MM/yyyy HH:mm' }}</p>
-          <p>{{ cl.descricaoClinica }}</p>
-          @if (cl.prescricoes?.length) {
-            <p><strong>Prescrições:</strong>
-              @for (pr of cl.prescricoes; track pr.medicamento) {
-                <span class="badge">{{ pr.medicamento }} {{ pr.dose }} / {{ pr.frequencia }}</span>
-              }
-            </p>
-          }
+        <div class="card card-flush">
+          <div class="card-header">
+            <span class="badge">{{ cl.tipoRegistro }}</span>
+            <span class="card-meta">{{ cl.dataRegistro | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="card-body">
+            <p>{{ cl.descricaoClinica }}</p>
+            @if (cl.prescricoes?.length) {
+              <p><strong>Prescrições:</strong>
+                <span class="badge-list">
+                  @for (pr of cl.prescricoes; track pr.medicamento) {
+                    <span class="badge">{{ pr.medicamento }} {{ pr.dose }} / {{ pr.frequencia }}</span>
+                  }
+                </span>
+              </p>
+            }
+          </div>
         </div>
       }
     } @else {

@@ -242,7 +242,7 @@
                   }
                 </select>
               </td>
-              <td class="mono">
+              <td class="mono nowrap">
                 @if (valorDaMetrica(o) !== null) {
                   {{ valorDaMetrica(o) | number:'1.0-2' }} {{ metricaAtual().unidade }}
                 } @else {
@@ -251,7 +251,7 @@
               </td>
               <td>{{ o.metricas.vus_max ?? '—' }}</td>
               <td class="mono lab-arquivo-nome" [title]="o.arquivo">{{ o.arquivo }}</td>
-              <td>{{ o.importadoEm | date:'dd/MM HH:mm' }}</td>
+              <td class="nowrap">{{ o.importadoEm | date:'dd/MM HH:mm' }}</td>
               <td>
                 <input class="lab-nota" type="text" [value]="o.nota" (change)="anotar(o, $event)" placeholder="—">
               </td>

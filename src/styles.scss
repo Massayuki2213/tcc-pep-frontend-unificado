@@ -8,7 +8,7 @@
 :root {
   --bg: #f2f5f9;
   --surface: #ffffff;
-  --border: #e2e8f0;
+  --border: #d8e0ea;
   --text: #0f172a;
   --text-2: #475569;
   --text-3: #94a3b8;
@@ -20,7 +20,7 @@
   --navy: #0c2136;
   --navy-2: #14344f;
   --radius: 12px;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05), 0 2px 6px rgba(15, 23, 42, .05);
   --shadow-md: 0 4px 16px rgba(15, 23, 42, .08);
 }
 
@@ -184,7 +184,51 @@ h2 { font-size: .82rem; font-weight: 600; color: var(--text-2); text-transform: 
   flex-direction: column;
   gap: .55rem;
   box-shadow: var(--shadow-sm);
+
+  ul { padding-left: 1.25rem; }
 }
+
+/* O título no topo do card vira cabeçalho com linha divisória, como o .card-header */
+.card > h2:first-child,
+.card > .page-header:first-child,
+.card > .page-title:first-child {
+  margin: -1.35rem -1.5rem .65rem;
+  padding: 1rem 1.5rem .9rem;
+  border-bottom: 1px solid var(--border);
+
+  // Card que só tem o cabeçalho: sem linha e sem a faixa vazia embaixo
+  &:last-child { margin-bottom: -1.35rem; border-bottom: none; }
+}
+
+/* Card com cabeçalho separado por linha; o conteúdo vai em .card-body ou numa .table-flush */
+.card-flush { padding: 0; gap: 0; overflow: hidden; }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 3.25rem;
+  padding: .65rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-body { padding: 1.15rem 1.5rem 1.35rem; display: flex; flex-direction: column; gap: .55rem; }
+
+.card-meta { font-size: .85rem; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+/* Pares rótulo/valor (prontuário, atendimento) */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: .9rem 1.5rem;
+
+  dt { font-size: .68rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .05em; }
+  dd { font-weight: 500; margin-top: .1rem; }
+  .info-wide { grid-column: 1 / -1; }
+}
+
+.badge-list { display: inline-flex; flex-wrap: wrap; gap: .35rem; vertical-align: middle; }
 
 /* ── Dashboard ──────────────────────────────────────────── */
 .stats-grid {
@@ -234,7 +278,7 @@ h2 { font-size: .82rem; font-weight: 600; color: var(--text-2); text-transform: 
   @media (max-width: 1000px) { grid-template-columns: 1fr; }
 }
 
-.risk-bars { display: flex; flex-direction: column; gap: .7rem; margin-top: .5rem; }
+.risk-bars { display: flex; flex-direction: column; gap: .7rem; }
 
 .risk-bar-row {
   display: grid;
@@ -247,7 +291,7 @@ h2 { font-size: .82rem; font-weight: 600; color: var(--text-2); text-transform: 
 
   .risk-track {
     height: 10px;
-    background: #eef2f7;
+    background: #e8edf3;
     border-radius: 999px;
     overflow: hidden;
 
@@ -330,7 +374,23 @@ h2 { font-size: .82rem; font-weight: 600; color: var(--text-2); text-transform: 
 
   tbody tr { transition: background .1s; }
   tbody tr:hover { background: #f8fafc; }
-  tr + tr td { border-top: 1px solid #eef2f7; }
+  tr + tr td { border-top: 1px solid #e4e9f0; }
+
+  .nowrap { white-space: nowrap; }
+
+  // Sem isto o display flex de .actions tira o td da grade e a linha da borda sai desalinhada
+  td.actions { display: table-cell; }
+  td.actions .btn + .btn { margin-left: .25rem; }
+}
+
+/* Tabela encostada nas bordas de um .card-flush: o card já faz a moldura */
+.table-flush {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  th:first-child, td:first-child { padding-left: 1.5rem; }
+  th:last-child, td:last-child { padding-right: 1.5rem; }
 }
 
 /* Avatar com iniciais (lista de pacientes) */

@@ -7,10 +7,12 @@
 
     <div class="card">
       <h2>Dados pessoais</h2>
-      <p><strong>Sexo:</strong> {{ d.sexo }}</p>
-      <p><strong>Nascimento:</strong> {{ d.dataNascimento | date:'dd/MM/yyyy' }}</p>
-      @if (d.tipagemSanguinea) { <p><strong>Tipagem:</strong> {{ d.tipagemSanguinea }}</p> }
-      @if (d.telefoneContato)  { <p><strong>Telefone:</strong> {{ d.telefoneContato }}</p> }
+      <dl class="info-grid">
+        <div><dt>Sexo</dt><dd>{{ d.sexo }}</dd></div>
+        <div><dt>Nascimento</dt><dd>{{ d.dataNascimento | date:'dd/MM/yyyy' }}</dd></div>
+        @if (d.tipagemSanguinea) { <div><dt>Tipagem</dt><dd>{{ d.tipagemSanguinea }}</dd></div> }
+        @if (d.telefoneContato)  { <div><dt>Telefone</dt><dd>{{ d.telefoneContato }}</dd></div> }
+      </dl>
     </div>
 
     @if (d.historicoClinico) {
@@ -29,20 +31,39 @@
       </div>
     }
 
-    <h2>Atendimentos</h2>
-    @if (d.atendimentos?.length) {
-      @for (a of d.atendimentos; track a.id) {
-        <div class="card">
-          <p>
-            <strong>{{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</strong>
-            — {{ a.queixaPrincipal }}
-            <a [routerLink]="['/atendimentos', a.id]" class="btn btn-sm" style="margin-left:8px">Ver detalhes</a>
-          </p>
-        </div>
+    <div class="card card-flush">
+      <div class="card-header">
+        <h2>Atendimentos</h2>
+      </div>
+      @if (d.atendimentos?.length) {
+        <table class="table table-flush">
+          <thead>
+            <tr>
+              <th>Entrada</th>
+              <th>Queixa</th>
+              <th>Risco</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of d.atendimentos; track a.id) {
+              <tr>
+                <td class="nowrap">{{ a.dataHoraEntrada | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ a.queixaPrincipal }}</td>
+                <td>
+                  @if (a.classificacaoRisco) {
+                    <span [class]="'badge risco-' + a.classificacaoRisco.toLowerCase()">{{ a.classificacaoRisco }}</span>
+                  }
+                </td>
+                <td><a [routerLink]="['/atendimentos', a.id]" class="btn btn-sm">Ver detalhes</a></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <p class="empty">Nenhum atendimento registrado.</p>
       }
-    } @else {
-      <p class="empty">Nenhum atendimento registrado.</p>
-    }
+    </div>
   </div>
 } @else if (erro()) {
   <div class="load-error">

@@ -30,7 +30,7 @@
       <tbody>
         @for (log of logs(); track log.id) {
           <tr>
-            <td>{{ log.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td class="nowrap">{{ log.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td>
             <td>{{ log.acaoRealizada }}</td>
             <td><span class="badge">{{ log.entidadeAfetada }}</span></td>
             <td class="mono">{{ log.entidadeId }}</td>
