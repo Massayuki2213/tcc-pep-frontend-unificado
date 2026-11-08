@@ -383,6 +383,21 @@ h2 { font-size: .82rem; font-weight: 600; color: var(--text-2); text-transform: 
   td.actions .btn + .btn { margin-left: .25rem; }
 }
 
+/* Rodapé de paginação abaixo de uma .table-flush */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: .7rem 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: .82rem;
+  color: var(--text-2);
+
+  .pager-pos { font-variant-numeric: tabular-nums; padding: 0 .25rem; }
+}
+
 /* Tabela encostada nas bordas de um .card-flush: o card já faz a moldura */
 .table-flush {
   border: none;

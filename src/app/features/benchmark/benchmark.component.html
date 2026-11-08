@@ -69,13 +69,13 @@
     </div>
   }
 
-  <div class="card">
-    <div class="page-header">
+  <div class="card card-flush">
+    <div class="card-header">
       <h2>Resultados (CSV)</h2>
       <button class="btn btn-sm" (click)="carregarResultados()">Atualizar</button>
     </div>
     @if (resultados().length > 0) {
-      <table class="table">
+      <table class="table table-flush">
         <thead>
           <tr>
             <th>Arquitetura</th>
@@ -87,18 +87,31 @@
           </tr>
         </thead>
         <tbody>
-          @for (r of resultados(); track r.rel) {
+          @for (r of resultadosPagina(); track r.rel) {
             <tr>
               <td>{{ r.stackNome }}</td>
               <td><span class="badge">{{ r.cenario }}</span></td>
               <td class="mono">{{ r.arquivo }}</td>
-              <td>{{ r.modificadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
-              <td>{{ formatarTamanho(r.tamanhoBytes) }}</td>
+              <td class="nowrap">{{ r.modificadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td class="nowrap">{{ formatarTamanho(r.tamanhoBytes) }}</td>
               <td><a [href]="downloadUrl(r.rel)" class="btn btn-sm btn-primary" download>Baixar CSV</a></td>
             </tr>
           }
         </tbody>
       </table>
+      @if (totalPaginas() > 1) {
+        <div class="pager">
+          <span>
+            {{ pagina() * porPagina + 1 }}–{{ pagina() * porPagina + resultadosPagina().length }}
+            de {{ resultados().length }} arquivos
+          </span>
+          <div class="actions">
+            <button class="btn btn-sm" (click)="irParaPagina(pagina() - 1)" [disabled]="pagina() === 0">Anterior</button>
+            <span class="pager-pos">Página {{ pagina() + 1 }} de {{ totalPaginas() }}</span>
+            <button class="btn btn-sm" (click)="irParaPagina(pagina() + 1)" [disabled]="pagina() >= totalPaginas() - 1">Próxima</button>
+          </div>
+        </div>
+      }
     } @else {
       <p class="empty">Nenhum resultado ainda — rode um teste para gerar o primeiro CSV.</p>
     }

@@ -24,6 +24,15 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
   status = signal<BenchmarkStatus | null>(null);
   resultados = signal<ResultadoCsv[]>([]);
 
+  /** Com o acervo inteiro a tabela de CSVs ocupava a página toda. */
+  readonly porPagina = 5;
+  pagina = signal(0);
+  totalPaginas = computed(() => Math.max(1, Math.ceil(this.resultados().length / this.porPagina)));
+  resultadosPagina = computed(() => {
+    const inicio = this.pagina() * this.porPagina;
+    return this.resultados().slice(inicio, inicio + this.porPagina);
+  });
+
   stack = signal('monolito');
   script = signal('cenario-emergencia');
   carga = signal('1');
@@ -125,9 +134,15 @@ export class BenchmarkComponent implements OnInit, OnDestroy {
 
   carregarResultados() {
     this.svc.results().subscribe({
-      next: r => this.resultados.set(r),
+      // Volta para a primeira página: a lista vem do mais novo para o mais antigo,
+      // então o CSV da rodada que acabou de terminar fica visível
+      next: r => { this.resultados.set(r); this.pagina.set(0); },
       error: () => this.resultados.set([]),
     });
+  }
+
+  irParaPagina(p: number) {
+    this.pagina.set(Math.min(Math.max(p, 0), this.totalPaginas() - 1));
   }
 
   downloadUrl(rel: string) {
