@@ -228,16 +228,17 @@
           @for (o of observacoes(); track o.id) {
             <tr>
               <td>
-                <select [value]="o.arquitetura" (change)="reclassificar(o, 'arquitetura', $event)">
+                <!-- [selected] por opção: o [value] no select chega antes das options e cai sempre na primeira -->
+                <select (change)="reclassificar(o, 'arquitetura', $event)">
                   @for (a of arquiteturas; track a.valor) {
-                    <option [value]="a.valor">{{ a.nome }}</option>
+                    <option [value]="a.valor" [selected]="a.valor === o.arquitetura">{{ a.nome }}</option>
                   }
                 </select>
               </td>
               <td>
-                <select [value]="o.carga" (change)="reclassificar(o, 'carga', $event)">
+                <select (change)="reclassificar(o, 'carga', $event)">
                   @for (c of cargas; track c.valor) {
-                    <option [value]="c.valor">{{ c.nome }}</option>
+                    <option [value]="c.valor" [selected]="c.valor === o.carga">{{ c.nome }}</option>
                   }
                 </select>
               </td>
